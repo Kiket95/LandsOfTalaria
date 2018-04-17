@@ -40,7 +40,6 @@ namespace LandsOfTalaria
 
         public void Draw(SpriteBatch spriteBatch,GraphicsDevice graphicsDevice)
         {
-
             graphicsDevice.BlendState = BlendState.AlphaBlend;
             graphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
             graphicsDevice.RasterizerState = RasterizerState.CullNone;
@@ -49,13 +48,21 @@ namespace LandsOfTalaria
             tiledMapRenderer.Draw(startingLoc.GetLayer("1"), playerCamera.Transform);
             spriteBatch.End();
 
-            spriteBatch.Begin(transformMatrix: playerCamera.Transform);
+            graphicsDevice.BlendState = BlendState.AlphaBlend;
+            graphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
+            graphicsDevice.RasterizerState = RasterizerState.CullNone;
+
+            spriteBatch.Begin(transformMatrix: playerCamera.Transform, samplerState: SamplerState.PointWrap);
             player.Draw(spriteBatch);
             foreach (PlayerAttack playerAttack in PlayerAttack.playerAttacks)
             {
                 spriteBatch.Draw(attackSprite, new Vector2(playerAttack.Position.X - 8, playerAttack.Position.Y - 8), Color.White);
             }
             spriteBatch.End();
+
+            graphicsDevice.BlendState = BlendState.AlphaBlend;
+            graphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
+            graphicsDevice.RasterizerState = RasterizerState.CullNone;
 
             spriteBatch.Begin(transformMatrix: playerCamera.Transform);
             tiledMapRenderer.Draw(startingLoc.GetLayer("2"), playerCamera.Transform);

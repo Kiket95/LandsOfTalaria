@@ -38,7 +38,6 @@ namespace LandsOfTalaria
             base.Initialize();
         }
 
-
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
