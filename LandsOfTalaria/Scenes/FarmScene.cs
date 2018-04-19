@@ -22,15 +22,14 @@ namespace LandsOfTalaria
         Texture2D bigTreeTextureUpper;
         Texture2D bigTreeTextureLower;
         SpriteBatch spriteBatch;
-
-        public FarmScene(Player player, PlayerCamera playerCamera, TiledMapRenderer tiledMapRenderer,SpriteBatch spriteBatch)
+        Vector2 screenCenter;
+        public FarmScene(Player player, PlayerCamera playerCamera, TiledMapRenderer tiledMapRenderer,SpriteBatch spriteBatch,Vector2 screenCenter)
         {
-            
             this.player = player;
             this.playerCamera = playerCamera;
             this.tiledMapRenderer = tiledMapRenderer;
             this.spriteBatch = spriteBatch;
-
+            this.screenCenter = screenCenter;
         }
         
         public void LoadContent(ContentManager contentManager)
@@ -67,6 +66,7 @@ namespace LandsOfTalaria
 
         public void Draw(GraphicsDevice graphicsDevice)
         {
+
             graphicsDevice.BlendState = BlendState.AlphaBlend;
             graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
             graphicsDevice.RasterizerState = RasterizerState.CullNone;
@@ -135,7 +135,7 @@ namespace LandsOfTalaria
 
         public void LoadEnemies()
         {
-            Enemy.enemies.Add(new Wolf(new Vector2(1500,100)));
+            Enemy.enemies.Add(new Wolf(new Vector2(1500,100),screenCenter));
         }
 
         public void DrawEnemies()

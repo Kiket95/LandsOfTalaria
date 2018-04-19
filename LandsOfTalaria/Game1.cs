@@ -15,7 +15,7 @@ namespace LandsOfTalaria
         SceneManager sceneManager;
         TiledMapRenderer tiledMapRenderer;
         PlayerCamera playerCamera;
-
+        Vector2 screenCenter;
         public static int screenHeight;
         public static int screenWidth;
 
@@ -35,7 +35,7 @@ namespace LandsOfTalaria
             tiledMapRenderer = new TiledMapRenderer(GraphicsDevice);
             playerCamera = new PlayerCamera();
             player = new Player();
-            sceneManager = new SceneManager(player, playerCamera, tiledMapRenderer,spriteBatch);
+            sceneManager = new SceneManager(player, playerCamera, tiledMapRenderer,spriteBatch, screenCenter);
             base.Initialize();
         }
 
@@ -60,7 +60,6 @@ namespace LandsOfTalaria
 
         protected override void Draw(GameTime gameTime)
         {
-
             GraphicsDevice.Clear(Color.Black);
             sceneManager.Draw(GraphicsDevice);
 
