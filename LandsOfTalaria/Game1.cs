@@ -3,10 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Tiled.Graphics;
 
-
 namespace LandsOfTalaria
 {
-    public enum Direction { Right, Left, Up, Down };
+    public enum Direction { Right, Left, Up, Down, UpRight };
+
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -22,6 +22,7 @@ namespace LandsOfTalaria
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+           
             Content.RootDirectory = "Content";
             screenHeight = graphics.PreferredBackBufferHeight = 20*32;
             screenWidth = graphics.PreferredBackBufferWidth = 40*32;
@@ -29,16 +30,18 @@ namespace LandsOfTalaria
 
         protected override void Initialize()
         {
+            graphics.SynchronizeWithVerticalRetrace = true;
+            spriteBatch = new SpriteBatch(GraphicsDevice);
             tiledMapRenderer = new TiledMapRenderer(GraphicsDevice);
             playerCamera = new PlayerCamera();
             player = new Player();
-            sceneManager = new SceneManager(player, playerCamera, tiledMapRenderer);
+            sceneManager = new SceneManager(player, playerCamera, tiledMapRenderer,spriteBatch);
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+           
             sceneManager.LoadContent(this.Content);
         }
 
@@ -59,7 +62,7 @@ namespace LandsOfTalaria
         {
 
             GraphicsDevice.Clear(Color.Black);
-            sceneManager.Draw(spriteBatch,GraphicsDevice);
+            sceneManager.Draw(GraphicsDevice);
 
             base.Draw(gameTime);
         }

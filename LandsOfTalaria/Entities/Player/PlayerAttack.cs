@@ -13,11 +13,12 @@ using MonoGame.Extended.TextureAtlases;
 
 namespace LandsOfTalaria
 {
+
     class PlayerAttack
     {
         public Vector2 position;
         private int speed = 800;
-        private int radius = 20;
+        private int radius = 16;
         public static List<PlayerAttack> playerAttacks = new List<PlayerAttack>();
         public int Radius{
             get { return radius; }

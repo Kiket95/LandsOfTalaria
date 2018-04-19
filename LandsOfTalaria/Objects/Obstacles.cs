@@ -1,10 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended.Tiled;
-using MonoGame.Extended.Tiled.Graphics;
-using MonoGame.Extended;
-using Microsoft.Xna.Framework.Content;
 using System.Collections.Generic;
 
 namespace LandsOfTalaria.Objects
@@ -14,6 +9,7 @@ namespace LandsOfTalaria.Objects
         protected Vector2 position;
         Texture2D texture;
         protected int radius;
+        Vector2 hitBoxPosition;
 
         public static List<Obstacles> obstacles = new List<Obstacles>();
 
@@ -21,6 +17,11 @@ namespace LandsOfTalaria.Objects
         {
             get { return position; }
             set { position = value; }
+        }
+        public Vector2 HitBoxPosition
+        {
+            get { return hitBoxPosition; }
+            set { hitBoxPosition = value; }
         }
 
         public int Radius
@@ -34,5 +35,15 @@ namespace LandsOfTalaria.Objects
             this.position = newPosition;
         }
 
+        public static bool didCollide(Vector2 otherPosition, int otherRadius )
+        {
+            foreach(Obstacles obstacle in Obstacles.obstacles)
+            {
+               int sumOfRadiuses =  obstacle.radius + otherRadius;
+                if (Vector2.Distance(obstacle.HitBoxPosition, otherPosition) < sumOfRadiuses)
+                    return true;
+            }
+            return false;
+        }
     }
 }

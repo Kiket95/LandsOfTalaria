@@ -3,19 +3,23 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using MonoGame.Extended;
+using LandsOfTalaria.Objects;
+using LandsOfTalaria.Entities;
+
 
 namespace LandsOfTalaria
 {
     class Player
     {
-        
+
         Direction direction = Direction.Down;
 
         private int health = 10;
         private int speed;
         private bool isMoving = false;
         float dt;
-        private Vector2 position = new Vector2(200, 200);
+        private int radius = 16;
+        private Vector2 position = new Vector2(2000,100);
         public AnimatedSprite[] animatedSprite = new AnimatedSprite[4];
         public AnimatedSprite animatedSpriteWalking;
         public Texture2D[] walkingFrames;
@@ -47,30 +51,26 @@ namespace LandsOfTalaria
 
         public void movingPlayer()
         {
-            if(keyboardState.IsKeyDown(Keys.D)) {
+            Vector2 temporaryPosition = position;
+            if (keyboardState.IsKeyDown(Keys.D)) {
                 direction = Direction.Right;
-                position.X += speed * dt;
-
                 isMoving = true;
             }
+
             if (keyboardState.IsKeyDown(Keys.A)) {
                 direction = Direction.Left;
-                position.X -= speed * dt;
-
                 isMoving = true;
             }
             if (keyboardState.IsKeyDown(Keys.W)) {
                 direction = Direction.Up;
-                position.Y -= speed * dt;
-
                 isMoving = true;
+
             }
             if (keyboardState.IsKeyDown(Keys.S)) {
                 direction = Direction.Down;
-                position.Y += speed * dt;
-
                 isMoving = true;
             }
+
             if (keyboardState.IsKeyDown(Keys.LeftShift))
             {
                 speed = 250;
@@ -81,9 +81,53 @@ namespace LandsOfTalaria
             }
             if (keyboardState.IsKeyDown(Keys.Space) && (keyboardStateOld.IsKeyUp(Keys.Space)))
             {
-                PlayerAttack.playerAttacks.Add(new PlayerAttack(position,direction));
+                PlayerAttack.playerAttacks.Add(new PlayerAttack(position, direction));
             }
+
+            if (Position != Vector2.Zero)
+            {
+                Position.Normalize();
+            }
+
             keyboardStateOld = keyboardState;
+
+            if (isMoving)
+            {
+                switch (direction)
+                {
+                    case Direction.Right:
+                        temporaryPosition.X += speed * dt;
+                        if (!Obstacles.didCollide(temporaryPosition, radius))
+                        {
+                            position.X += speed * dt;
+                        }
+                        break;
+                    case Direction.Left:
+                        temporaryPosition.X -= speed * dt;
+                        if (!Obstacles.didCollide(temporaryPosition, radius))
+                        {
+                            position.X -= speed * dt;
+                        }
+                        break;
+                    case Direction.Up:
+                        temporaryPosition.Y -= speed * dt;
+                        if (!Obstacles.didCollide(temporaryPosition, radius))
+                        {
+                            position.Y -= speed * dt;
+                        }
+                        break;
+                    case Direction.Down:
+                        temporaryPosition.Y += speed * dt;
+                        if (!Obstacles.didCollide(temporaryPosition, radius))
+                        {
+                            position.Y += speed * dt;
+                        }
+                        break;
+                    default: break;
+                }
+            
+            }
+                
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -101,10 +145,10 @@ namespace LandsOfTalaria
              contentManager.Load<Texture2D>("Player Textures/playerMoveDown"),
             };
 
-            animatedSprite[0] = new AnimatedSprite(walkingFrames[0], 1, 3); //WALK RIGHT
-            animatedSprite[1] = new AnimatedSprite(walkingFrames[1], 1, 3); //LEFT
-            animatedSprite[2] = new AnimatedSprite(walkingFrames[2], 1, 3); //UP
-            animatedSprite[3] = new AnimatedSprite(walkingFrames[3], 1, 3); //DOWN
+            animatedSprite[0] = new AnimatedSprite(walkingFrames[0], 1, 3,1); //WALK RIGHT
+            animatedSprite[1] = new AnimatedSprite(walkingFrames[1], 1, 3,1); //LEFT
+            animatedSprite[2] = new AnimatedSprite(walkingFrames[2], 1, 3,1); //UP
+            animatedSprite[3] = new AnimatedSprite(walkingFrames[3], 1, 3,1); //DOWN
         }
     }
 }

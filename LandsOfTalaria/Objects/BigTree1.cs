@@ -9,9 +9,9 @@ namespace LandsOfTalaria.Objects
 {
     class BigTree1:Obstacles
     {
-        Texture2D bigTree1Texture;
         public BigTree1(Vector2 newPosition) :base(newPosition) {
-            radius = 32;
+            radius = 16;
+            HitBoxPosition = new Vector2(position.X + 120, position.Y + 240);
         }
     }
 }

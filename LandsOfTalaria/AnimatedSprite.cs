@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using MonoGame.Extended.Sprites;
-using MonoGame.Extended.TextureAtlases;
 
 namespace LandsOfTalaria
 {
@@ -18,8 +12,9 @@ namespace LandsOfTalaria
         private int totalFrames;
         private double timer;
         private double speed;
+        float rotation;
 
-        public AnimatedSprite(Texture2D texture, int rows, int columns)
+        public AnimatedSprite(Texture2D texture, int rows, int columns,float rotation)
         {
             Texture = texture;
             Rows = rows;
@@ -28,6 +23,7 @@ namespace LandsOfTalaria
             totalFrames = Rows * Columns;
             speed = 0.15D;
             timer = speed;
+            this.rotation = rotation;
             
         }
 
@@ -55,7 +51,7 @@ namespace LandsOfTalaria
             Rectangle sourceRectangle = new Rectangle(width * column, height * row, width, height);
             Rectangle destinationRectangle = new Rectangle((int)location.X, (int)location.Y, width, height);
 
-            spriteBatch.Draw(Texture, destinationRectangle, sourceRectangle, Color.White);
+            spriteBatch.Draw(Texture,destinationRectangle, sourceRectangle,Color.White);
         }
 
         public void setFrame(int newFrame)
