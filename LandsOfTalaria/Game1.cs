@@ -1,47 +1,68 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended.Tiled.Graphics;
 
 namespace LandsOfTalaria
 {
+    public enum Direction { Right, Left, Up, Down, UpRight };
 
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Player player;
+        SceneManager sceneManager;
+        TiledMapRenderer tiledMapRenderer;
+        PlayerCamera playerCamera;
+
+        public static int screenHeight;
+        public static int screenWidth;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+           
             Content.RootDirectory = "Content";
+            screenHeight = graphics.PreferredBackBufferHeight = 20*32;
+            screenWidth = graphics.PreferredBackBufferWidth = 40*32;
         }
 
         protected override void Initialize()
         {
+            graphics.SynchronizeWithVerticalRetrace = true;
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            tiledMapRenderer = new TiledMapRenderer(GraphicsDevice);
+            playerCamera = new PlayerCamera();
+            player = new Player();
+            sceneManager = new SceneManager(player, playerCamera, tiledMapRenderer,spriteBatch);
             base.Initialize();
         }
 
-
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-
+           
+            sceneManager.LoadContent(this.Content);
         }
 
         protected override void UnloadContent()
         {
         }
+
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            sceneManager.Update(gameTime);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            GraphicsDevice.Clear(Color.Black);
+            sceneManager.Draw(GraphicsDevice);
 
             base.Draw(gameTime);
         }
