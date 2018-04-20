@@ -51,7 +51,8 @@ namespace LandsOfTalaria
             Rectangle sourceRectangle = new Rectangle(width * column, height * row, width, height);
             Rectangle destinationRectangle = new Rectangle((int)location.X, (int)location.Y, width, height);
 
-            spriteBatch.Draw(Texture,destinationRectangle, sourceRectangle,Color.White);
+            //spriteBatch.Draw(bigTreeTextureLower, new Rectangle((int)obstacle.Positon.X, (int)obstacle.Positon.Y + 224, 224, 75), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: 0.4f);
+            spriteBatch.Draw(Texture,destinationRectangle, sourceRectangle,Color.White,0,Vector2.Zero,SpriteEffects.None,layerDepth: 0.5f);
         }
 
         public void setFrame(int newFrame)

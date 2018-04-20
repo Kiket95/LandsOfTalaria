@@ -149,7 +149,6 @@ namespace LandsOfTalaria.Entities.Enemies
                 direction = Direction.Down;
                 isMoving = true;
             }
-
         }
 
         public void Draw(SpriteBatch spriteBatch){

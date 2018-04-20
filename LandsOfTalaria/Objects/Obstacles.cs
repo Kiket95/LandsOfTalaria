@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
@@ -6,11 +7,13 @@ namespace LandsOfTalaria.Objects
 {
     class Obstacles
     {
-        protected Vector2 position;
-        Texture2D texture;
+        public Vector2 position;
+        public Texture2D texture;
         protected int radius;
-        Vector2 hitBoxPosition;
-
+        protected Vector2 hitBoxPosition;
+        public Vector2 textureSize;
+        protected string source;
+        public Vector2 layerSwitchingSize;
         public static List<Obstacles> obstacles = new List<Obstacles>();
 
         public Vector2 Positon
@@ -35,7 +38,7 @@ namespace LandsOfTalaria.Objects
             this.position = newPosition;
         }
 
-        public static bool didCollide(Vector2 otherPosition, int otherRadius )
+        public static bool didCollide(Vector2 otherPosition, int otherRadius)
         {
             foreach(Obstacles obstacle in Obstacles.obstacles)
             {
@@ -44,6 +47,12 @@ namespace LandsOfTalaria.Objects
                     return true;
             }
             return false;
+        }
+
+        public void LoadContent(ContentManager contentManager)
+        {
+            texture = contentManager.Load<Texture2D>(source);
+            textureSize = new Vector2(texture.Width, texture.Height);
         }
     }
 }

@@ -140,6 +140,18 @@
 /processorParam:TextureFormat=Color
 /build:Objects Textures/BigTree1Upper.png
 
+#begin Objects Textures/SunflowerPlant.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Objects Textures/SunflowerPlant.png
+
 #begin Player Textures/monstersplayers.png
 /importer:TextureImporter
 /processor:TextureProcessor
