@@ -17,13 +17,11 @@ namespace LandsOfTalaria.Entities.Enemies
 
         protected enum State { Wander,Chase,RunAway}
         protected State state;
-        protected Vector2 temporaryPosition;
         protected AnimatedSprite[] animatedSprite = new AnimatedSprite[4];
         protected AnimatedSprite animatedSpriteWalking;
         protected Texture2D[] walkingFrames;
         protected Vector2 position;
         protected Vector2 startingPosition;
-        protected KeyboardState keyboardState;
         protected Vector2 moveDirection;
         protected bool isMoving = false;
         Random random = new Random();
@@ -36,8 +34,6 @@ namespace LandsOfTalaria.Entities.Enemies
         protected int speedWandering;
         protected Vector2 wanderPoint;
         protected int radius;
-        protected const float turnSpeed = 0.2f;
-
 
         public Vector2 MoveDirection {
             get { return moveDirection; }
@@ -49,7 +45,6 @@ namespace LandsOfTalaria.Entities.Enemies
             get { return position; }
             set { position = value; }
         }
-
         public int Health
         {
             get { return health; }
@@ -71,7 +66,7 @@ namespace LandsOfTalaria.Entities.Enemies
             position = newPosition;
             this.startingPosition = position;
             this.screenCenter = screenCenter;
-            speedChasing = speed;
+            speedChasing = 160;
             wanderPoint.X = startingPosition.X;
             wanderPoint.Y = startingPosition.Y;
         }
@@ -85,12 +80,12 @@ namespace LandsOfTalaria.Entities.Enemies
             float distanceFromWanderPoints = Vector2.Distance(position, wanderPoint);
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if ((distanceFromPlayer > 150)) {
+            if (((int)distanceFromPlayer > 150)) {
                 state = State.Wander;
             }
-            if (distanceFromPlayer <= 150)
+            if ((int)distanceFromPlayer <= 150)
             {
-                if (distancePlayerSpawn <= 450)
+                if ((int)distancePlayerSpawn <= 450)
                     state = State.Chase;
             }
             if (health < 2)
@@ -103,33 +98,45 @@ namespace LandsOfTalaria.Entities.Enemies
 
                     break;
                 case State.Chase:
-
-                    if (position.Y >= playerPosition.Y)
-                    {
-                        direction = Direction.Down;
-                        isMoving = true;
-                        //position.Y -= dt * speed;
-                    }
-                    if (position.Y < playerPosition.Y)
+                    if ((int)position.Y >= (int)playerPosition.Y)
                     {
                         direction = Direction.Up;
                         isMoving = true;
+                        //position.Y -= dt * speed;
+                    }
+                    if ((int)position.Y < (int)playerPosition.Y)
+                    {
+                        direction = Direction.Down;
+                        isMoving = true;
                         //position.Y += dt * speed;
                     }
-                    if (position.X >= playerPosition.X)
+                    if ((int)position.X >= (int)playerPosition.X)
                     {
                         direction = Direction.Left;
                         isMoving = true;
-                        //position.X -= dt * speed;
+                        //position.Y -= dt * speed;
                     }
-                    if (position.X < playerPosition.X)
+                    if ((int)position.X < (int)playerPosition.X)
                     {
                         direction = Direction.Right;
                         isMoving = true;
+                        //position.Y += dt * speed;
                     }
-                    if (distanceFromPlayer < 16)
+                    if (Math.Abs((int)position.Y - (int)playerPosition.Y) < 4 || Math.Abs((int)position.X - (int)playerPosition.X) < 4)
+                    {
                         speed = 0;
-                    if (distancePlayerSpawn > 450)
+                        isMoving = false;
+                    }
+                    else
+                        speed = speedChasing;
+
+                    if ((int)distanceFromPlayer < 32)
+                    {
+                        isMoving = false;
+                        speed = 0;
+                    }
+                        
+                    if ((int)distancePlayerSpawn > 450)
                         state = State.Wander;
                     break;
                 case State.Wander:
@@ -138,38 +145,29 @@ namespace LandsOfTalaria.Entities.Enemies
                     break;
                 default: break;
             }
-
             if (isMoving)
             {
                 switch (direction)
                 {
                     case Direction.Right:
-                        temporaryPosition.X += speed * dt;
-                        if (!Obstacles.didCollide(temporaryPosition, radius))
-                        {
+
                             position.X += speed * dt;
-                        }
+                        
                         break;
                     case Direction.Left:
-                        temporaryPosition.X -= speed * dt;
-                        if (!Obstacles.didCollide(temporaryPosition, radius))
-                        {
+                        
                             position.X -= speed * dt;
-                        }
+                        
                         break;
                     case Direction.Up:
-                        temporaryPosition.Y -= speed * dt;
-                        if (!Obstacles.didCollide(temporaryPosition, radius))
-                        {
+                        
                             position.Y -= speed * dt;
-                        }
+                        
                         break;
                     case Direction.Down:
-                        temporaryPosition.Y += speed * dt;
-                        if (!Obstacles.didCollide(temporaryPosition, radius))
-                        {
+                       
                             position.Y += speed * dt;
-                        }
+                        
                         break;
                     default: break;
                 }
