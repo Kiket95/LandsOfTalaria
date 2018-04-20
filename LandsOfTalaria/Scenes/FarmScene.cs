@@ -95,8 +95,8 @@ namespace LandsOfTalaria
             for (int i = 0;i<10;i++)
             {
                 Obstacles.obstacles.Add(new BigTree1(new Vector2(x,y)));
-                Obstacles.obstacles.Add(new BigTree1(new Vector2(x + 200, y)));
-                Obstacles.obstacles.Add(new BigTree1(new Vector2(x + 100, y )));
+                Obstacles.obstacles.Add(new BigTree1(new Vector2(x + 100, y)));
+                Obstacles.obstacles.Add(new BigTree1(new Vector2(x + 200, y )));
                 Obstacles.obstacles.Add(new BigTree1(new Vector2(x + 300, y )));
                 y += 250;
 
@@ -106,7 +106,6 @@ namespace LandsOfTalaria
             Obstacles.obstacles.Add(new SunflowerPlant(new Vector2(1500, 424)));
             Obstacles.obstacles.Add(new SunflowerPlant(new Vector2(1400, 400)));
             Obstacles.obstacles.Add(new SunflowerPlant(new Vector2(1300, 376)));
-
         }
 
         public void DrawLayer()

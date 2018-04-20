@@ -17,7 +17,7 @@ namespace LandsOfTalaria.Entities.Enemies
 
         protected enum State { Wander,Chase,RunAway}
         protected State state;
-
+        protected Vector2 temporaryPosition;
         protected AnimatedSprite[] animatedSprite = new AnimatedSprite[4];
         protected AnimatedSprite animatedSpriteWalking;
         protected Texture2D[] walkingFrames;
@@ -76,79 +76,111 @@ namespace LandsOfTalaria.Entities.Enemies
             wanderPoint.Y = startingPosition.Y;
         }
 
-        public void Update(GameTime gameTime, Vector2 playerPosition){
-            keyboardState = Keyboard.GetState();
+        public void Update(GameTime gameTime, Vector2 playerPosition) {
+
             animatedSpriteWalking = animatedSprite[(int)direction];
             float distanceFromPlayer = Vector2.Distance(position, playerPosition);
             float distancePlayerSpawn = Vector2.Distance(startingPosition, playerPosition);
-            float distanceFromSpawn = Vector2.Distance(position,startingPosition);
-            float distanceFromWanderPoints = Vector2.Distance(position,wanderPoint);
+            float distanceFromSpawn = Vector2.Distance(position, startingPosition);
+            float distanceFromWanderPoints = Vector2.Distance(position, wanderPoint);
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if ((distanceFromPlayer > 150)){
-                    state = State.Wander;
+            if ((distanceFromPlayer > 150)) {
+                state = State.Wander;
             }
             if (distanceFromPlayer <= 150)
             {
-                if(distancePlayerSpawn <= 450)
-                state = State.Chase;
+                if (distancePlayerSpawn <= 450)
+                    state = State.Chase;
             }
             if (health < 2)
             {
                 state = State.RunAway;
             }
 
-            switch(state){
+            switch (state) {
                 case State.RunAway:
 
                     break;
                 case State.Chase:
-                    moveDirection = playerPosition - Position;
-                    speed = 160;
-                    if (MoveDirection != Vector2.Zero)
-                        moveDirection.Normalize();
+
+                    if (position.Y >= playerPosition.Y)
+                    {
+                        direction = Direction.Down;
+                        isMoving = true;
+                        //position.Y -= dt * speed;
+                    }
+                    if (position.Y < playerPosition.Y)
+                    {
+                        direction = Direction.Up;
+                        isMoving = true;
+                        //position.Y += dt * speed;
+                    }
+                    if (position.X >= playerPosition.X)
+                    {
+                        direction = Direction.Left;
+                        isMoving = true;
+                        //position.X -= dt * speed;
+                    }
+                    if (position.X < playerPosition.X)
+                    {
+                        direction = Direction.Right;
+                        isMoving = true;
+                    }
                     if (distanceFromPlayer < 16)
                         speed = 0;
                     if (distancePlayerSpawn > 450)
                         state = State.Wander;
-                        break;
+                    break;
                 case State.Wander:
-                    Wandering(playerPosition);
+                    // Wandering(playerPosition);
                     speed = speedWandering;
                     break;
                 default: break;
             }
 
-            position += dt * moveDirection * speed;
+            if (isMoving)
+            {
+                switch (direction)
+                {
+                    case Direction.Right:
+                        temporaryPosition.X += speed * dt;
+                        if (!Obstacles.didCollide(temporaryPosition, radius))
+                        {
+                            position.X += speed * dt;
+                        }
+                        break;
+                    case Direction.Left:
+                        temporaryPosition.X -= speed * dt;
+                        if (!Obstacles.didCollide(temporaryPosition, radius))
+                        {
+                            position.X -= speed * dt;
+                        }
+                        break;
+                    case Direction.Up:
+                        temporaryPosition.Y -= speed * dt;
+                        if (!Obstacles.didCollide(temporaryPosition, radius))
+                        {
+                            position.Y -= speed * dt;
+                        }
+                        break;
+                    case Direction.Down:
+                        temporaryPosition.Y += speed * dt;
+                        if (!Obstacles.didCollide(temporaryPosition, radius))
+                        {
+                            position.Y += speed * dt;
+                        }
+                        break;
+                    default: break;
+                }
+
+            }
 
             if (isMoving)
                 animatedSpriteWalking.Update(gameTime);
             else
-            animatedSpriteWalking.setFrame(1);
+                animatedSpriteWalking.setFrame(1);
             isMoving = false;
-            movingEnemy();
-        }
-
-        public void movingEnemy()
-        {
-            if (keyboardState.IsKeyDown(Keys.D)){
-
-                direction = Direction.Right;
-                isMoving = true;
-            }
-
-            if (keyboardState.IsKeyDown(Keys.A)){
-                direction = Direction.Left;
-                isMoving = true;
-            }
-            if (keyboardState.IsKeyDown(Keys.W)){
-                direction = Direction.Up;
-                isMoving = true;
-            }
-            if (keyboardState.IsKeyDown(Keys.S)){
-                direction = Direction.Down;
-                isMoving = true;
-            }
         }
 
         public void Draw(SpriteBatch spriteBatch){

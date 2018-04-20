@@ -26,7 +26,7 @@ namespace LandsOfTalaria.Objects
             HitBoxPosition = new Vector2(position.X + 120, position.Y + 240);
             source = "Objects Textures/Trees/BigTree1Upper";
             source2 = "Objects Textures/Trees/BigTree1Lower";
-            layerDepth += 0.1f;
+            layerDepth += 0.01f;
         }
 
         public override void LoadContent(ContentManager contentManager)
