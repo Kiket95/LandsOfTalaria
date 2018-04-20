@@ -9,10 +9,10 @@ namespace LandsOfTalaria.Objects
     {
         public SunflowerPlant(Vector2 newPosition) : base(newPosition)
         {
-            radius = 16;
+            radius = 4;
             layerSwitchingSize.X = textureSize.X - textureSize.X / 2;
             layerSwitchingSize.Y = textureSize.Y - textureSize.Y / 2;
-            HitBoxPosition = new Vector2(position.X + 120, position.Y + 240);
+            HitBoxPosition = new Vector2(position.X+16, position.Y+48);
             source = "Objects Textures/SunflowerPlant";
         }
 

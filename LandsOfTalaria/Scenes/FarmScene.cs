@@ -20,7 +20,6 @@ namespace LandsOfTalaria
         TiledMapRenderer tiledMapRenderer;
         TiledMap startingLoc;
         public Texture2D attackSprite;
-        float depth;
         KeyboardState keyboardState;
         SpriteBatch spriteBatch;
         Vector2 screenCenter;
@@ -57,7 +56,6 @@ namespace LandsOfTalaria
 
         public void Update(GameTime gameTime)
         {
-            keyboardState = Keyboard.GetState();
             player.Update(gameTime);
             playerCamera.Follow(player);
             
@@ -76,7 +74,10 @@ namespace LandsOfTalaria
             graphicsDevice.BlendState = BlendState.AlphaBlend;
             graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
             graphicsDevice.RasterizerState = RasterizerState.CullNone;
+            spriteBatch.Begin(transformMatrix: playerCamera.Transform, samplerState: SamplerState.PointClamp, sortMode: SpriteSortMode.FrontToBack);
             DrawLayer();
+            spriteBatch.End();
+
         }
 
         public void DrawObstacle()
@@ -95,12 +96,13 @@ namespace LandsOfTalaria
             {
                 Obstacles.obstacles.Add(new BigTree1(new Vector2(x,y)));
                 Obstacles.obstacles.Add(new BigTree1(new Vector2(x + 200, y)));
-                Obstacles.obstacles.Add(new BigTree1(new Vector2(x + 100, y + 50)));
-
+                Obstacles.obstacles.Add(new BigTree1(new Vector2(x + 100, y )));
+                Obstacles.obstacles.Add(new BigTree1(new Vector2(x + 300, y )));
                 y += 250;
+
             }
             Obstacles.obstacles.Add(new BigTree1(new Vector2(2000,200)));
-
+            Obstacles.obstacles.Add(new BigTree1(new Vector2(2000,500)));
             Obstacles.obstacles.Add(new SunflowerPlant(new Vector2(1500, 424)));
             Obstacles.obstacles.Add(new SunflowerPlant(new Vector2(1400, 400)));
             Obstacles.obstacles.Add(new SunflowerPlant(new Vector2(1300, 376)));
@@ -109,17 +111,17 @@ namespace LandsOfTalaria
 
         public void DrawLayer()
         {
-            spriteBatch.Begin(transformMatrix: playerCamera.Transform,samplerState: SamplerState.PointClamp,sortMode: SpriteSortMode.FrontToBack);
             tiledMapRenderer.Draw(startingLoc.GetLayer("1"), playerCamera.Transform);
             DrawObstacle();
             DrawPlayer();
             DrawEnemies();
-            spriteBatch.End();
         }
 
         public void LoadEnemies()
         {
             Enemy.enemies.Add(new Wolf(new Vector2(1500,100),screenCenter));
+            Enemy.enemies.Add(new Wolf(new Vector2(1900, 100), screenCenter));
+
         }
 
         public void DrawEnemies()
@@ -135,7 +137,10 @@ namespace LandsOfTalaria
             player.Draw(spriteBatch);
             foreach (PlayerAttack playerAttack in PlayerAttack.playerAttacks)
             {
-                spriteBatch.Draw(attackSprite, new Vector2(playerAttack.Position.X - 8, playerAttack.Position.Y - 8), Color.White);
+
+                //            spriteBatch.Draw(upperPart, new Rectangle((int)Positon.X, (int)Positon.Y, (int)textureSize.X, (int)textureSize.Y), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: 0.6f);
+
+            //    spriteBatch.Draw(attackSprite, new Rectangle((int)playerAttack.position.X, (int)playerAttack.position.Y, 16, 16), null, Color.White,0,Vector2.Zero,SpriteEffects.None,layerDepth:0.45f);
                 //     if (Obstacles.didCollide(playerAttack.position, playerAttack.Radius))
                 //         playerAttack.Collided = true;
             }

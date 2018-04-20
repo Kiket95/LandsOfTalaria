@@ -13,6 +13,7 @@ namespace LandsOfTalaria.Objects
 {
     class Trees : Obstacles
     {
+        protected float layerDepth;
         protected Texture2D upperPart;
         protected Texture2D lowerPart;
         protected String source2;
@@ -25,6 +26,7 @@ namespace LandsOfTalaria.Objects
             HitBoxPosition = new Vector2(position.X + 120, position.Y + 240);
             source = "Objects Textures/Trees/BigTree1Upper";
             source2 = "Objects Textures/Trees/BigTree1Lower";
+            layerDepth += 0.1f;
         }
 
         public override void LoadContent(ContentManager contentManager)
@@ -37,8 +39,8 @@ namespace LandsOfTalaria.Objects
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(upperPart, new Rectangle((int)Positon.X, (int)Positon.Y, (int)textureSize.X, (int)textureSize.Y), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: 0.6f);
-            spriteBatch.Draw(lowerPart, new Rectangle((int)Positon.X, (int)Positon.Y + (int)textureSize.Y, (int)textureSize2.X, (int)textureSize2.Y), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: 0.4f);
+            spriteBatch.Draw(upperPart, new Rectangle((int)Positon.X, (int)Positon.Y, (int)textureSize.X, (int)textureSize.Y), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: 0.6f+layerDepth);
+            spriteBatch.Draw(lowerPart, new Rectangle((int)Positon.X, (int)Positon.Y + (int)textureSize.Y, (int)textureSize2.X, (int)textureSize2.Y), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: 0.4f+layerDepth);
         }
     }
 }

@@ -51,6 +51,7 @@ namespace LandsOfTalaria.Objects
 
         public virtual void LoadContent(ContentManager contentManager)
         {
+
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
