@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LandsOfTalaria.Objects
 {
@@ -16,6 +14,17 @@ namespace LandsOfTalaria.Objects
             layerSwitchingSize.Y = textureSize.Y - textureSize.Y / 2;
             HitBoxPosition = new Vector2(position.X + 120, position.Y + 240);
             source = "Objects Textures/SunflowerPlant";
+        }
+
+        public override void LoadContent(ContentManager contentManager)
+        {
+            texture = contentManager.Load<Texture2D>(source);
+            textureSize = new Vector2(texture.Width, texture.Height);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(texture, new Rectangle((int)Positon.X, (int)Positon.Y, (int)textureSize.X, (int)textureSize.Y), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: 0.5f);
         }
     }
 }

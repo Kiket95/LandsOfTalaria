@@ -49,10 +49,13 @@ namespace LandsOfTalaria.Objects
             return false;
         }
 
-        public void LoadContent(ContentManager contentManager)
+        public virtual void LoadContent(ContentManager contentManager)
         {
-            texture = contentManager.Load<Texture2D>(source);
-            textureSize = new Vector2(texture.Width, texture.Height);
+        }
+
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+
         }
     }
 }

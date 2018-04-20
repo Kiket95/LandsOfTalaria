@@ -60,16 +60,6 @@ namespace LandsOfTalaria
             keyboardState = Keyboard.GetState();
             player.Update(gameTime);
             playerCamera.Follow(player);
-
-            foreach(Obstacles obstacle in Obstacles.obstacles)
-            {
-                float playerObstacleDistance = Vector2.Distance(obstacle.position + new Vector2((int)obstacle.textureSize.X/2,(int)obstacle.textureSize.Y/2),player.Position);
-
-                if (((int)player.Position.Y > (int)obstacle.Positon.Y + 50)  && (playerObstacleDistance < 200))
-                    depth = 0.4f;
-                else
-                    depth = 0.6f;
-            }
             
             foreach (PlayerAttack playerAttack in PlayerAttack.playerAttacks)
             {
@@ -83,21 +73,17 @@ namespace LandsOfTalaria
 
         public void Draw(GraphicsDevice graphicsDevice)
         {
-
             graphicsDevice.BlendState = BlendState.AlphaBlend;
             graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
             graphicsDevice.RasterizerState = RasterizerState.CullNone;
-
             DrawLayer();
-           
         }
 
         public void DrawObstacle()
         {
             foreach (Obstacles obstacle in Obstacles.obstacles)
             {
-                if(obstacle.GetType() == typeof(BigTree1))spriteBatch.Draw(obstacle.texture, new Rectangle((int)obstacle.Positon.X, (int)obstacle.Positon.Y, (int)obstacle.textureSize.X, (int)obstacle.textureSize.Y), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: depth);
-                if (obstacle.GetType() == typeof(SunflowerPlant)) spriteBatch.Draw(obstacle.texture, new Rectangle((int)obstacle.Positon.X, (int)obstacle.Positon.Y, 32, 64), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: depth);
+                obstacle.Draw(spriteBatch);
             }
         }
 
@@ -107,13 +93,14 @@ namespace LandsOfTalaria
             int y = 0;
             for (int i = 0;i<10;i++)
             {
-           //     Obstacles.obstacles.Add(new BigTree1(new Vector2(x,y)));
-          //      Obstacles.obstacles.Add(new BigTree1(new Vector2(x + 200, y)));
-           //     Obstacles.obstacles.Add(new BigTree1(new Vector2(x + 100, y + 50)));
+                Obstacles.obstacles.Add(new BigTree1(new Vector2(x,y)));
+                Obstacles.obstacles.Add(new BigTree1(new Vector2(x + 200, y)));
+                Obstacles.obstacles.Add(new BigTree1(new Vector2(x + 100, y + 50)));
 
                 y += 250;
             }
             Obstacles.obstacles.Add(new BigTree1(new Vector2(2000,200)));
+
             Obstacles.obstacles.Add(new SunflowerPlant(new Vector2(1500, 424)));
             Obstacles.obstacles.Add(new SunflowerPlant(new Vector2(1400, 400)));
             Obstacles.obstacles.Add(new SunflowerPlant(new Vector2(1300, 376)));
