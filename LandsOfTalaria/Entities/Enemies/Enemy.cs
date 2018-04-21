@@ -14,9 +14,11 @@ namespace LandsOfTalaria.Entities.Enemies
     {
         protected Direction direction = Direction.Down;
         public static List<Enemy> enemies = new List<Enemy>();
-
+       
         protected enum State { Wander,Chase,RunAway}
         protected State state;
+        protected enum Flag {Xpos,Ypos}
+        protected Flag sideFlag;
         protected AnimatedSprite[] animatedSprite = new AnimatedSprite[4];
         protected AnimatedSprite animatedSpriteWalking;
         protected Texture2D[] walkingFrames;
@@ -28,13 +30,14 @@ namespace LandsOfTalaria.Entities.Enemies
         protected Vector2 screenCenter;
         protected string[] source = new string[4];
         protected int health;
-        protected int speed;
-        protected int speedChasing;
-        protected int speedRunningAway;
-        protected int speedWandering;
+        protected Vector2 speed;
+        protected Vector2 speedChasing;
+        protected Vector2 speedRunningAway;
+        protected Vector2 speedWandering;
         protected Vector2 wanderPoint;
         protected int radius;
-
+        protected int sizeOfView;
+        protected int teritorySize;
         public Vector2 MoveDirection {
             get { return moveDirection; }
             set { moveDirection = value; }
@@ -50,7 +53,7 @@ namespace LandsOfTalaria.Entities.Enemies
             get { return health; }
             set { health = value; }
         }
-        public int Speed
+        public Vector2 Speed
         {
             get { return speed; }
             set { speed = value; }
@@ -66,9 +69,11 @@ namespace LandsOfTalaria.Entities.Enemies
             position = newPosition;
             this.startingPosition = position;
             this.screenCenter = screenCenter;
-            speedChasing = 160;
+            speedChasing = new Vector2(160, 160);
             wanderPoint.X = startingPosition.X;
             wanderPoint.Y = startingPosition.Y;
+            teritorySize = 450;
+            sizeOfView = 200;
         }
 
         public void Update(GameTime gameTime, Vector2 playerPosition) {
@@ -80,10 +85,10 @@ namespace LandsOfTalaria.Entities.Enemies
             float distanceFromWanderPoints = Vector2.Distance(position, wanderPoint);
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (((int)distanceFromPlayer > 150)) {
+            if (((int)distanceFromPlayer > sizeOfView)) {
                 state = State.Wander;
             }
-            if ((int)distanceFromPlayer <= 150)
+            if ((int)distanceFromPlayer <= sizeOfView)
             {
                 if ((int)distancePlayerSpawn <= 450)
                     state = State.Chase;
@@ -98,80 +103,23 @@ namespace LandsOfTalaria.Entities.Enemies
 
                     break;
                 case State.Chase:
-                    if ((int)position.Y >= (int)playerPosition.Y)
-                    {
-                        direction = Direction.Up;
-                        isMoving = true;
-                        //position.Y -= dt * speed;
-                    }
-                    if ((int)position.Y < (int)playerPosition.Y)
-                    {
-                        direction = Direction.Down;
-                        isMoving = true;
-                        //position.Y += dt * speed;
-                    }
-                    if ((int)position.X >= (int)playerPosition.X)
-                    {
-                        direction = Direction.Left;
-                        isMoving = true;
-                        //position.Y -= dt * speed;
-                    }
-                    if ((int)position.X < (int)playerPosition.X)
-                    {
-                        direction = Direction.Right;
-                        isMoving = true;
-                        //position.Y += dt * speed;
-                    }
-                    if (Math.Abs((int)position.Y - (int)playerPosition.Y) < 4 || Math.Abs((int)position.X - (int)playerPosition.X) < 4)
-                    {
-                        speed = 0;
-                        isMoving = false;
-                    }
-                    else
-                        speed = speedChasing;
+                    playerChasing(playerPosition, dt);
 
-                    if ((int)distanceFromPlayer < 32)
+                    if ((int)distanceFromPlayer < 16)
                     {
                         isMoving = false;
-                        speed = 0;
+                        speed = new Vector2(0, 0);
                     }
-                        
-                    if ((int)distancePlayerSpawn > 450)
+                    else speed = speedChasing;
+
+                    if ((int)distancePlayerSpawn > teritorySize)
                         state = State.Wander;
                     break;
                 case State.Wander:
-                    // Wandering(playerPosition);
+                     Wandering(playerPosition,dt);
                     speed = speedWandering;
                     break;
                 default: break;
-            }
-            if (isMoving)
-            {
-                switch (direction)
-                {
-                    case Direction.Right:
-
-                            position.X += speed * dt;
-                        
-                        break;
-                    case Direction.Left:
-                        
-                            position.X -= speed * dt;
-                        
-                        break;
-                    case Direction.Up:
-                        
-                            position.Y -= speed * dt;
-                        
-                        break;
-                    case Direction.Down:
-                       
-                            position.Y += speed * dt;
-                        
-                        break;
-                    default: break;
-                }
-
             }
 
             if (isMoving)
@@ -183,6 +131,48 @@ namespace LandsOfTalaria.Entities.Enemies
 
         public void Draw(SpriteBatch spriteBatch){
             animatedSpriteWalking.Draw(spriteBatch, new Vector2(position.X - radius, position.Y - radius));
+        }
+
+        public void playerChasing(Vector2 playerPosition,float dt)
+        {
+            if (sideFlag == Flag.Xpos)
+            {
+                if ((int)position.X >= (int)playerPosition.X)
+                {
+                    direction = Direction.Left;
+                    isMoving = true;
+                    position.X -= speed.X * dt;
+                }
+                else if ((int)position.X < (int)playerPosition.X)
+                {
+                    direction = Direction.Right;
+                    isMoving = true;
+                    position.X += speed.X * dt;
+                }
+            }
+            if (sideFlag == Flag.Ypos)
+            {
+                if ((int)position.Y >= (int)playerPosition.Y)
+                {
+                    direction = Direction.Up;
+                    isMoving = true;
+                    position.Y -= speed.Y * dt;
+                }
+                else if ((int)position.Y < (int)playerPosition.Y)
+                {
+                    direction = Direction.Down;
+                    isMoving = true;
+                    position.Y += speed.Y * dt;
+                }
+            }
+            if (Math.Abs(playerPosition.X - position.X) < 4)
+            {
+                sideFlag = Flag.Ypos;
+            }
+            if (Math.Abs(playerPosition.Y - position.Y) < 4)
+            {
+                sideFlag = Flag.Xpos;
+            }
         }
 
         public void LoadContent(ContentManager contentManager){
@@ -199,8 +189,48 @@ namespace LandsOfTalaria.Entities.Enemies
             animatedSprite[3] = new AnimatedSprite(walkingFrames[3], 1, 3,1); //DOWN
         }
 
-        public void Wandering(Vector2 playerPosition)
+        public void Wandering(Vector2 playerPosition,float dt)
         {
+
+            if (sideFlag == Flag.Xpos)
+            {
+                if ((int)position.X >= (int)wanderPoint.X)
+                {
+                    direction = Direction.Left;
+                    isMoving = true;
+                    position.X -= speed.X * dt;
+                }
+                else if ((int)position.X < (int)wanderPoint.X)
+                {
+                    direction = Direction.Right;
+                    isMoving = true;
+                    position.X += speed.X * dt;
+                }
+            }
+            if (sideFlag == Flag.Ypos)
+            {
+                if ((int)position.Y >= (int)wanderPoint.Y)
+                {
+                    direction = Direction.Up;
+                    isMoving = true;
+                    position.Y -= speed.Y * dt;
+                }
+                else if ((int)position.Y < (int)wanderPoint.Y)
+                {
+                    direction = Direction.Down;
+                    isMoving = true;
+                    position.Y += speed.Y * dt;
+                }
+            }
+            if (Math.Abs(wanderPoint.X - position.X) < 4)
+            {
+                sideFlag = Flag.Ypos;
+            }
+            if (Math.Abs(wanderPoint.Y - position.Y) < 4)
+            {
+                sideFlag = Flag.Xpos;
+            }
+
 
             if (Vector2.Distance(position, wanderPoint) < 16)
             {
