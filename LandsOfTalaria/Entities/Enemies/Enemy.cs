@@ -61,6 +61,7 @@ namespace LandsOfTalaria.Entities.Enemies
             wanderPoint.Y = startingPosition.Y;
             teritorySize = 450;
             sizeOfView = 200;
+            runSpeed = 1;
         }
 
         public void Update(GameTime gameTime, Vector2 playerPosition) {
@@ -108,9 +109,10 @@ namespace LandsOfTalaria.Entities.Enemies
                     break;
                 default: break;
             }
+            runSpeed = speed.X / 100;
 
             if (isMoving)
-                animatedSpriteWalking.Update(gameTime);
+                animatedSpriteWalking.Update(gameTime,runSpeed);
             else
                 animatedSpriteWalking.setFrame(1);
             isMoving = false;
@@ -178,7 +180,6 @@ namespace LandsOfTalaria.Entities.Enemies
 
         public void Wandering(Vector2 playerPosition,float dt)
         {
-
             if (sideFlag == Flag.Xpos)
             {
                 if ((int)position.X >= (int)wanderPoint.X)
@@ -217,7 +218,6 @@ namespace LandsOfTalaria.Entities.Enemies
             {
                 sideFlag = Flag.Xpos;
             }
-
 
             if (Vector2.Distance(position, wanderPoint) < 16)
             {

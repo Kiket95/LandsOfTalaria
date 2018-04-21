@@ -20,7 +20,6 @@ namespace LandsOfTalaria
         TiledMapRenderer tiledMapRenderer;
         TiledMap startingLoc;
         public Texture2D attackSprite;
-        KeyboardState keyboardState;
         SpriteBatch spriteBatch;
         Vector2 screenCenter;
         public FarmScene(Player player, PlayerCamera playerCamera, TiledMapRenderer tiledMapRenderer,SpriteBatch spriteBatch,Vector2 screenCenter)
@@ -34,7 +33,8 @@ namespace LandsOfTalaria
         
         public void LoadContent(ContentManager contentManager)
         {
-            Song song = contentManager.Load<Song>("Music/FarmScene"); 
+            Song song = contentManager.Load<Song>("Music/FarmScene");
+            MediaPlayer.Volume = 0.1f;
             MediaPlayer.Play(song);
             MediaPlayer.IsRepeating = true;
 
@@ -78,6 +78,7 @@ namespace LandsOfTalaria
             DrawLayer();
             spriteBatch.End();
 
+           
         }
 
         public void DrawObstacle()
@@ -96,8 +97,6 @@ namespace LandsOfTalaria
             {
                 Obstacles.obstacles.Add(new BigTree1(new Vector2(x,y)));
                 Obstacles.obstacles.Add(new BigTree1(new Vector2(x + 100, y)));
-                Obstacles.obstacles.Add(new BigTree1(new Vector2(x + 200, y )));
-                Obstacles.obstacles.Add(new BigTree1(new Vector2(x + 300, y )));
                 y += 250;
 
             }
@@ -112,15 +111,15 @@ namespace LandsOfTalaria
         {
             tiledMapRenderer.Draw(startingLoc.GetLayer("1"), playerCamera.Transform);
             DrawObstacle();
-            DrawPlayer();
             DrawEnemies();
+            DrawPlayer();
+
         }
 
         public void LoadEnemies()
         {
             Enemy.enemies.Add(new Wolf(new Vector2(1500,100),screenCenter));
             Enemy.enemies.Add(new Wolf(new Vector2(1900, 100), screenCenter));
-
         }
 
         public void DrawEnemies()
@@ -136,10 +135,7 @@ namespace LandsOfTalaria
             player.Draw(spriteBatch);
             foreach (PlayerAttack playerAttack in PlayerAttack.playerAttacks)
             {
-
-                //            spriteBatch.Draw(upperPart, new Rectangle((int)Positon.X, (int)Positon.Y, (int)textureSize.X, (int)textureSize.Y), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: 0.6f);
-
-            //    spriteBatch.Draw(attackSprite, new Rectangle((int)playerAttack.position.X, (int)playerAttack.position.Y, 16, 16), null, Color.White,0,Vector2.Zero,SpriteEffects.None,layerDepth:0.45f);
+                spriteBatch.Draw(attackSprite, new Rectangle((int)playerAttack.position.X, (int)playerAttack.position.Y, 16, 16), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: 0.49f);
                 //     if (Obstacles.didCollide(playerAttack.position, playerAttack.Radius))
                 //         playerAttack.Collided = true;
             }

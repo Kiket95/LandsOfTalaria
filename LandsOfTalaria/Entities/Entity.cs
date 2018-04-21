@@ -20,5 +20,6 @@ namespace LandsOfTalaria.Entities
         protected Vector2 speed;
         protected bool isMoving = false;
         protected float dt;
+        protected float runSpeed;
     }
 }

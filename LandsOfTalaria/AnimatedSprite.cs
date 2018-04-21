@@ -27,10 +27,10 @@ namespace LandsOfTalaria
             
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime,float animationSpeed)
         {
-            timer -= gameTime.ElapsedGameTime.TotalSeconds;
-
+            timer -= gameTime.ElapsedGameTime.TotalSeconds* animationSpeed;
+            
             if(timer <= 0)
             {
                 currentFrame++;

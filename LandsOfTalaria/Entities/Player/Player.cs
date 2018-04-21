@@ -5,15 +5,20 @@ using Microsoft.Xna.Framework.Content;
 using MonoGame.Extended;
 using LandsOfTalaria.Objects;
 using LandsOfTalaria.Entities;
-
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
+using MonoGame.Extended.Timers;
 
 namespace LandsOfTalaria
 {
+    
     class Player:Entity
     {
-
+        SoundEffect grassStep;
         private KeyboardState keyboardStateOld = Keyboard.GetState();
         private KeyboardState keyboardState;
+        private float timer;
+        private float timerTick = 0.4f;
 
         public Vector2 Position{
             get { return position;}
@@ -30,20 +35,45 @@ namespace LandsOfTalaria
             position = new Vector2(2000, 100);
             radius = 16;
             speed = new Vector2(150,150);
+            runSpeed = 1;
         }
 
         public void Update(GameTime gameTime) {
 
             keyboardState = Keyboard.GetState();
             dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            timer += dt;
             animatedSpriteWalking = animatedSprite[(int)direction];
 
             if (isMoving)
-                animatedSpriteWalking.Update(gameTime);
+                animatedSpriteWalking.Update(gameTime, runSpeed);
             else
                 animatedSpriteWalking.setFrame(1);
             isMoving = false;
             movingPlayer();
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            animatedSpriteWalking.Draw(spriteBatch, new Vector2(position.X - 16, position.Y - 16));
+        }
+
+        public void LoadContent(ContentManager contentManager)
+        {
+            grassStep = contentManager.Load<SoundEffect>("Music/grassStep");
+
+            walkingFrames = new Texture2D[]
+            {
+             contentManager.Load<Texture2D>("Player Textures/playerMoveRight"),
+             contentManager.Load<Texture2D>("Player Textures/playerMoveLeft"),
+             contentManager.Load<Texture2D>("Player Textures/playerMoveUp"),
+             contentManager.Load<Texture2D>("Player Textures/playerMoveDown"),
+            };
+
+            animatedSprite[0] = new AnimatedSprite(walkingFrames[0], 1, 3, 1); //WALK RIGHT
+            animatedSprite[1] = new AnimatedSprite(walkingFrames[1], 1, 3, 1); //LEFT
+            animatedSprite[2] = new AnimatedSprite(walkingFrames[2], 1, 3, 1); //UP
+            animatedSprite[3] = new AnimatedSprite(walkingFrames[3], 1, 3, 1); //DOWN
         }
 
         public void movingPlayer()
@@ -70,17 +100,22 @@ namespace LandsOfTalaria
 
             if (keyboardState.IsKeyDown(Keys.LeftShift))
             {
-                speed.X = 250;
-                speed.Y = 250;
+                speed.X = 300;
+                speed.Y = 300;
+                runSpeed = 1.5f;
+                timerTick = 0.2f;
             }
             if (keyboardState.IsKeyUp(Keys.LeftShift))
             {
-                speed.X = 250;
-                speed.Y = 250;
+                speed.X = 150;
+                speed.Y = 150;
+                runSpeed = 1f;
+                timerTick = 0.3f;
             }
             if (keyboardState.IsKeyDown(Keys.Space) && (keyboardStateOld.IsKeyUp(Keys.Space)))
             {
-                PlayerAttack.playerAttacks.Add(new PlayerAttack(position, direction));
+                
+                //      PlayerAttack.playerAttacks.Add(new PlayerAttack(position, direction));
             }
 
             if (Position != Vector2.Zero)
@@ -90,8 +125,14 @@ namespace LandsOfTalaria
 
             keyboardStateOld = keyboardState;
 
+            
             if (isMoving)
             {
+                if (timer >= timerTick)
+                {
+                    grassStep.Play(0.4f, 0.0f, 0.0f);
+                    timer = 0 ;
+                }
                 switch (direction)
                 {
                     case Direction.Right:
@@ -129,25 +170,5 @@ namespace LandsOfTalaria
                 
         }
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            animatedSpriteWalking.Draw(spriteBatch,new Vector2(position.X - 16,position.Y - 16));
-        }
-
-        public void LoadContent(ContentManager contentManager)
-        {
-            walkingFrames = new Texture2D[]
-            {
-             contentManager.Load<Texture2D>("Player Textures/playerMoveRight"),
-             contentManager.Load<Texture2D>("Player Textures/playerMoveLeft"),
-             contentManager.Load<Texture2D>("Player Textures/playerMoveUp"),
-             contentManager.Load<Texture2D>("Player Textures/playerMoveDown"),
-            };
-
-            animatedSprite[0] = new AnimatedSprite(walkingFrames[0], 1, 3,1); //WALK RIGHT
-            animatedSprite[1] = new AnimatedSprite(walkingFrames[1], 1, 3,1); //LEFT
-            animatedSprite[2] = new AnimatedSprite(walkingFrames[2], 1, 3,1); //UP
-            animatedSprite[3] = new AnimatedSprite(walkingFrames[3], 1, 3,1); //DOWN
-        }
     }
 }
