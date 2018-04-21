@@ -10,38 +10,25 @@ using System.Collections.Generic;
 namespace LandsOfTalaria.Entities.Enemies
 {
 
-    class Enemy
+    class Enemy:Entity
     {
-        protected Direction direction = Direction.Down;
         public static List<Enemy> enemies = new List<Enemy>();
        
         protected enum State { Wander,Chase,RunAway}
         protected State state;
         protected enum Flag {Xpos,Ypos}
         protected Flag sideFlag;
-        protected AnimatedSprite[] animatedSprite = new AnimatedSprite[4];
-        protected AnimatedSprite animatedSpriteWalking;
-        protected Texture2D[] walkingFrames;
-        protected Vector2 position;
         protected Vector2 startingPosition;
-        protected Vector2 moveDirection;
-        protected bool isMoving = false;
         Random random = new Random();
         protected Vector2 screenCenter;
         protected string[] source = new string[4];
-        protected int health;
-        protected Vector2 speed;
         protected Vector2 speedChasing;
         protected Vector2 speedRunningAway;
         protected Vector2 speedWandering;
         protected Vector2 wanderPoint;
-        protected int radius;
         protected int sizeOfView;
         protected int teritorySize;
-        public Vector2 MoveDirection {
-            get { return moveDirection; }
-            set { moveDirection = value; }
-        }
+       
 
         public Vector2 Position
         {
@@ -83,7 +70,7 @@ namespace LandsOfTalaria.Entities.Enemies
             float distancePlayerSpawn = Vector2.Distance(startingPosition, playerPosition);
             float distanceFromSpawn = Vector2.Distance(position, startingPosition);
             float distanceFromWanderPoints = Vector2.Distance(position, wanderPoint);
-            float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (((int)distanceFromPlayer > sizeOfView)) {
                 state = State.Wander;
@@ -237,9 +224,7 @@ namespace LandsOfTalaria.Entities.Enemies
                 wanderPoint.X = random.Next((int)startingPosition.X - 150, (int)startingPosition.X + 150);
                 wanderPoint.Y = random.Next((int)startingPosition.Y - 150, (int)startingPosition.Y + 150);
             }
-            moveDirection = wanderPoint - position;
-            if (MoveDirection != Vector2.Zero)
-                moveDirection.Normalize();
+           
         }
     }
 }

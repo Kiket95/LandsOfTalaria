@@ -9,22 +9,11 @@ using LandsOfTalaria.Entities;
 
 namespace LandsOfTalaria
 {
-    class Player
+    class Player:Entity
     {
 
-        Direction direction = Direction.Down;
-
-        private int health = 10;
-        private int speed;
-        private bool isMoving = false;
-        float dt;
-        private int radius = 16;
-        private Vector2 position = new Vector2(2000,100);
-        public AnimatedSprite[] animatedSprite = new AnimatedSprite[4];
-        public AnimatedSprite animatedSpriteWalking;
-        public Texture2D[] walkingFrames;
         private KeyboardState keyboardStateOld = Keyboard.GetState();
-        KeyboardState keyboardState;
+        private KeyboardState keyboardState;
 
         public Vector2 Position{
             get { return position;}
@@ -33,6 +22,14 @@ namespace LandsOfTalaria
         private int Health{
             get { return health;}
             set { health = value;}
+        }
+        
+        public Player()
+        {
+            animatedSprite = new AnimatedSprite[4];
+            position = new Vector2(2000, 100);
+            radius = 16;
+            speed = new Vector2(150,150);
         }
 
         public void Update(GameTime gameTime) {
@@ -73,11 +70,13 @@ namespace LandsOfTalaria
 
             if (keyboardState.IsKeyDown(Keys.LeftShift))
             {
-                speed = 250;
+                speed.X = 250;
+                speed.Y = 250;
             }
             if (keyboardState.IsKeyUp(Keys.LeftShift))
             {
-                speed = 150;
+                speed.X = 250;
+                speed.Y = 250;
             }
             if (keyboardState.IsKeyDown(Keys.Space) && (keyboardStateOld.IsKeyUp(Keys.Space)))
             {
@@ -96,31 +95,31 @@ namespace LandsOfTalaria
                 switch (direction)
                 {
                     case Direction.Right:
-                        temporaryPosition.X += speed * dt;
+                        temporaryPosition.X += speed.X * dt;
                         if (!Obstacles.didCollide(temporaryPosition, radius))
                         {
-                            position.X += speed * dt;
+                            position.X += speed.X * dt;
                         }
                         break;
                     case Direction.Left:
-                        temporaryPosition.X -= speed * dt;
+                        temporaryPosition.X -= speed.X * dt;
                         if (!Obstacles.didCollide(temporaryPosition, radius))
                         {
-                            position.X -= speed * dt;
+                            position.X -= speed.X * dt;
                         }
                         break;
                     case Direction.Up:
-                        temporaryPosition.Y -= speed * dt;
+                        temporaryPosition.Y -= speed.Y * dt;
                         if (!Obstacles.didCollide(temporaryPosition, radius))
                         {
-                            position.Y -= speed * dt;
+                            position.Y -= speed.Y * dt;
                         }
                         break;
                     case Direction.Down:
-                        temporaryPosition.Y += speed * dt;
+                        temporaryPosition.Y += speed.Y * dt;
                         if (!Obstacles.didCollide(temporaryPosition, radius))
                         {
-                            position.Y += speed * dt;
+                            position.Y += speed.Y * dt;
                         }
                         break;
                     default: break;
