@@ -15,28 +15,29 @@ namespace LandsOfTalaria.Entities.Enemies
         protected Direction direction = Direction.Down;
         public static List<Enemy> enemies = new List<Enemy>();
 
+        protected enum State { Wander,Chase,RunAway}
+        protected State state;
+
         protected AnimatedSprite[] animatedSprite = new AnimatedSprite[4];
         protected AnimatedSprite animatedSpriteWalking;
         protected Texture2D[] walkingFrames;
-        protected KeyboardState keyboardStateOld = Keyboard.GetState();
         protected Vector2 position;
         protected Vector2 startingPosition;
         protected KeyboardState keyboardState;
         protected Vector2 moveDirection;
-        protected Random random;
-        protected int nextValueX;
-        protected int nextValueY;
+        protected bool isMoving = false;
+        Random random = new Random();
+        protected Vector2 screenCenter;
         protected string[] source = new string[4];
         protected int health;
         protected int speed;
-        protected int oldSpeed;
+        protected int speedChasing;
+        protected int speedRunningAway;
+        protected int speedWandering;
+        protected Vector2 wanderPoint;
         protected int radius;
-        protected int attackRadius;
-        protected bool isMoving = false;
-        protected float dt;
-        protected Vector2 roamingPosition;
-        protected Vector2 roamDistance;
-        protected int viewDistance;
+        protected const float turnSpeed = 0.2f;
+
 
         public Vector2 MoveDirection {
             get { return moveDirection; }
@@ -64,103 +65,98 @@ namespace LandsOfTalaria.Entities.Enemies
             get { return radius; }
             set { radius = value; }
         }
-        public int AttackRadius
-        {
-            get { return attackRadius; }
-            set { attackRadius = value; }
-        }
+ 
 
-        public Enemy(Vector2 newPosition) {
+        public Enemy(Vector2 newPosition,Vector2 screenCenter) {
             position = newPosition;
-            random = new Random();
-            startingPosition = position;
-            roamingPosition = startingPosition;
+            this.startingPosition = position;
+            this.screenCenter = screenCenter;
+            speedChasing = speed;
+            wanderPoint.X = startingPosition.X;
+            wanderPoint.Y = startingPosition.Y;
         }
 
-        public void Update(GameTime gameTime, Vector2 playerPosition)
-        {
-            if (Vector2.Distance(position, playerPosition) < 32)
-            {
-                speed = 0;
-            }
+        public void Update(GameTime gameTime, Vector2 playerPosition){
             keyboardState = Keyboard.GetState();
-            dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-
-            if ((int)Vector2.Distance(position,playerPosition) <= viewDistance && (int)Vector2.Distance(startingPosition, playerPosition)<=960)
-            {
-                speed = 160;
-                moveDirection = playerPosition - Position;
-            }
-            else
-            {
-            Wandering(playerPosition);
-            }
-            moveDirection.Normalize();
-            position += dt * moveDirection * speed;
-
             animatedSpriteWalking = animatedSprite[(int)direction];
+            float distanceFromPlayer = Vector2.Distance(position, playerPosition);
+            float distancePlayerSpawn = Vector2.Distance(startingPosition, playerPosition);
+            float distanceFromSpawn = Vector2.Distance(position,startingPosition);
+            float distanceFromWanderPoints = Vector2.Distance(position,wanderPoint);
+            float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if ((distanceFromPlayer > 150)){
+                    state = State.Wander;
+            }
+            if (distanceFromPlayer <= 150)
+            {
+                if(distancePlayerSpawn <= 450)
+                state = State.Chase;
+            }
+            if (health < 2)
+            {
+                state = State.RunAway;
+            }
+
+            switch(state){
+                case State.RunAway:
+
+                    break;
+                case State.Chase:
+                    moveDirection = playerPosition - Position;
+                    speed = 160;
+                    if (MoveDirection != Vector2.Zero)
+                        moveDirection.Normalize();
+                    if (distanceFromPlayer < 16)
+                        speed = 0;
+                    if (distancePlayerSpawn > 450)
+                        state = State.Wander;
+                        break;
+                case State.Wander:
+                    Wandering(playerPosition);
+                    speed = speedWandering;
+                    break;
+                default: break;
+            }
+
+            position += dt * moveDirection * speed;
 
             if (isMoving)
                 animatedSpriteWalking.Update(gameTime);
             else
-                animatedSpriteWalking.setFrame(1);
+            animatedSpriteWalking.setFrame(1);
             isMoving = false;
             movingEnemy();
         }
 
         public void movingEnemy()
         {
-            if (keyboardState.IsKeyDown(Keys.D))
-            {
+            if (keyboardState.IsKeyDown(Keys.D)){
 
                 direction = Direction.Right;
-                if (!Obstacles.didCollide(position, radius))
-                {
-                    isMoving = true;
-                }
+                isMoving = true;
             }
 
-            if (keyboardState.IsKeyDown(Keys.A))
-            {
+            if (keyboardState.IsKeyDown(Keys.A)){
                 direction = Direction.Left;
-
-                if (!Obstacles.didCollide(position, radius))
-                {
-                    isMoving = true;
-                }
+                isMoving = true;
             }
-            if (keyboardState.IsKeyDown(Keys.W))
-            {
+            if (keyboardState.IsKeyDown(Keys.W)){
                 direction = Direction.Up;
-
-                if (!Obstacles.didCollide(position, radius))
-                {
-                    isMoving = true;
-                }
+                isMoving = true;
             }
-            if (keyboardState.IsKeyDown(Keys.S))
-            {
+            if (keyboardState.IsKeyDown(Keys.S)){
                 direction = Direction.Down;
-
-                if (!Obstacles.didCollide(position, radius))
-                {
-                    isMoving = true;
-                }
+                isMoving = true;
             }
-
         }
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
+        public void Draw(SpriteBatch spriteBatch){
             animatedSpriteWalking.Draw(spriteBatch, new Vector2(position.X - radius, position.Y - radius));
         }
 
-        public void LoadContent(ContentManager contentManager)
-        {
-            oldSpeed = speed;
-            walkingFrames = new Texture2D[]
-            {
+        public void LoadContent(ContentManager contentManager){
+            walkingFrames = new Texture2D[]{
              contentManager.Load<Texture2D>(source[0]),
              contentManager.Load<Texture2D>(source[1]),
              contentManager.Load<Texture2D>(source[2]),
@@ -175,17 +171,15 @@ namespace LandsOfTalaria.Entities.Enemies
 
         public void Wandering(Vector2 playerPosition)
         {
-            speed = 50;
-            if (Vector2.Distance(playerPosition, position) < 16)
-                speed = 0;
 
-            if (Vector2.Distance(position,roamingPosition) < 16)
+            if (Vector2.Distance(position, wanderPoint) < 16)
             {
-                nextValueX = random.Next((int)startingPosition.X - (int)roamDistance.X, (int)startingPosition.X + (int)roamDistance.X);
-                nextValueY = random.Next((int)startingPosition.Y - (int)roamDistance.Y, (int)startingPosition.Y + (int)roamDistance.Y);
-                roamingPosition = roamingPosition = new Vector2(nextValueX, nextValueY);
+                wanderPoint.X = random.Next((int)startingPosition.X - 150, (int)startingPosition.X + 150);
+                wanderPoint.Y = random.Next((int)startingPosition.Y - 150, (int)startingPosition.Y + 150);
             }
-            moveDirection = roamingPosition - position;
+            moveDirection = wanderPoint - position;
+            if (MoveDirection != Vector2.Zero)
+                moveDirection.Normalize();
         }
     }
 }

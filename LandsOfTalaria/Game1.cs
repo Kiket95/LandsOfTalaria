@@ -6,7 +6,8 @@ using MonoGame.Extended.Tiled.Graphics;
 namespace LandsOfTalaria
 {
     public enum Direction { Right, Left, Up, Down, UpRight };
-
+    enum GameStates { DEAD, PAUSE, ALIVE}
+    
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -15,7 +16,8 @@ namespace LandsOfTalaria
         SceneManager sceneManager;
         TiledMapRenderer tiledMapRenderer;
         PlayerCamera playerCamera;
-
+        Vector2 screenCenter;
+        GameStates state;
         public static int screenHeight;
         public static int screenWidth;
 
@@ -35,7 +37,7 @@ namespace LandsOfTalaria
             tiledMapRenderer = new TiledMapRenderer(GraphicsDevice);
             playerCamera = new PlayerCamera();
             player = new Player();
-            sceneManager = new SceneManager(player, playerCamera, tiledMapRenderer,spriteBatch);
+            sceneManager = new SceneManager(player, playerCamera, tiledMapRenderer,spriteBatch, screenCenter);
             base.Initialize();
         }
 
@@ -53,14 +55,13 @@ namespace LandsOfTalaria
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
             sceneManager.Update(gameTime);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-
+            
             GraphicsDevice.Clear(Color.Black);
             sceneManager.Draw(GraphicsDevice);
 

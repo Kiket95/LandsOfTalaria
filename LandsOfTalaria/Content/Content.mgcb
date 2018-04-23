@@ -104,7 +104,7 @@
 /processorParam:Quality=Best
 /build:Music/FarmScene.mp3
 
-#begin Objects Textures/BigTree1.png
+#begin Objects Textures/SunflowerPlant.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -114,9 +114,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Objects Textures/BigTree1.png
+/build:Objects Textures/SunflowerPlant.png
 
-#begin Objects Textures/BigTree1Lower.png
+#begin Objects Textures/Trees/BigTree1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -126,9 +126,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Objects Textures/BigTree1Lower.png
+/build:Objects Textures/Trees/BigTree1.png
 
-#begin Objects Textures/BigTree1Upper.png
+#begin Objects Textures/Trees/BigTree1Lower.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -138,7 +138,19 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Objects Textures/BigTree1Upper.png
+/build:Objects Textures/Trees/BigTree1Lower.png
+
+#begin Objects Textures/Trees/BigTree1Upper.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Objects Textures/Trees/BigTree1Upper.png
 
 #begin Player Textures/monstersplayers.png
 /importer:TextureImporter
