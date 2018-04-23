@@ -11,7 +11,7 @@ namespace LandsOfTalaria.Entities
 {
     class Entity
     {
-        public static List<Obstacles> obtaclesLayersList = new List<Obstacles>();
+        public List<Obstacles> obtaclesLayersList;
         protected Direction direction = Direction.Down;
         protected int health = 10;
         protected AnimatedSprite[] animatedSprite = new AnimatedSprite[4];

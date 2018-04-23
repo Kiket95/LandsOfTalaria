@@ -8,6 +8,7 @@ using LandsOfTalaria.Entities;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
 using MonoGame.Extended.Timers;
+using System.Collections.Generic;
 
 namespace LandsOfTalaria
 {
@@ -32,16 +33,36 @@ namespace LandsOfTalaria
         
         public Player()
         {
+            obtaclesLayersList = new List<Obstacles>();
             animatedSprite = new AnimatedSprite[4];
             position = new Vector2(2000, 100);
             radius = 16;
             speed = new Vector2(150,150);
             runSpeed = 1;
-            depth = 0.4f;
+            depth = 0.5f;
         }
 
         public void Update(GameTime gameTime) {
 
+            foreach(Obstacles obstacle in obtaclesLayersList)
+            {
+                if ((position.Y + 32 < obstacle.position.Y + obstacle.textureSize.Y))
+                {
+                    animatedSprite[0].depth = 0.3f;
+                    animatedSprite[1].depth = 0.3f;
+                    animatedSprite[2].depth = 0.3f;
+                    animatedSprite[3].depth = 0.3f;
+                }
+                else
+                {
+                    animatedSprite[0].depth = 0.5f;
+                    animatedSprite[1].depth = 0.5f;
+                    animatedSprite[2].depth = 0.5f;
+                    animatedSprite[3].depth = 0.5f;
+                }
+
+            }
+           
             keyboardState = Keyboard.GetState();
             dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             timer += dt;
@@ -72,10 +93,10 @@ namespace LandsOfTalaria
              contentManager.Load<Texture2D>("Player Textures/playerMoveDown"),
             };
 
-            animatedSprite[0] = new AnimatedSprite(walkingFrames[0], 1, 3, 1, depth); //WALK RIGHT
-            animatedSprite[1] = new AnimatedSprite(walkingFrames[1], 1, 3, 1, depth); //LEFT
-            animatedSprite[2] = new AnimatedSprite(walkingFrames[2], 1, 3, 1, depth); //UP
-            animatedSprite[3] = new AnimatedSprite(walkingFrames[3], 1, 3, 1, depth); //DOWN
+            animatedSprite[0] = new AnimatedSprite(walkingFrames[0], 1, 3, 1); //WALK RIGHT
+            animatedSprite[1] = new AnimatedSprite(walkingFrames[1], 1, 3, 1); //LEFT
+            animatedSprite[2] = new AnimatedSprite(walkingFrames[2], 1, 3, 1); //UP
+            animatedSprite[3] = new AnimatedSprite(walkingFrames[3], 1, 3, 1); //DOWN
         }
 
         public void movingPlayer()

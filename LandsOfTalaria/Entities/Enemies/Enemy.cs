@@ -170,10 +170,10 @@ namespace LandsOfTalaria.Entities.Enemies
              contentManager.Load<Texture2D>(source[3]),
             };
 
-            animatedSprite[0] = new AnimatedSprite(walkingFrames[0], 1, 3,1, 0.5f); //WALK RIGHT
-            animatedSprite[1] = new AnimatedSprite(walkingFrames[1], 1, 3,1, 0.5f); //LEFT
-            animatedSprite[2] = new AnimatedSprite(walkingFrames[2], 1, 3,1, 0.5f); //UP
-            animatedSprite[3] = new AnimatedSprite(walkingFrames[3], 1, 3,1, 0.5f); //DOWN
+            animatedSprite[0] = new AnimatedSprite(walkingFrames[0], 1, 3,1); //WALK RIGHT
+            animatedSprite[1] = new AnimatedSprite(walkingFrames[1], 1, 3,1); //LEFT
+            animatedSprite[2] = new AnimatedSprite(walkingFrames[2], 1, 3,1); //UP
+            animatedSprite[3] = new AnimatedSprite(walkingFrames[3], 1, 3,1); //DOWN
         }
 
         public void Wandering(Vector2 playerPosition,float dt)

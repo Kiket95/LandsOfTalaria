@@ -13,9 +13,9 @@ namespace LandsOfTalaria
         private double timer;
         private double speed;
         float rotation;
-        float depth;
+        public float depth;
 
-        public AnimatedSprite(Texture2D texture, int rows, int columns,float rotation,float depth)
+        public AnimatedSprite(Texture2D texture, int rows, int columns,float rotation )
         {
             Texture = texture;
             Rows = rows;
@@ -25,7 +25,7 @@ namespace LandsOfTalaria
             speed = 0.15D;
             timer = speed;
             this.rotation = rotation;
-            this.depth = depth;
+            this.depth = 0.5f;
         }
 
         public void Update(GameTime gameTime,float animationSpeed)

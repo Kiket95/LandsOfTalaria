@@ -13,6 +13,8 @@ namespace LandsOfTalaria
         FarmScene farmScene;
         SpriteBatch spriteBatch;
         Vector2 screenCenter;
+        
+
         public SceneManager(Player player, PlayerCamera playerCamera, TiledMapRenderer tiledMapRenderer,SpriteBatch spriteBatch,Vector2 screenCenter)
         {
             this.player = player;

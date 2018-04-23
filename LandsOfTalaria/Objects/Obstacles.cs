@@ -53,7 +53,8 @@ namespace LandsOfTalaria.Objects
 
         public virtual void LoadContent(ContentManager contentManager)
         {
-
+            texture = contentManager.Load<Texture2D>(source);
+            textureSize.Y = texture.Height;
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)

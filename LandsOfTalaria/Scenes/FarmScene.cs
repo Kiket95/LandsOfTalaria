@@ -23,8 +23,11 @@ namespace LandsOfTalaria
         public Texture2D attackSprite;
         SpriteBatch spriteBatch;
         Vector2 screenCenter;
+        public List<Obstacles> obstacles;
+
         public FarmScene(Player player, PlayerCamera playerCamera, TiledMapRenderer tiledMapRenderer,SpriteBatch spriteBatch,Vector2 screenCenter)
         {
+            obstacles = new List<Obstacles>();
             this.player = player;
             this.playerCamera = playerCamera;
             this.tiledMapRenderer = tiledMapRenderer;
@@ -34,6 +37,8 @@ namespace LandsOfTalaria
         
         public void LoadContent(ContentManager contentManager)
         {
+            
+
             Song song = contentManager.Load<Song>("Music/FarmScene");
             MediaPlayer.Volume = 0.1f;
             MediaPlayer.Play(song);
@@ -43,7 +48,7 @@ namespace LandsOfTalaria
             player.LoadContent(contentManager);
             LoadTrees();
             LoadEnemies();
-            foreach(Obstacles obstacle in Obstacles.obstacles)
+            foreach(Obstacles obstacle in obstacles)
             {
                 obstacle.LoadContent(contentManager);
             }
@@ -59,7 +64,7 @@ namespace LandsOfTalaria
         {
             player.Update(gameTime);
             playerCamera.Follow(player);
-            
+            this.player.obtaclesLayersList = obstacles;
             foreach (PlayerAttack playerAttack in PlayerAttack.playerAttacks)
             {
                 playerAttack.Update(gameTime);
@@ -91,7 +96,7 @@ namespace LandsOfTalaria
 
         public void DrawObstacle()
         {
-            foreach (Obstacles obstacle in Obstacles.obstacles)
+            foreach (Obstacles obstacle in obstacles)
             {
                 obstacle.Draw(spriteBatch);
             }
@@ -110,10 +115,13 @@ namespace LandsOfTalaria
             }
           //  Obstacles.obstacles.Add(new BigTree1(new Vector2(2000,200)));
           //  Obstacles.obstacles.Add(new BigTree1(new Vector2(2000,500)));
-          //  Obstacles.obstacles.Add(new SunflowerPlant(new Vector2(1500, 424)));
-          //  Obstacles.obstacles.Add(new SunflowerPlant(new Vector2(1400, 400)));
-          //  Obstacles.obstacles.Add(new SunflowerPlant(new Vector2(1300, 376)));
-            Obstacles.obstacles.Add(new SunflowerPlant(new Vector2(1800, 700)));
+            obstacles.Add(new SunflowerPlant(new Vector2(1500, 424)));
+            obstacles.Add(new SunflowerPlant(new Vector2(1400, 400)));
+            obstacles.Add(new SunflowerPlant(new Vector2(1300, 376)));
+            obstacles.Add(new SunflowerPlant(new Vector2(1850, 720)));
+            obstacles.Add(new SunflowerPlant(new Vector2(1880, 740)));
+            obstacles.Add(new SunflowerPlant(new Vector2(1920, 760)));
+            obstacles.Add(new SunflowerPlant(new Vector2(1960, 6800)));
         }
 
         public void DrawLayer()
