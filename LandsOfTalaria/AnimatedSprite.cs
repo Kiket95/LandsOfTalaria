@@ -13,8 +13,9 @@ namespace LandsOfTalaria
         private double timer;
         private double speed;
         float rotation;
+        float depth;
 
-        public AnimatedSprite(Texture2D texture, int rows, int columns,float rotation)
+        public AnimatedSprite(Texture2D texture, int rows, int columns,float rotation,float depth)
         {
             Texture = texture;
             Rows = rows;
@@ -24,7 +25,7 @@ namespace LandsOfTalaria
             speed = 0.15D;
             timer = speed;
             this.rotation = rotation;
-            
+            this.depth = depth;
         }
 
         public void Update(GameTime gameTime,float animationSpeed)
@@ -52,7 +53,7 @@ namespace LandsOfTalaria
             Rectangle destinationRectangle = new Rectangle((int)location.X, (int)location.Y, width, height);
 
             //spriteBatch.Draw(bigTreeTextureLower, new Rectangle((int)obstacle.Positon.X, (int)obstacle.Positon.Y + 224, 224, 75), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: 0.4f);
-            spriteBatch.Draw(Texture,destinationRectangle, sourceRectangle,Color.White,0,Vector2.Zero,SpriteEffects.None,layerDepth: 0.5f);
+            spriteBatch.Draw(Texture,destinationRectangle, sourceRectangle,Color.White,0,Vector2.Zero,SpriteEffects.None,layerDepth: depth);
         }
 
         public void setFrame(int newFrame)

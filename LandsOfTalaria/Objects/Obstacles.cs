@@ -7,6 +7,7 @@ namespace LandsOfTalaria.Objects
 {
     class Obstacles
     {
+        protected static float layer;
         public Vector2 position;
         public Texture2D texture;
         protected int radius;
@@ -36,6 +37,7 @@ namespace LandsOfTalaria.Objects
         public Obstacles(Vector2 newPosition)
         {
             this.position = newPosition;
+            layer += 0.001f;
         }
 
         public static bool didCollide(Vector2 otherPosition, int otherRadius)

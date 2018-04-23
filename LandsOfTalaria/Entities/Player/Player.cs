@@ -19,6 +19,7 @@ namespace LandsOfTalaria
         private KeyboardState keyboardState;
         private float timer;
         private float timerTick = 0.4f;
+        float depth;
 
         public Vector2 Position{
             get { return position;}
@@ -36,6 +37,7 @@ namespace LandsOfTalaria
             radius = 16;
             speed = new Vector2(150,150);
             runSpeed = 1;
+            depth = 0.4f;
         }
 
         public void Update(GameTime gameTime) {
@@ -70,10 +72,10 @@ namespace LandsOfTalaria
              contentManager.Load<Texture2D>("Player Textures/playerMoveDown"),
             };
 
-            animatedSprite[0] = new AnimatedSprite(walkingFrames[0], 1, 3, 1); //WALK RIGHT
-            animatedSprite[1] = new AnimatedSprite(walkingFrames[1], 1, 3, 1); //LEFT
-            animatedSprite[2] = new AnimatedSprite(walkingFrames[2], 1, 3, 1); //UP
-            animatedSprite[3] = new AnimatedSprite(walkingFrames[3], 1, 3, 1); //DOWN
+            animatedSprite[0] = new AnimatedSprite(walkingFrames[0], 1, 3, 1, depth); //WALK RIGHT
+            animatedSprite[1] = new AnimatedSprite(walkingFrames[1], 1, 3, 1, depth); //LEFT
+            animatedSprite[2] = new AnimatedSprite(walkingFrames[2], 1, 3, 1, depth); //UP
+            animatedSprite[3] = new AnimatedSprite(walkingFrames[3], 1, 3, 1, depth); //DOWN
         }
 
         public void movingPlayer()
@@ -103,19 +105,30 @@ namespace LandsOfTalaria
                 speed.X = 300;
                 speed.Y = 300;
                 runSpeed = 1.5f;
-                timerTick = 0.2f;
+                timerTick = 0.25f;
             }
             if (keyboardState.IsKeyUp(Keys.LeftShift))
             {
                 speed.X = 150;
                 speed.Y = 150;
                 runSpeed = 1f;
-                timerTick = 0.3f;
+                timerTick = 0.35f;
             }
             if (keyboardState.IsKeyDown(Keys.Space) && (keyboardStateOld.IsKeyUp(Keys.Space)))
             {
-                
-                //      PlayerAttack.playerAttacks.Add(new PlayerAttack(position, direction));
+               PlayerAttack.playerAttacks.Add(new PlayerAttack(position, direction));
+            }
+
+            foreach(Obstacles obstacle in Obstacles.obstacles)
+            {
+                if(obstacle.position.Y > position.Y)
+                {
+                    depth = 0.8f;
+                }
+                if (obstacle.position.Y <= position.Y)
+                {
+                    depth = 0.4f;
+                }
             }
 
             if (Position != Vector2.Zero)

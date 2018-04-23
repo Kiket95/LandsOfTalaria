@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using LandsOfTalaria.Objects;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace LandsOfTalaria.Entities
 {
     class Entity
     {
+        public static List<Obstacles> obtaclesLayersList = new List<Obstacles>();
         protected Direction direction = Direction.Down;
         protected int health = 10;
         protected AnimatedSprite[] animatedSprite = new AnimatedSprite[4];
