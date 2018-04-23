@@ -119,25 +119,12 @@ namespace LandsOfTalaria
                PlayerAttack.playerAttacks.Add(new PlayerAttack(position, direction));
             }
 
-            foreach(Obstacles obstacle in Obstacles.obstacles)
-            {
-                if(obstacle.position.Y > position.Y)
-                {
-                    depth = 0.8f;
-                }
-                if (obstacle.position.Y <= position.Y)
-                {
-                    depth = 0.4f;
-                }
-            }
-
             if (Position != Vector2.Zero)
             {
                 Position.Normalize();
             }
 
             keyboardStateOld = keyboardState;
-
             
             if (isMoving)
             {
