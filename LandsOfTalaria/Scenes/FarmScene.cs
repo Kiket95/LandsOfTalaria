@@ -110,7 +110,11 @@ namespace LandsOfTalaria
 
                 x += 32;
             }
-          //  Obstacles.obstacles.Add(new BigTree1(new Vector2(2000,200)));
+            obstacles.Add(new SunflowerPlant(new Vector2(2000,500)));
+            obstacles.Add(new SunflowerPlant(new Vector2(2100, 300)));
+            obstacles.Add(new SunflowerPlant(new Vector2(2000, 400)));
+
+
 
 
         }

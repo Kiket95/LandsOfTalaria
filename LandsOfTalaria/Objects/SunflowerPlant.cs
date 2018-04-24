@@ -5,26 +5,26 @@ using System.Collections.Generic;
 
 namespace LandsOfTalaria.Objects
 {
-    class SunflowerPlant : Obstacles
+    class SunflowerPlant : SmallObstacle
     {
         public SunflowerPlant(Vector2 newPosition) : base(newPosition)
         {
             radius = 4;
-            layerSwitchingSize.X = textureSize.X - textureSize.X / 2;
-            layerSwitchingSize.Y = textureSize.Y - textureSize.Y / 2;
+            boundingSphere = new BoundingSphere(new Vector3(position.X+16, position.Y+48, 0), radius);
             HitBoxPosition = new Vector2(position.X+16, position.Y+48);
             source = "Objects Textures/SunflowerPlant";
         }
 
-        public override void LoadContent(ContentManager contentManager)
+        public override bool isBehind(Vector2 temporaryPosition, List<Obstacles> obtaclesLayersList)
         {
-            texture = contentManager.Load<Texture2D>(source);
-            textureSize = new Vector2(texture.Width, texture.Height);
-        }
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(texture, new Rectangle((int)Positon.X, (int)Positon.Y, (int)textureSize.X, (int)textureSize.Y), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: 0.4f);
+            foreach (Obstacles obstacle in obtaclesLayersList)
+            {
+                //  if (entityPosition.Y+entitySize.Y < obstacle.position.Y+obstacle.textureSize.Y && entityPosition.Y + entitySize.Y > obstacle.position.Y && entityPosition.X > obstacle.position.X && entityPosition.X < obstacle.position.X+obstacle.textureSize.X)
+                // DOLNA LINIA GRACZA WYŻEJ OD DOLNEJ LINII OBIEKTU &&  GORNA LINIA GRACZA WYZEJ OD 32PIXELI OD GORNEJ LINIII OBIEKTU  OD DOLNEJ LINII OBIEKTU &&  GRACZ POMIEDZY PRAWA && LEWA SCIANA OBIEKTU
+                if ((int)temporaryPosition.Y > obstacle.position.Y && (int)temporaryPosition.Y + 32 > obstacle.position.Y && (int)temporaryPosition.X < obstacle.position.X + 32 && (int)temporaryPosition.X + 32 > obstacle.position.X && (int)temporaryPosition.Y < obstacle.position.Y + 32)
+                    return true;
+            }
+            return false;
         }
     }
 }

@@ -15,9 +15,10 @@ namespace LandsOfTalaria.Objects
         public Vector2 hitBoxPosition;
         public Vector2 textureSize;
         protected string source;
-        public Vector2 layerSwitchingSize;
         public BoundingBox boundingBox;
-      //  public static List<Obstacles> obstacles = new List<Obstacles>();
+        public BoundingSphere boundingSphere;
+
+        //  public static List<Obstacles> obstacles = new List<Obstacles>();
 
         public Vector2 Positon
         {
@@ -40,7 +41,6 @@ namespace LandsOfTalaria.Objects
         {
             position = newPosition;
             layer += 0.001f;
-            boundingBox = new BoundingBox(new Vector3(position.X, position.Y+4, 0), new Vector3(position.X + 32, position.Y + 28, 0));
         }
 
       
@@ -51,29 +51,35 @@ namespace LandsOfTalaria.Objects
             textureSize.X = texture.Width;
         }
 
-     /*   public static bool didCollide(Vector2 temporaryPosition,List<Obstacles> obtaclesLayersList)
-        {
-            foreach (Obstacles obstacle in obtaclesLayersList)
-            {
-                int sumOfRadiuses = obstacle.radius + 16;
-                if (Vector2.Distance(obstacle.HitBoxPosition, temporaryPosition) < sumOfRadiuses)
-                    return true;
-            }
-            return false;
-        }
-        */
+        /*   
+           */
 
-        public static bool didCollide(BoundingSphere entityHitboxSphere, List<Obstacles> obtaclesLayersList)
+        public virtual bool didCollide(BoundingSphere entityHitboxSphere, List<Obstacles> obtaclesLayersList)
         {
             foreach (Obstacles obstacle in obtaclesLayersList)
             {
-                
                 if (entityHitboxSphere.Intersects(obstacle.boundingBox))
                     return true;
             }
             return false;
         }
-        
+
+        public virtual bool didCollide2(BoundingSphere entityHitboxSphere, List<Obstacles> obtaclesLayersList)
+        {
+            foreach (Obstacles obstacle in obtaclesLayersList)
+            {
+                if (entityHitboxSphere.Intersects(obstacle.boundingBox))
+                    return true;
+            }
+            return false;
+        }
+
+        public virtual bool isBehind(Vector2 temporaryPosition, List<Obstacles> obtaclesLayersList)
+        {
+            return false;
+        }
+
+
         public virtual void Draw(SpriteBatch spriteBatch)
         {
 

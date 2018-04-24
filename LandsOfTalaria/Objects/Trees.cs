@@ -8,6 +8,7 @@ using MonoGame.Extended.Sprites;
 using MonoGame.Extended.TextureAtlases;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace LandsOfTalaria.Objects
 {
@@ -21,9 +22,6 @@ namespace LandsOfTalaria.Objects
         public Trees(Vector2 newPosition) : base(newPosition)
         {
             radius = 16;
-            layerSwitchingSize.X = 225;
-            layerSwitchingSize.Y = 225;
-            HitBoxPosition = new Vector2(position.X + 120, position.Y + 240);
             source = "Objects Textures/Trees/BigTree1Upper";
             source2 = "Objects Textures/Trees/BigTree1Lower";
         }
@@ -34,6 +32,15 @@ namespace LandsOfTalaria.Objects
             lowerPart = contentManager.Load<Texture2D>(source2);
             textureSize = new Vector2(upperPart.Width, upperPart.Height);
             textureSize2 = new Vector2(lowerPart.Width, lowerPart.Height);
+        }
+        public override bool didCollide(BoundingSphere entityHitboxSphere, List<Obstacles> obtaclesLayersList)
+        {
+            foreach (Obstacles obstacle in obtaclesLayersList)
+            {
+                if (entityHitboxSphere.Intersects(boundingSphere))
+                    return true;
+            }
+            return false;
         }
 
         public override void Draw(SpriteBatch spriteBatch)

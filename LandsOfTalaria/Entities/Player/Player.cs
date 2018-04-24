@@ -133,7 +133,7 @@ namespace LandsOfTalaria
 
             if (isMoving)
             {
-                if (isBehind(temporaryPosition))
+                if (isBehind(temporaryPosition, obtaclesLayersList))
                 {
                     animatedSprite[0].depth = 0.3f;
                     animatedSprite[1].depth = 0.3f;
@@ -157,7 +157,7 @@ namespace LandsOfTalaria
                     case Direction.Right:
                         temporaryPosition.X += speed.X * dt;
                         boundingSphere = new BoundingSphere(new Vector3(temporaryPosition.X, temporaryPosition.Y, 0), radius);
-                        if (!Obstacles.didCollide(boundingSphere, obtaclesLayersList))
+                        if (!didCollide(boundingSphere))
                         {
                             Console.WriteLine("KOLIZJA!");
                             position.X += speed.X * dt;
@@ -166,7 +166,7 @@ namespace LandsOfTalaria
                     case Direction.Left:
                         temporaryPosition.X -= speed.X * dt;
                         boundingSphere = new BoundingSphere(new Vector3(temporaryPosition.X, temporaryPosition.Y, 0), radius);
-                        if (!Obstacles.didCollide(boundingSphere, obtaclesLayersList))
+                        if (!didCollide(boundingSphere))
                         {
                             Console.WriteLine("KOLIZJA!");
                             position.X -= speed.X * dt;
@@ -175,7 +175,7 @@ namespace LandsOfTalaria
                     case Direction.Up:
                         temporaryPosition.Y -= speed.Y * dt;
                         boundingSphere = new BoundingSphere(new Vector3(temporaryPosition.X, temporaryPosition.Y, 0), radius);
-                        if (!Obstacles.didCollide(boundingSphere, obtaclesLayersList))
+                        if (!didCollide(boundingSphere))
                         {
                             Console.WriteLine("KOLIZJA!");
                             position.Y -= speed.Y * dt;
@@ -184,7 +184,7 @@ namespace LandsOfTalaria
                     case Direction.Down:
                         temporaryPosition.Y += speed.Y * dt;
                         boundingSphere = new BoundingSphere(new Vector3(temporaryPosition.X, temporaryPosition.Y, 0), radius);
-                        if (!Obstacles.didCollide(boundingSphere, obtaclesLayersList))
+                        if (!didCollide(boundingSphere))
                         {
                             Console.WriteLine("KOLIZJA!");
                             position.Y += speed.Y * dt;
@@ -194,21 +194,28 @@ namespace LandsOfTalaria
                 }
                 
             }
-           
         }
-
-       
-        public bool isBehind(Vector2 temporaryPosition)
+        public bool isBehind(Vector2 temporaryPosition,List<Obstacles> obtaclesLayersList)
         {
             foreach (Obstacles obstacle in obtaclesLayersList)
             {
-                //  if (entityPosition.Y+entitySize.Y < obstacle.position.Y+obstacle.textureSize.Y && entityPosition.Y + entitySize.Y > obstacle.position.Y && entityPosition.X > obstacle.position.X && entityPosition.X < obstacle.position.X+obstacle.textureSize.X)
-                // DOLNA LINIA GRACZA WYŻEJ OD DOLNEJ LINII OBIEKTU &&  GORNA LINIA GRACZA WYZEJ OD 32PIXELI OD GORNEJ LINIII OBIEKTU  OD DOLNEJ LINII OBIEKTU &&  GRACZ POMIEDZY PRAWA && LEWA SCIANA OBIEKTU
-                if ((int)temporaryPosition.Y > obstacle.position.Y && (int)temporaryPosition.Y + 32 > obstacle.position.Y && (int)temporaryPosition.X < obstacle.position.X + 32 && (int)temporaryPosition.X + 32 > obstacle.position.X && (int)temporaryPosition.Y < obstacle.position.Y + 32) 
+                if (obstacle.isBehind(temporaryPosition, obtaclesLayersList))
                     return true;
             }
             return false;
         }
+
+        public bool didCollide(BoundingSphere boundingSphere2)
+        {
+            foreach(Obstacles obstacle in obtaclesLayersList)
+            {
+                if (obstacle.didCollide(boundingSphere2, obtaclesLayersList))
+                    return true;
+            }
+            return false;
+        }
+       
+        
 
     }
 }

@@ -48,6 +48,7 @@
     <Compile Include="Objects\BigTree1.cs" />
     <Compile Include="Objects\Fence.cs" />
     <Compile Include="Objects\Obstacles.cs" />
+    <Compile Include="Objects\SmallObstacle.cs" />
     <Compile Include="Objects\SunflowerPlant.cs" />
     <Compile Include="Objects\Trees.cs" />
     <Compile Include="Scenes\FarmScene.cs" />
