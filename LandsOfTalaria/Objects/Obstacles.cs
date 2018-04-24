@@ -10,12 +10,12 @@ namespace LandsOfTalaria.Objects
         protected static float layer;
         public Vector2 position;
         public Texture2D texture;
-        protected int radius;
-        protected Vector2 hitBoxPosition;
+        public int radius;
+        public Vector2 hitBoxPosition;
         public Vector2 textureSize;
         protected string source;
         public Vector2 layerSwitchingSize;
-        public static List<Obstacles> obstacles = new List<Obstacles>();
+      //  public static List<Obstacles> obstacles = new List<Obstacles>();
 
         public Vector2 Positon
         {
@@ -40,21 +40,12 @@ namespace LandsOfTalaria.Objects
             layer += 0.001f;
         }
 
-        public static bool didCollide(Vector2 otherPosition, int otherRadius)
-        {
-            foreach(Obstacles obstacle in Obstacles.obstacles)
-            {
-               int sumOfRadiuses =  obstacle.radius + otherRadius;
-                if (Vector2.Distance(obstacle.HitBoxPosition, otherPosition) < sumOfRadiuses)
-                    return true;
-            }
-            return false;
-        }
-
+      
         public virtual void LoadContent(ContentManager contentManager)
         {
             texture = contentManager.Load<Texture2D>(source);
             textureSize.Y = texture.Height;
+            textureSize.X = texture.Width;
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)

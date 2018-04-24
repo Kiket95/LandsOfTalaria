@@ -37,8 +37,6 @@ namespace LandsOfTalaria
         
         public void LoadContent(ContentManager contentManager)
         {
-            
-
             Song song = contentManager.Load<Song>("Music/FarmScene");
             MediaPlayer.Volume = 0.1f;
             MediaPlayer.Play(song);
@@ -63,8 +61,8 @@ namespace LandsOfTalaria
         public void Update(GameTime gameTime)
         {
             player.Update(gameTime);
+            player.obtaclesLayersList = obstacles;
             playerCamera.Follow(player);
-            this.player.obtaclesLayersList = obstacles;
             foreach (PlayerAttack playerAttack in PlayerAttack.playerAttacks)
             {
                 playerAttack.Update(gameTime);
@@ -104,30 +102,32 @@ namespace LandsOfTalaria
 
         public void LoadTrees()
         {
-            int x = 2700;
+            int x = 2000;
             int y = 0;
             for (int i = 0;i<10;i++)
             {
-            //    Obstacles.obstacles.Add(new BigTree1(new Vector2(x,y)));
-            //    Obstacles.obstacles.Add(new BigTree1(new Vector2(x + 100, y)));
-                y += 250;
-
+                obstacles.Add(new SunflowerPlant(new Vector2(x+50, y)));
+                obstacles.Add(new SunflowerPlant(new Vector2(x+100, y)));
+                obstacles.Add(new SunflowerPlant(new Vector2(x+150, y)));
+                obstacles.Add(new SunflowerPlant(new Vector2(x+200, y)));
+                obstacles.Add(new SunflowerPlant(new Vector2(x+250, y)));
+                y += 75;
             }
           //  Obstacles.obstacles.Add(new BigTree1(new Vector2(2000,200)));
-          //  Obstacles.obstacles.Add(new BigTree1(new Vector2(2000,500)));
             obstacles.Add(new SunflowerPlant(new Vector2(1500, 424)));
             obstacles.Add(new SunflowerPlant(new Vector2(1400, 400)));
             obstacles.Add(new SunflowerPlant(new Vector2(1300, 376)));
             obstacles.Add(new SunflowerPlant(new Vector2(1850, 720)));
             obstacles.Add(new SunflowerPlant(new Vector2(1880, 740)));
-            obstacles.Add(new SunflowerPlant(new Vector2(1920, 760)));
-            obstacles.Add(new SunflowerPlant(new Vector2(1960, 6800)));
+            obstacles.Add(new SunflowerPlant(new Vector2(1910, 760)));
+            obstacles.Add(new SunflowerPlant(new Vector2(1940, 780)));
+
         }
 
         public void DrawLayer()
         {
-            tiledMapRenderer.Draw(startingLoc.GetLayer("1"), playerCamera.Transform, null, null, depth: 0.9f);
-            tiledMapRenderer.Draw(startingLoc.GetLayer("2"), playerCamera.Transform, null, null, depth: 0.9f);
+            tiledMapRenderer.Draw(startingLoc.GetLayer("1"), playerCamera.Transform);
+            tiledMapRenderer.Draw(startingLoc.GetLayer("2"), playerCamera.Transform);
 
             DrawObstacle();
             DrawEnemies();

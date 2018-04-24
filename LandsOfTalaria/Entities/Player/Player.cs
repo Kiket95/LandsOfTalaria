@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
 using MonoGame.Extended.Timers;
 using System.Collections.Generic;
+using System;
 
 namespace LandsOfTalaria
 {
@@ -21,6 +22,7 @@ namespace LandsOfTalaria
         private float timer;
         private float timerTick = 0.4f;
         float depth;
+        public List<Obstacles> obtaclesLayersList;
 
         public Vector2 Position{
             get { return position;}
@@ -40,28 +42,11 @@ namespace LandsOfTalaria
             speed = new Vector2(150,150);
             runSpeed = 1;
             depth = 0.5f;
+
         }
 
-        public void Update(GameTime gameTime) {
-
-            foreach(Obstacles obstacle in obtaclesLayersList)
-            {
-                if ((position.Y + 32 < obstacle.position.Y + obstacle.textureSize.Y))
-                {
-                    animatedSprite[0].depth = 0.3f;
-                    animatedSprite[1].depth = 0.3f;
-                    animatedSprite[2].depth = 0.3f;
-                    animatedSprite[3].depth = 0.3f;
-                }
-                else
-                {
-                    animatedSprite[0].depth = 0.5f;
-                    animatedSprite[1].depth = 0.5f;
-                    animatedSprite[2].depth = 0.5f;
-                    animatedSprite[3].depth = 0.5f;
-                }
-
-            }
+        public void Update(GameTime gameTime)
+        {
            
             keyboardState = Keyboard.GetState();
             dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -101,7 +86,7 @@ namespace LandsOfTalaria
 
         public void movingPlayer()
         {
-            Vector2 temporaryPosition = position;
+            
             if (keyboardState.IsKeyDown(Keys.D)) {
                 direction = Direction.Right;
                 isMoving = true;
@@ -146,9 +131,26 @@ namespace LandsOfTalaria
             }
 
             keyboardStateOld = keyboardState;
-            
+            Vector2 temporaryPosition = position;
+            temporaryPosition.X += speed.X * dt;
+            temporaryPosition.Y += speed.Y * dt;
+
             if (isMoving)
             {
+                if (isBehind(temporaryPosition))
+                {
+                    animatedSprite[0].depth = 0.3f;
+                    animatedSprite[1].depth = 0.3f;
+                    animatedSprite[2].depth = 0.3f;
+                    animatedSprite[3].depth = 0.3f;
+                }
+                else
+                {
+                    animatedSprite[0].depth = 0.5f;
+                    animatedSprite[1].depth = 0.5f;
+                    animatedSprite[2].depth = 0.5f;
+                    animatedSprite[3].depth = 0.5f;
+                }
                 if (timer >= timerTick)
                 {
                     grassStep.Play(0.4f, 0.0f, 0.0f);
@@ -157,38 +159,59 @@ namespace LandsOfTalaria
                 switch (direction)
                 {
                     case Direction.Right:
-                        temporaryPosition.X += speed.X * dt;
-                        if (!Obstacles.didCollide(temporaryPosition, radius))
+                        if (!didCollide(temporaryPosition))
                         {
                             position.X += speed.X * dt;
                         }
                         break;
                     case Direction.Left:
                         temporaryPosition.X -= speed.X * dt;
-                        if (!Obstacles.didCollide(temporaryPosition, radius))
+                        if (!didCollide(temporaryPosition))
                         {
                             position.X -= speed.X * dt;
                         }
                         break;
                     case Direction.Up:
                         temporaryPosition.Y -= speed.Y * dt;
-                        if (!Obstacles.didCollide(temporaryPosition, radius))
+                        if (!didCollide(temporaryPosition))
                         {
                             position.Y -= speed.Y * dt;
                         }
                         break;
                     case Direction.Down:
                         temporaryPosition.Y += speed.Y * dt;
-                        if (!Obstacles.didCollide(temporaryPosition, radius))
+                        if (!didCollide(temporaryPosition))
                         {
                             position.Y += speed.Y * dt;
                         }
                         break;
                     default: break;
                 }
-            
-            }
                 
+            }
+           
+        }
+
+        public bool didCollide(Vector2 temporaryPosition)
+        {
+            foreach (Obstacles obstacle in obtaclesLayersList)
+            {
+                int sumOfRadiuses = obstacle.radius + radius;
+                if (Vector2.Distance(obstacle.HitBoxPosition, temporaryPosition) < sumOfRadiuses)
+                    return true;
+            }
+            return false;
+        }
+        public bool isBehind(Vector2 temporaryPosition)
+        {
+            foreach (Obstacles obstacle in obtaclesLayersList)
+            {
+                //  if (entityPosition.Y+entitySize.Y < obstacle.position.Y+obstacle.textureSize.Y && entityPosition.Y + entitySize.Y > obstacle.position.Y && entityPosition.X > obstacle.position.X && entityPosition.X < obstacle.position.X+obstacle.textureSize.X)
+                // DOLNA LINIA GRACZA WYŻEJ OD DOLNEJ LINII OBIEKTU &&  GORNA LINIA GRACZA WYZEJ OD 32PIXELI OD GORNEJ LINIII OBIEKTU  OD DOLNEJ LINII OBIEKTU &&  GRACZ POMIEDZY PRAWA && LEWA SCIANA OBIEKTU
+                if ((int)temporaryPosition.Y > obstacle.position.Y && (int)temporaryPosition.Y + 32 > obstacle.position.Y && (int)temporaryPosition.X < obstacle.position.X + 32 && (int)temporaryPosition.X + 32 > obstacle.position.X && (int)temporaryPosition.Y < obstacle.position.Y + 64) 
+                    return true;
+            }
+            return false;
         }
 
     }
