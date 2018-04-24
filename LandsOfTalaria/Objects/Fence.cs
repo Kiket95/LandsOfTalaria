@@ -11,9 +11,11 @@ namespace LandsOfTalaria.Objects
 {
     class Fence:Obstacles
     {
+        BoundingBox boundingBox;
         public Fence(Vector2 newPosition):base(newPosition)
         {
-            radius = 4;
+            boundingBox = new BoundingBox();
+            radius = 6;
             layerSwitchingSize.X = textureSize.X - textureSize.X / 2;
             layerSwitchingSize.Y = textureSize.Y - textureSize.Y / 2;
             HitBoxPosition = new Vector2(position.X + 16, position.Y + 24);

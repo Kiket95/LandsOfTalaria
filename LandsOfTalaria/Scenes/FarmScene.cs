@@ -103,24 +103,15 @@ namespace LandsOfTalaria
         public void LoadTrees()
         {
             int x = 2000;
-            int y = 0;
-            for (int i = 0;i<10;i++)
+            int y = 200;
+            for (int i = 0;i<30;i++)
             {
-                obstacles.Add(new SunflowerPlant(new Vector2(x+50, y)));
-                obstacles.Add(new SunflowerPlant(new Vector2(x+100, y)));
-                obstacles.Add(new SunflowerPlant(new Vector2(x+150, y)));
-                obstacles.Add(new SunflowerPlant(new Vector2(x+200, y)));
-                obstacles.Add(new SunflowerPlant(new Vector2(x+250, y)));
-                y += 75;
+                obstacles.Add(new Fence(new Vector2(x, y)));
+
+                x += 32;
             }
           //  Obstacles.obstacles.Add(new BigTree1(new Vector2(2000,200)));
-            obstacles.Add(new SunflowerPlant(new Vector2(1500, 424)));
-            obstacles.Add(new SunflowerPlant(new Vector2(1400, 400)));
-            obstacles.Add(new SunflowerPlant(new Vector2(1300, 376)));
-            obstacles.Add(new SunflowerPlant(new Vector2(1850, 720)));
-            obstacles.Add(new SunflowerPlant(new Vector2(1880, 740)));
-            obstacles.Add(new SunflowerPlant(new Vector2(1910, 760)));
-            obstacles.Add(new SunflowerPlant(new Vector2(1940, 780)));
+
 
         }
 

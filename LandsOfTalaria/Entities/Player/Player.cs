@@ -23,7 +23,7 @@ namespace LandsOfTalaria
         private float timerTick = 0.4f;
         float depth;
         public List<Obstacles> obtaclesLayersList;
-
+        public BoundingSphere boundingSphere;
         public Vector2 Position{
             get { return position;}
             set { position = value;}
@@ -42,16 +42,15 @@ namespace LandsOfTalaria
             speed = new Vector2(150,150);
             runSpeed = 1;
             depth = 0.5f;
-
         }
 
         public void Update(GameTime gameTime)
         {
-           
             keyboardState = Keyboard.GetState();
             dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             timer += dt;
             animatedSpriteWalking = animatedSprite[(int)direction];
+            
 
             if (isMoving)
                 animatedSpriteWalking.Update(gameTime, runSpeed);
@@ -86,7 +85,6 @@ namespace LandsOfTalaria
 
         public void movingPlayer()
         {
-            
             if (keyboardState.IsKeyDown(Keys.D)) {
                 direction = Direction.Right;
                 isMoving = true;
@@ -132,8 +130,7 @@ namespace LandsOfTalaria
 
             keyboardStateOld = keyboardState;
             Vector2 temporaryPosition = position;
-            temporaryPosition.X += speed.X * dt;
-            temporaryPosition.Y += speed.Y * dt;
+          //  boundingSphere = new BoundingSphere(new Vector3(temporaryPosition.X + 16, temporaryPosition.Y + 16, 0), radius);
 
             if (isMoving)
             {
@@ -159,29 +156,34 @@ namespace LandsOfTalaria
                 switch (direction)
                 {
                     case Direction.Right:
-                        if (!didCollide(temporaryPosition))
+                        temporaryPosition.X += speed.X * dt;
+                        if (!Obstacles.didCollide(temporaryPosition, obtaclesLayersList))
                         {
+                            Console.WriteLine("KOLIZJA!");
                             position.X += speed.X * dt;
                         }
                         break;
                     case Direction.Left:
                         temporaryPosition.X -= speed.X * dt;
-                        if (!didCollide(temporaryPosition))
+                        if (!Obstacles.didCollide(temporaryPosition, obtaclesLayersList))
                         {
+                            Console.WriteLine("KOLIZJA!");
                             position.X -= speed.X * dt;
                         }
                         break;
                     case Direction.Up:
                         temporaryPosition.Y -= speed.Y * dt;
-                        if (!didCollide(temporaryPosition))
+                        if (!Obstacles.didCollide(temporaryPosition, obtaclesLayersList))
                         {
+                            Console.WriteLine("KOLIZJA!");
                             position.Y -= speed.Y * dt;
                         }
                         break;
                     case Direction.Down:
                         temporaryPosition.Y += speed.Y * dt;
-                        if (!didCollide(temporaryPosition))
+                        if (!Obstacles.didCollide(temporaryPosition, obtaclesLayersList))
                         {
+                            Console.WriteLine("KOLIZJA!");
                             position.Y += speed.Y * dt;
                         }
                         break;
@@ -192,23 +194,14 @@ namespace LandsOfTalaria
            
         }
 
-        public bool didCollide(Vector2 temporaryPosition)
-        {
-            foreach (Obstacles obstacle in obtaclesLayersList)
-            {
-                int sumOfRadiuses = obstacle.radius + radius;
-                if (Vector2.Distance(obstacle.HitBoxPosition, temporaryPosition) < sumOfRadiuses)
-                    return true;
-            }
-            return false;
-        }
+       
         public bool isBehind(Vector2 temporaryPosition)
         {
             foreach (Obstacles obstacle in obtaclesLayersList)
             {
                 //  if (entityPosition.Y+entitySize.Y < obstacle.position.Y+obstacle.textureSize.Y && entityPosition.Y + entitySize.Y > obstacle.position.Y && entityPosition.X > obstacle.position.X && entityPosition.X < obstacle.position.X+obstacle.textureSize.X)
                 // DOLNA LINIA GRACZA WYŻEJ OD DOLNEJ LINII OBIEKTU &&  GORNA LINIA GRACZA WYZEJ OD 32PIXELI OD GORNEJ LINIII OBIEKTU  OD DOLNEJ LINII OBIEKTU &&  GRACZ POMIEDZY PRAWA && LEWA SCIANA OBIEKTU
-                if ((int)temporaryPosition.Y > obstacle.position.Y && (int)temporaryPosition.Y + 32 > obstacle.position.Y && (int)temporaryPosition.X < obstacle.position.X + 32 && (int)temporaryPosition.X + 32 > obstacle.position.X && (int)temporaryPosition.Y < obstacle.position.Y + 64) 
+                if ((int)temporaryPosition.Y > obstacle.position.Y && (int)temporaryPosition.Y + 32 > obstacle.position.Y && (int)temporaryPosition.X < obstacle.position.X + 32 && (int)temporaryPosition.X + 32 > obstacle.position.X && (int)temporaryPosition.Y < obstacle.position.Y + 32) 
                     return true;
             }
             return false;

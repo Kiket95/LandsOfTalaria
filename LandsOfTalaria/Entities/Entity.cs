@@ -11,6 +11,7 @@ namespace LandsOfTalaria.Entities
 {
     class Entity
     {
+
         protected Direction direction = Direction.Down;
         protected int health = 10;
         protected AnimatedSprite[] animatedSprite = new AnimatedSprite[4];
@@ -22,5 +23,11 @@ namespace LandsOfTalaria.Entities
         protected bool isMoving = false;
         protected float dt;
         protected float runSpeed;
+
     }
+
+
+
+       
+      
 }
