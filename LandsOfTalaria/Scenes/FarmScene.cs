@@ -6,11 +6,7 @@ using Microsoft.Xna.Framework.Content;
 using System.Collections.Generic;
 using LandsOfTalaria.Objects;
 using LandsOfTalaria.Entities.Enemies;
-using MonoGame.Extended;
-using System;
 using Microsoft.Xna.Framework.Media;
-using Microsoft.Xna.Framework.Input;
-using TiledSharp;
 
 namespace LandsOfTalaria
 {
@@ -24,7 +20,7 @@ namespace LandsOfTalaria
         SpriteBatch spriteBatch;
         Vector2 screenCenter;
         public List<Obstacles> obstacles;
-
+        public List<TiledMapObject> mapLayerObstacles;
         public FarmScene(Player player, PlayerCamera playerCamera, TiledMapRenderer tiledMapRenderer,SpriteBatch spriteBatch,Vector2 screenCenter)
         {
             obstacles = new List<Obstacles>();
@@ -78,6 +74,8 @@ namespace LandsOfTalaria
             graphicsDevice.BlendState = BlendState.AlphaBlend;
             graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
             graphicsDevice.RasterizerState = RasterizerState.CullNone;
+            tiledMapRenderer.Draw(startingLoc.GetLayer("1"), playerCamera.Transform, depth: 0.5f);
+            tiledMapRenderer.Draw(startingLoc.GetLayer("2"), playerCamera.Transform, depth: 0.6f);
             spriteBatch.Begin(transformMatrix: playerCamera.Transform, sortMode: SpriteSortMode.FrontToBack,depthStencilState: DepthStencilState.DepthRead,blendState: BlendState.NonPremultiplied);
             DrawLayer();
 
@@ -87,9 +85,9 @@ namespace LandsOfTalaria
                 //     if (Obstacles.didCollide(playerAttack.position, playerAttack.Radius))
                 //         playerAttack.Collided = true;
             }
-
+            
             spriteBatch.End();
-
+            
         }
 
         public void DrawObstacle()
@@ -110,23 +108,33 @@ namespace LandsOfTalaria
 
                 x += 32;
             }
-            obstacles.Add(new SunflowerPlant(new Vector2(2000,500)));
+            obstacles.Add(new BigTree1(new Vector2(2500, 400)));
+            obstacles.Add(new BigTree1(new Vector2(1500, 400)));
+            obstacles.Add(new SunflowerPlant(new Vector2(2000, 500)));
+            obstacles.Add(new SunflowerPlant(new Vector2(2000, 550)));
             obstacles.Add(new SunflowerPlant(new Vector2(2100, 300)));
             obstacles.Add(new SunflowerPlant(new Vector2(2000, 400)));
-
-
+            obstacles.Add(new SunflowerPlant(new Vector2(2100, 500)));
+            obstacles.Add(new SunflowerPlant(new Vector2(2100, 600)));
+            obstacles.Add(new SunflowerPlant(new Vector2(2100, 400)));
+            obstacles.Add(new SunflowerPlant(new Vector2(1900, 500)));
+            obstacles.Add(new SunflowerPlant(new Vector2(1900, 550)));
+            obstacles.Add(new SunflowerPlant(new Vector2(1900, 300)));
+            obstacles.Add(new SunflowerPlant(new Vector2(1900, 400)));
+            obstacles.Add(new SunflowerPlant(new Vector2(2500, 600)));
+            obstacles.Add(new Fence(new Vector2(2700, 600)));
 
 
         }
 
         public void DrawLayer()
         {
-            tiledMapRenderer.Draw(startingLoc.GetLayer("1"), playerCamera.Transform);
-            tiledMapRenderer.Draw(startingLoc.GetLayer("2"), playerCamera.Transform);
+
 
             DrawObstacle();
             DrawEnemies();
             DrawPlayer();
+
         }
 
         public void LoadEnemies()

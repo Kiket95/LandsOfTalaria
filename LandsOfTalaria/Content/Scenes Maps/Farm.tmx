@@ -239,9 +239,5 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup name="collisions" offsetx="8.33333" offsety="6.66667">
-  <object id="1" name="collision" x="2020.67" y="1031.67" width="35.3333" height="35">
-   <ellipse/>
-  </object>
- </objectgroup>
+ <objectgroup name="collisions" offsetx="8.33333" offsety="6.66667"/>
 </map>

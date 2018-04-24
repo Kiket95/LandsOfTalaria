@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 
 namespace LandsOfTalaria.Objects
@@ -18,31 +19,11 @@ namespace LandsOfTalaria.Objects
         public BoundingBox boundingBox;
         public BoundingSphere boundingSphere;
 
-        //  public static List<Obstacles> obstacles = new List<Obstacles>();
-
-        public Vector2 Positon
-        {
-            get { return position; }
-            set { position = value; }
-        }
-        public Vector2 HitBoxPosition
-        {
-            get { return hitBoxPosition; }
-            set { hitBoxPosition = value; }
-        }
-
-        public int Radius
-        {
-            get { return radius; }
-            set { radius = value; }
-        }
-
         public Obstacles(Vector2 newPosition)
         {
             position = newPosition;
             layer += 0.001f;
         }
-
       
         public virtual void LoadContent(ContentManager contentManager)
         {
@@ -51,31 +32,45 @@ namespace LandsOfTalaria.Objects
             textureSize.X = texture.Width;
         }
 
-        /*   
-           */
-
+        public virtual bool didCollide(BoundingBox entityHitboxSphere, List<Obstacles> obtaclesLayersList)
+        {
+            return false;
+        }
         public virtual bool didCollide(BoundingSphere entityHitboxSphere, List<Obstacles> obtaclesLayersList)
         {
-            foreach (Obstacles obstacle in obtaclesLayersList)
-            {
-                if (entityHitboxSphere.Intersects(obstacle.boundingBox))
-                    return true;
-            }
             return false;
         }
 
-        public virtual bool didCollide2(BoundingSphere entityHitboxSphere, List<Obstacles> obtaclesLayersList)
+        public static bool isBehind(Vector2 temporaryPosition, List<Obstacles> obtaclesLayersList, Vector2 size)
         {
             foreach (Obstacles obstacle in obtaclesLayersList)
             {
-                if (entityHitboxSphere.Intersects(obstacle.boundingBox))
-                    return true;
+                if (obstacle.GetType() == typeof(Fence))
+                {
+                    if ((int)temporaryPosition.X <= obstacle.position.X + 32 &&
+                        (int)temporaryPosition.X+32 >= obstacle.position.X &&
+                        (int)temporaryPosition.Y + 24 < obstacle.position.Y + 32 &&
+                        (int)temporaryPosition.Y + 24 > obstacle.position.Y - 32)
+                    {
+                        Console.WriteLine("Fence");
+                        return true;
+                    }
+                }
+                if (obstacle.GetType() == typeof(SunflowerPlant))
+                {
+                    if ((int)temporaryPosition.Y + size.Y < obstacle.position.Y + 70 &&
+                        (int)temporaryPosition.Y + 32 >= obstacle.position.Y &&
+                        (int)temporaryPosition.Y < obstacle.position.Y + 96 &&
+                        (int)temporaryPosition.Y + 10 >= obstacle.position.Y &&
+                        (int)temporaryPosition.X + 32 >= obstacle.position.X &&
+                        (int)temporaryPosition.X <= obstacle.position.X + obstacle.textureSize.X &&
+                        (int)temporaryPosition.Y > obstacle.position.Y - 34)
+                    {
+                        Console.WriteLine("Sunflower");
+                        return true;
+                    }
+                }
             }
-            return false;
-        }
-
-        public virtual bool isBehind(Vector2 temporaryPosition, List<Obstacles> obtaclesLayersList)
-        {
             return false;
         }
 

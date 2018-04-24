@@ -1,9 +1,6 @@
-﻿using LandsOfTalaria.Objects;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended.Tiled.Graphics;
 using System;
 using System.Collections.Generic;
 
@@ -60,6 +57,7 @@ namespace LandsOfTalaria.Entities.Enemies
             teritorySize = 450;
             sizeOfView = 200;
             runSpeed = 1;
+
         }
 
         public void Update(GameTime gameTime, Vector2 playerPosition) {
@@ -174,6 +172,7 @@ namespace LandsOfTalaria.Entities.Enemies
             animatedSprite[1] = new AnimatedSprite(walkingFrames[1], 1, 3,1); //LEFT
             animatedSprite[2] = new AnimatedSprite(walkingFrames[2], 1, 3,1); //UP
             animatedSprite[3] = new AnimatedSprite(walkingFrames[3], 1, 3,1); //DOWN
+            size = new Vector2(walkingFrames[0].Width, walkingFrames[0].Height);
         }
 
         public void Wandering(Vector2 playerPosition,float dt)

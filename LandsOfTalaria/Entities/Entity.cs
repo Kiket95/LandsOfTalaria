@@ -19,11 +19,17 @@ namespace LandsOfTalaria.Entities
         protected Texture2D[] walkingFrames;
         protected Vector2 position;
         protected int radius;
+
         protected Vector2 speed;
         protected bool isMoving = false;
         protected float dt;
         protected float runSpeed;
         public float depth;
+        public Vector2 size;
+        public Entity()
+        {
+
+        }
 
 
     }

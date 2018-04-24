@@ -17,7 +17,7 @@ namespace LandsOfTalaria
         TiledMapRenderer tiledMapRenderer;
         PlayerCamera playerCamera;
         Vector2 screenCenter;
-        GameStates state;
+      //  GameStates state;
         public static int screenHeight;
         public static int screenWidth;
 
@@ -28,6 +28,7 @@ namespace LandsOfTalaria
             Content.RootDirectory = "Content";
             screenHeight = graphics.PreferredBackBufferHeight = 20*32;
             screenWidth = graphics.PreferredBackBufferWidth = 40*32;
+            screenCenter = new Vector2(screenWidth / 2, screenHeight / 2);
         }
 
         protected override void Initialize()
@@ -61,7 +62,6 @@ namespace LandsOfTalaria
 
         protected override void Draw(GameTime gameTime)
         {
-            
             GraphicsDevice.Clear(Color.Black);
             sceneManager.Draw(GraphicsDevice);
 
