@@ -23,11 +23,13 @@ namespace LandsOfTalaria.Entities
         protected bool isMoving = false;
         protected float dt;
         protected float runSpeed;
+        public float depth;
+
 
     }
 
 
 
-       
-      
+
+
 }

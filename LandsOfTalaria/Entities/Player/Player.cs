@@ -21,7 +21,6 @@ namespace LandsOfTalaria
         private KeyboardState keyboardState;
         private float timer;
         private float timerTick = 0.4f;
-        float depth;
         public List<Obstacles> obtaclesLayersList;
         public BoundingSphere boundingSphere;
         public Vector2 Position{
@@ -130,7 +129,7 @@ namespace LandsOfTalaria
 
             keyboardStateOld = keyboardState;
             Vector2 temporaryPosition = position;
-          //  boundingSphere = new BoundingSphere(new Vector3(temporaryPosition.X + 16, temporaryPosition.Y + 16, 0), radius);
+            
 
             if (isMoving)
             {
@@ -157,7 +156,8 @@ namespace LandsOfTalaria
                 {
                     case Direction.Right:
                         temporaryPosition.X += speed.X * dt;
-                        if (!Obstacles.didCollide(temporaryPosition, obtaclesLayersList))
+                        boundingSphere = new BoundingSphere(new Vector3(temporaryPosition.X, temporaryPosition.Y, 0), radius);
+                        if (!Obstacles.didCollide(boundingSphere, obtaclesLayersList))
                         {
                             Console.WriteLine("KOLIZJA!");
                             position.X += speed.X * dt;
@@ -165,7 +165,8 @@ namespace LandsOfTalaria
                         break;
                     case Direction.Left:
                         temporaryPosition.X -= speed.X * dt;
-                        if (!Obstacles.didCollide(temporaryPosition, obtaclesLayersList))
+                        boundingSphere = new BoundingSphere(new Vector3(temporaryPosition.X, temporaryPosition.Y, 0), radius);
+                        if (!Obstacles.didCollide(boundingSphere, obtaclesLayersList))
                         {
                             Console.WriteLine("KOLIZJA!");
                             position.X -= speed.X * dt;
@@ -173,7 +174,8 @@ namespace LandsOfTalaria
                         break;
                     case Direction.Up:
                         temporaryPosition.Y -= speed.Y * dt;
-                        if (!Obstacles.didCollide(temporaryPosition, obtaclesLayersList))
+                        boundingSphere = new BoundingSphere(new Vector3(temporaryPosition.X, temporaryPosition.Y, 0), radius);
+                        if (!Obstacles.didCollide(boundingSphere, obtaclesLayersList))
                         {
                             Console.WriteLine("KOLIZJA!");
                             position.Y -= speed.Y * dt;
@@ -181,7 +183,8 @@ namespace LandsOfTalaria
                         break;
                     case Direction.Down:
                         temporaryPosition.Y += speed.Y * dt;
-                        if (!Obstacles.didCollide(temporaryPosition, obtaclesLayersList))
+                        boundingSphere = new BoundingSphere(new Vector3(temporaryPosition.X, temporaryPosition.Y, 0), radius);
+                        if (!Obstacles.didCollide(boundingSphere, obtaclesLayersList))
                         {
                             Console.WriteLine("KOLIZJA!");
                             position.Y += speed.Y * dt;

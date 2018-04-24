@@ -40,7 +40,7 @@ namespace LandsOfTalaria.Objects
         {
             position = newPosition;
             layer += 0.001f;
-            
+            boundingBox = new BoundingBox(new Vector3(position.X, position.Y+4, 0), new Vector3(position.X + 32, position.Y + 28, 0));
         }
 
       
@@ -63,13 +63,12 @@ namespace LandsOfTalaria.Objects
         }
         */
 
-        public static bool didCollide(Vector2 entityPosition, List<Obstacles> obtaclesLayersList)
+        public static bool didCollide(BoundingSphere entityHitboxSphere, List<Obstacles> obtaclesLayersList)
         {
-            BoundingSphere sphere = new BoundingSphere(new Vector3((int)entityPosition.X, entityPosition.Y,0),12);
             foreach (Obstacles obstacle in obtaclesLayersList)
             {
-                obstacle.boundingBox = new BoundingBox(new Vector3(obstacle.position.X, obstacle.position.Y, 0), new Vector3(obstacle.position.X + 36, obstacle.position.Y + 32, 0));
-                if (sphere.Intersects(obstacle.boundingBox))
+                
+                if (entityHitboxSphere.Intersects(obstacle.boundingBox))
                     return true;
             }
             return false;
