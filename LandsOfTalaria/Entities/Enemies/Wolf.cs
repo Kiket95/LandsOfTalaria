@@ -14,8 +14,7 @@ namespace LandsOfTalaria
 
         public static List<Wolf> wolfes = new List<Wolf>();
 
-        public Wolf(Vector2 newPosition,Vector2 screenCenter) :base(newPosition,screenCenter)
-        {
+        public Wolf(Vector2 newPosition,Vector2 screenCenter) :base(newPosition,screenCenter){
             position = newPosition;
             startingPosition = position;
             health = 10;

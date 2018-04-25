@@ -21,6 +21,7 @@ namespace LandsOfTalaria
         private KeyboardState keyboardState;
         private float timer;
         private float timerTick = 0.4f;
+
         public Vector2 Position{
             get { return position;}
             set { position = value;}
@@ -30,8 +31,7 @@ namespace LandsOfTalaria
             set { health = value;}
         }
         
-        public Player()
-        {
+        public Player(){
             animatedSprite = new AnimatedSprite[4];
             position = new Vector2(2000, 100);
             radius = 16;
@@ -44,8 +44,7 @@ namespace LandsOfTalaria
             skinPath[3] = "Player Textures/playerMoveDown";
         }
 
-        public override void Update(GameTime gameTime, Vector2 playerPosition)
-        {
+        public override void Update(GameTime gameTime){
             keyboardState = Keyboard.GetState();
             dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             timer += dt;
@@ -60,19 +59,16 @@ namespace LandsOfTalaria
             movingPlayer();
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
+        public override void Draw(SpriteBatch spriteBatch){
             animatedSpriteWalking.Draw(spriteBatch, new Vector2(position.X - 16, position.Y - 16));
         }
 
-        public override void LoadContent(ContentManager contentManager)
-        {
+        public override void LoadContent(ContentManager contentManager){
             base.LoadContent(contentManager);
             grassStep = contentManager.Load<SoundEffect>("Music/grassStep");
         }
 
-        public void movingPlayer()
-        {
+        public void movingPlayer(){
             if (keyboardState.IsKeyDown(Keys.LeftShift))
             {
                 speed.X = 300;
@@ -80,8 +76,7 @@ namespace LandsOfTalaria
                 runSpeed = 1.5f;
                 timerTick = 0.25f;
             }
-            if (keyboardState.IsKeyUp(Keys.LeftShift))
-            {
+            if (keyboardState.IsKeyUp(Keys.LeftShift)){
                 speed.X = 150;
                 speed.Y = 150;
                 runSpeed = 1f;
@@ -107,57 +102,39 @@ namespace LandsOfTalaria
                 isMoving = true;
             }
 
-           
-            if (keyboardState.IsKeyDown(Keys.Space) && (keyboardStateOld.IsKeyUp(Keys.Space)))
-            {
+            if (keyboardState.IsKeyDown(Keys.Space) && (keyboardStateOld.IsKeyUp(Keys.Space))){
                PlayerAttack.playerAttacks.Add(new PlayerAttack(position, direction));
             }
 
             keyboardStateOld = keyboardState;
             temporaryPosition = position;
-            if (isMoving)
-            {
-                
-                if (timer >= timerTick)
-                {
+            if (isMoving){
+                if (timer >= timerTick){
                     grassStep.Play(0.4f, 0.0f, 0.0f);
                     timer = 0 ;
                 }
-                switch (direction)
-                {
+                switch (direction){
                     case Direction.Right:
                         temporaryPosition.X += speed.X * dt;
-                        boundingBox = new BoundingBox(new Vector3(temporaryPosition.X+8, temporaryPosition.Y+8, 0), new Vector3(temporaryPosition.X + 24, temporaryPosition.Y + 24, 0));
-                        boundingSphere = new BoundingSphere(new Vector3(temporaryPosition.X, temporaryPosition.Y, 0), radius);
-                        if (!didCollide(boundingBox, boundingSphere))
-                        {
+                        if (!didCollide()){
                             position.X += speed.X * dt;
                         }
                         break;
                     case Direction.Left:
                         temporaryPosition.X -= speed.X * dt;
-                        boundingBox = new BoundingBox(new Vector3(temporaryPosition.X + 8, temporaryPosition.Y + 8, 0), new Vector3(temporaryPosition.X + 24, temporaryPosition.Y + 24, 0));
-                        boundingSphere = new BoundingSphere(new Vector3(temporaryPosition.X, temporaryPosition.Y, 0), radius);
-                        if (!didCollide(boundingBox, boundingSphere))
-                        {
+                        if (!didCollide()){
                             position.X -= speed.X * dt;
                         }
                         break;
                     case Direction.Up:
                         temporaryPosition.Y -= speed.Y * dt;
-                        boundingBox = new BoundingBox(new Vector3(temporaryPosition.X + 8, temporaryPosition.Y + 8, 0), new Vector3(temporaryPosition.X + 24, temporaryPosition.Y + 24, 0));
-                        boundingSphere = new BoundingSphere(new Vector3(temporaryPosition.X, temporaryPosition.Y, 0), radius);
-                        if (!didCollide(boundingBox, boundingSphere))
-                        {
+                        if (!didCollide()){
                             position.Y -= speed.Y * dt;
                         }
                         break;
                     case Direction.Down:
                         temporaryPosition.Y += speed.Y * dt;
-                        boundingBox = new BoundingBox(new Vector3(temporaryPosition.X + 8, temporaryPosition.Y + 8, 0), new Vector3(temporaryPosition.X + 24, temporaryPosition.Y + 24, 0));
-                        boundingSphere = new BoundingSphere(new Vector3(temporaryPosition.X, temporaryPosition.Y, 0), radius);
-                        if (!didCollide(boundingBox,boundingSphere))
-                        {
+                        if (!didCollide()){
                             position.Y += speed.Y * dt;
                         }
                         break;
@@ -166,6 +143,5 @@ namespace LandsOfTalaria
                 isBehind();
             }
         }
-      
     }
 }

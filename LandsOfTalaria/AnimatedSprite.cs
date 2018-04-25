@@ -3,8 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace LandsOfTalaria
 {
-    public class AnimatedSprite
-    {
+    public class AnimatedSprite{
         public Texture2D Texture { get; set; }
         public int Rows { get; set; }
         public int Columns { get; set; }
@@ -15,8 +14,7 @@ namespace LandsOfTalaria
         float rotation;
         public float depth;
 
-        public AnimatedSprite(Texture2D texture, int rows, int columns,float rotation )
-        {
+        public AnimatedSprite(Texture2D texture, int rows, int columns,float rotation ){
             Texture = texture;
             Rows = rows;
             Columns = columns;
@@ -28,12 +26,10 @@ namespace LandsOfTalaria
             this.depth = 0.5f;
         }
 
-        public void Update(GameTime gameTime,float animationSpeed)
-        {
+        public void Update(GameTime gameTime,float animationSpeed) {
             timer -= gameTime.ElapsedGameTime.TotalSeconds* animationSpeed;
             
-            if(timer <= 0)
-            {
+            if(timer <= 0){
                 currentFrame++;
                 timer = speed;
             }
@@ -42,8 +38,7 @@ namespace LandsOfTalaria
                 currentFrame = 0;
         }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 location)
-        {
+        public void Draw(SpriteBatch spriteBatch, Vector2 location){
             int width = Texture.Width / Columns;
             int height = Texture.Height / Rows;
             int row = (int)((float)currentFrame / (float)Columns);
@@ -56,8 +51,7 @@ namespace LandsOfTalaria
             spriteBatch.Draw(Texture,destinationRectangle, sourceRectangle,Color.White,0,Vector2.Zero,SpriteEffects.None,layerDepth: depth);
         }
 
-        public void setFrame(int newFrame)
-        {
+        public void setFrame(int newFrame){
             currentFrame = newFrame;
         }
     }

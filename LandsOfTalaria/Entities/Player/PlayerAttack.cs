@@ -22,15 +22,15 @@ namespace LandsOfTalaria
         public static List<PlayerAttack> playerAttacks = new List<PlayerAttack>();
         public int Radius{
             get { return radius; }
-            }
+            set { radius = value; }
+        }
 
         public Vector2 Position{
             get { return position; }
         }
 
         public Direction direction;
-        public PlayerAttack(Vector2 newPosition,Direction newDirection)
-        {
+        public PlayerAttack(Vector2 newPosition,Direction newDirection){
             position = newPosition;
             direction = newDirection;
         }
@@ -39,8 +39,7 @@ namespace LandsOfTalaria
 
            float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            switch(direction)
-            {
+            switch(direction){
                 case Direction.Right:
                     position.X += speed * dt;
                     break;
@@ -55,7 +54,6 @@ namespace LandsOfTalaria
                     break;
                 default:
                     break;
-
             }
         }
     }

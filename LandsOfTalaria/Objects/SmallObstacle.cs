@@ -9,28 +9,14 @@ using System.Threading.Tasks;
 
 namespace LandsOfTalaria.Objects
 {
-    class SmallObstacle:Obstacles
-    {
+    class SmallObstacle:Obstacles{
         public SmallObstacle(Vector2 newPosition):base(newPosition){}
-        public override void LoadContent(ContentManager contentManager)
-        {
+        public override void LoadContent(ContentManager contentManager){
             texture = contentManager.Load<Texture2D>(source);
             textureSize = new Vector2(texture.Width, texture.Height);
         }
 
-
-        public override bool didCollide(BoundingBox entityHitboxSphere, List<Obstacles> obtaclesLayersList)
-        {
-            return false;
-        }
-
-        public override bool didCollide(BoundingSphere entityHitboxSphere, List<Obstacles> obtaclesLayersList)
-        {
-            return false;
-        }
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
+        public override void Draw(SpriteBatch spriteBatch){
             spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, (int)textureSize.X, (int)textureSize.Y), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: 0.4f);
         }
     }

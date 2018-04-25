@@ -13,33 +13,32 @@ namespace LandsOfTalaria.Entities
     class Entity
     {
         protected Direction direction = Direction.Down;
-        public List<Obstacles> obtaclesLayersList;
-        public BoundingSphere boundingSphere;
-        public BoundingBox boundingBox;
+        public List<Obstacles> obstaclesLayersList;
         protected AnimatedSprite[] animatedSprite = new AnimatedSprite[4];
         protected AnimatedSprite animatedSpriteWalking;
         protected Texture2D[] walkingFrames;
-
+        private BoundingBox boundingBox;
+        protected BoundingSphere boundingSphere;
         protected Vector2 speed;
-        public Vector2 size;
+        protected Vector2 size;
         protected Vector2 position;
         protected Vector2 temporaryPosition;
-
+        public Vector2 playerPosition;
         protected int radius;
         protected int health;
         protected bool isMoving = false;
         protected float dt;
         protected float runSpeed;
-        public float layerDepth;
+        protected float layerDepth;
         protected String[] skinPath = new String[4];
 
-        public Entity()
-        {
+        public virtual void Draw(SpriteBatch spriteBatch) { }
+
+        public Entity(){
             layerDepth = 0.5f;
         }
 
-        public virtual void LoadContent(ContentManager contentManager)
-        {
+        public virtual void LoadContent(ContentManager contentManager){
             walkingFrames = new Texture2D[]{
              contentManager.Load<Texture2D>(skinPath[0]),
              contentManager.Load<Texture2D>(skinPath[1]),
@@ -54,45 +53,31 @@ namespace LandsOfTalaria.Entities
             size = new Vector2(walkingFrames[0].Width, walkingFrames[0].Height);
         }
 
-        public void isBehind()
-        {
-            if (Obstacles.isBehind(temporaryPosition, obtaclesLayersList, size))
-            {
+        public void isBehind(){
+            if (Obstacles.isBehind(temporaryPosition, obstaclesLayersList, size)){
                 animatedSprite[0].depth = 0.3f;
                 animatedSprite[1].depth = 0.3f;
                 animatedSprite[2].depth = 0.3f;
                 animatedSprite[3].depth = 0.3f;
             }
-            else
-            {
+            else{
                 animatedSprite[0].depth = 0.5f;
                 animatedSprite[1].depth = 0.5f;
                 animatedSprite[2].depth = 0.5f;
                 animatedSprite[3].depth = 0.5f;
             }
         }
-
-        public bool didCollide(BoundingBox boundingBox, BoundingSphere boundingSphere)
-        {
-            foreach (Obstacles obstacle in obtaclesLayersList)
-            {
-                if (obstacle.GetType() == typeof(SunflowerPlant))
-                    if (obstacle.didCollide(boundingSphere, obtaclesLayersList))
-                        return true;
-                if (obstacle.GetType() == typeof(Fence))
-                    if (obstacle.didCollide(boundingBox, obtaclesLayersList))
-                        return true;
-            }
-            return false;
+        public bool didCollide(){
+            boundingBox = new BoundingBox(new Vector3(temporaryPosition.X + 8, temporaryPosition.Y + 8, 0), new Vector3(temporaryPosition.X + 24, temporaryPosition.Y + 24, 0));
+            boundingSphere = new BoundingSphere(new Vector3(temporaryPosition.X, temporaryPosition.Y, 0), radius);
+            if (Obstacles.didCollide(boundingBox, obstaclesLayersList,boundingSphere))
+                return true;
+            else
+                return false;
         }
-
-        public virtual void Draw(SpriteBatch spriteBatch){}
-        public virtual void Update(GameTime gameTime, Vector2 playerPosition) {
+        public virtual void Update(GameTime gameTime){
+            Console.WriteLine(obstaclesLayersList);
             animatedSpriteWalking = animatedSprite[(int)direction];
         }
-
     }
-
-
-
 }

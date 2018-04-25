@@ -24,8 +24,7 @@ namespace LandsOfTalaria
         public List<Entity> entities;
 
         //  public List<TiledMapObject> mapLayerObstacles;
-        public FarmScene(Player player, PlayerCamera playerCamera, TiledMapRenderer tiledMapRenderer,SpriteBatch spriteBatch,Vector2 screenCenter)
-        {
+        public FarmScene(Player player, PlayerCamera playerCamera, TiledMapRenderer tiledMapRenderer,SpriteBatch spriteBatch,Vector2 screenCenter){
             obstacles = new List<Obstacles>();
             entities = new List<Entity>();
             this.player = player;
@@ -35,8 +34,7 @@ namespace LandsOfTalaria
             this.screenCenter = screenCenter;
         }
         
-        public void LoadContent(ContentManager contentManager)
-        {
+        public void LoadContent(ContentManager contentManager){
             Song song = contentManager.Load<Song>("Music/FarmScene");
             MediaPlayer.Volume = 0.1f;
             MediaPlayer.Play(song);
@@ -57,27 +55,24 @@ namespace LandsOfTalaria
             }
         }
 
-        public void Update(GameTime gameTime)
-        {
-            player.Update(gameTime,player.Position);
-            foreach(Entity entity in entities )
-            {
-                entity.obtaclesLayersList = obstacles;
+        public void Update(GameTime gameTime){
+
+            player.Update(gameTime);
+            foreach(Entity entity in entities ){
+                entity.obstaclesLayersList = obstacles;
             }
-            player.obtaclesLayersList = obstacles;
+            player.obstaclesLayersList = obstacles;
             playerCamera.Follow(player);
-            foreach (PlayerAttack playerAttack in PlayerAttack.playerAttacks)
-            {
+            foreach (PlayerAttack playerAttack in PlayerAttack.playerAttacks){
                 playerAttack.Update(gameTime);
             }
-            foreach (Entity entity in entities)
-            {
-                entity.Update(gameTime,new Vector2((int)player.Position.X,(int)player.Position.Y));
+            foreach (Entity entity in entities){
+                entity.Update(gameTime);
+                entity.playerPosition = player.Position;
             }
         }
 
-        public void Draw(GraphicsDevice graphicsDevice)
-        {
+        public void Draw(GraphicsDevice graphicsDevice){
             graphicsDevice.BlendState = BlendState.AlphaBlend;
             graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
             graphicsDevice.RasterizerState = RasterizerState.CullNone;
@@ -86,37 +81,29 @@ namespace LandsOfTalaria
             spriteBatch.Begin(transformMatrix: playerCamera.Transform, sortMode: SpriteSortMode.FrontToBack,depthStencilState: DepthStencilState.DepthRead,blendState: BlendState.NonPremultiplied);
             DrawLayer();
 
-            foreach (PlayerAttack playerAttack in PlayerAttack.playerAttacks)
-            {
+            foreach (PlayerAttack playerAttack in PlayerAttack.playerAttacks){
                 spriteBatch.Draw(attackSprite, new Rectangle((int)playerAttack.position.X, (int)playerAttack.position.Y, 16, 16), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: 0.01f);
                 //     if (Obstacles.didCollide(playerAttack.position, playerAttack.Radius))
                 //         playerAttack.Collided = true;
             }
             
             spriteBatch.End();
-            
         }
 
-        public void DrawObstacle()
-        {
-            foreach (Obstacles obstacle in obstacles)
-            {
+        public void DrawObstacle(){
+            foreach (Obstacles obstacle in obstacles){
                 obstacle.Draw(spriteBatch);
             }
         }
 
-        public void LoadTrees()
-        {
+        public void LoadTrees() {
             int x = 2000;
             int y = 200;
-            for (int i = 0;i<30;i++)
-            {
+            for (int i = 0;i<30;i++){
                 obstacles.Add(new Fence(new Vector2(x, y)));
 
                 x += 32;
             }
-            obstacles.Add(new BigTree1(new Vector2(2500, 400)));
-            obstacles.Add(new BigTree1(new Vector2(1500, 400)));
             obstacles.Add(new SunflowerPlant(new Vector2(2000, 500)));
             obstacles.Add(new SunflowerPlant(new Vector2(2000, 550)));
             obstacles.Add(new SunflowerPlant(new Vector2(2100, 300)));
@@ -129,39 +116,31 @@ namespace LandsOfTalaria
             obstacles.Add(new SunflowerPlant(new Vector2(1900, 300)));
             obstacles.Add(new SunflowerPlant(new Vector2(1900, 400)));
             obstacles.Add(new SunflowerPlant(new Vector2(2500, 600)));
-            obstacles.Add(new Fence(new Vector2(2700, 600)));
-
-
+            obstacles.Add(new BigTree1(new Vector2(2700, 600)));
+            obstacles.Add(new BigTree1(new Vector2(2900, 600)));
+            obstacles.Add(new BigTree1(new Vector2(2700, 800)));
         }
 
-        public void DrawLayer()
-        {
-
-
+        public void DrawLayer(){
             DrawObstacle();
             DrawEnemies();
             DrawPlayer();
-
         }
 
-        public void LoadEnemies()
-        {
+        public void LoadEnemies(){
             entities.Add(new Wolf(new Vector2(1500,100),screenCenter));
             entities.Add(new Wolf(new Vector2(1900, 100), screenCenter));
         }
 
-        public void DrawEnemies()
-        {
+        public void DrawEnemies(){
             foreach(Entity entity in entities)
             {
                 entity.Draw(spriteBatch);
             }
         }
 
-        public void DrawPlayer()
-        {
+        public void DrawPlayer(){
             player.Draw(spriteBatch);
-
         }
     }
 }
