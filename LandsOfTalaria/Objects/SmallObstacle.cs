@@ -18,13 +18,14 @@ namespace LandsOfTalaria.Objects
             textureSize = new Vector2(texture.Width, texture.Height);
         }
 
+
+        public override bool didCollide(BoundingBox entityHitboxSphere, List<Obstacles> obtaclesLayersList)
+        {
+            return false;
+        }
+
         public override bool didCollide(BoundingSphere entityHitboxSphere, List<Obstacles> obtaclesLayersList)
         {
-            foreach (Obstacles obstacle in obtaclesLayersList)
-            {
-                if (entityHitboxSphere.Intersects(obstacle.boundingSphere))
-                    return true;
-            }
             return false;
         }
 

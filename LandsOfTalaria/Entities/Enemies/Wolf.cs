@@ -23,10 +23,10 @@ namespace LandsOfTalaria
             radius = 16;
             speedRunningAway = new Vector2(240, 240);
             speedWandering = new Vector2(80, 80);
-            source[0] = "Entities Textures/WolfMoveRight";
-            source[1] = "Entities Textures/WolfMoveLeft";
-            source[2] = "Entities Textures/WolfMoveUp";
-            source[3] = "Entities Textures/WolfMoveDown";
+            skinPath[0] = "Entities Textures/WolfMoveRight";
+            skinPath[1] = "Entities Textures/WolfMoveLeft";
+            skinPath[2] = "Entities Textures/WolfMoveUp";
+            skinPath[3] = "Entities Textures/WolfMoveDown";
         }
     }
 }

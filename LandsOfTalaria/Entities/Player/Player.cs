@@ -21,12 +21,6 @@ namespace LandsOfTalaria
         private KeyboardState keyboardState;
         private float timer;
         private float timerTick = 0.4f;
-        private bool isSprint;
-        private Vector2 temporarySpeed;
-        public List<Obstacles> obtaclesLayersList;
-        public BoundingSphere boundingSphere;
-        public BoundingBox boundingBox;
-        Vector2 temporaryPosition;
         public Vector2 Position{
             get { return position;}
             set { position = value;}
@@ -38,16 +32,19 @@ namespace LandsOfTalaria
         
         public Player()
         {
-            obtaclesLayersList = new List<Obstacles>();
             animatedSprite = new AnimatedSprite[4];
             position = new Vector2(2000, 100);
             radius = 16;
             speed = new Vector2(300,300);
             runSpeed = 1;
-            depth = 0.5f;
+            animatedSpriteWalking = animatedSprite[(int)direction];
+            skinPath[0] = "Player Textures/playerMoveRight";
+            skinPath[1] = "Player Textures/playerMoveLeft";
+            skinPath[2] = "Player Textures/playerMoveUp";
+            skinPath[3] = "Player Textures/playerMoveDown";
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, Vector2 playerPosition)
         {
             keyboardState = Keyboard.GetState();
             dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -63,48 +60,32 @@ namespace LandsOfTalaria
             movingPlayer();
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             animatedSpriteWalking.Draw(spriteBatch, new Vector2(position.X - 16, position.Y - 16));
         }
 
-        public void LoadContent(ContentManager contentManager)
+        public override void LoadContent(ContentManager contentManager)
         {
+            base.LoadContent(contentManager);
             grassStep = contentManager.Load<SoundEffect>("Music/grassStep");
-
-
-            walkingFrames = new Texture2D[]
-            {
-             contentManager.Load<Texture2D>("Player Textures/playerMoveRight"),
-             contentManager.Load<Texture2D>("Player Textures/playerMoveLeft"),
-             contentManager.Load<Texture2D>("Player Textures/playerMoveUp"),
-             contentManager.Load<Texture2D>("Player Textures/playerMoveDown"),
-            };
-
-            animatedSprite[0] = new AnimatedSprite(walkingFrames[0], 1, 3, 1); //WALK RIGHT
-            animatedSprite[1] = new AnimatedSprite(walkingFrames[1], 1, 3, 1); //LEFT
-            animatedSprite[2] = new AnimatedSprite(walkingFrames[2], 1, 3, 1); //UP
-            animatedSprite[3] = new AnimatedSprite(walkingFrames[3], 1, 3, 1); //DOWN
-            size = new Vector2(walkingFrames[0].Width, walkingFrames[0].Height);
         }
 
         public void movingPlayer()
         {
             if (keyboardState.IsKeyDown(Keys.LeftShift))
             {
-                temporarySpeed.X = 300;
-                temporarySpeed.Y = 300;
+                speed.X = 300;
+                speed.Y = 300;
                 runSpeed = 1.5f;
                 timerTick = 0.25f;
-                isSprint = true;
             }
             if (keyboardState.IsKeyUp(Keys.LeftShift))
             {
-                temporarySpeed.X = 150;
-                temporarySpeed.Y = 150;
+                speed.X = 150;
+                speed.Y = 150;
                 runSpeed = 1f;
                 timerTick = 0.35f;
-                isSprint = false;
             }
 
             if (keyboardState.IsKeyDown(Keys.D)) {
@@ -150,7 +131,6 @@ namespace LandsOfTalaria
                         boundingSphere = new BoundingSphere(new Vector3(temporaryPosition.X, temporaryPosition.Y, 0), radius);
                         if (!didCollide(boundingBox, boundingSphere))
                         {
-                            speed = temporarySpeed;
                             position.X += speed.X * dt;
                         }
                         break;
@@ -160,7 +140,6 @@ namespace LandsOfTalaria
                         boundingSphere = new BoundingSphere(new Vector3(temporaryPosition.X, temporaryPosition.Y, 0), radius);
                         if (!didCollide(boundingBox, boundingSphere))
                         {
-                            speed = temporarySpeed;
                             position.X -= speed.X * dt;
                         }
                         break;
@@ -170,7 +149,6 @@ namespace LandsOfTalaria
                         boundingSphere = new BoundingSphere(new Vector3(temporaryPosition.X, temporaryPosition.Y, 0), radius);
                         if (!didCollide(boundingBox, boundingSphere))
                         {
-                            speed = temporarySpeed;
                             position.Y -= speed.Y * dt;
                         }
                         break;
@@ -180,7 +158,6 @@ namespace LandsOfTalaria
                         boundingSphere = new BoundingSphere(new Vector3(temporaryPosition.X, temporaryPosition.Y, 0), radius);
                         if (!didCollide(boundingBox,boundingSphere))
                         {
-                            speed = temporarySpeed;
                             position.Y += speed.Y * dt;
                         }
                         break;
@@ -189,36 +166,6 @@ namespace LandsOfTalaria
                 isBehind();
             }
         }
-        public void isBehind()
-        {
-            if (Obstacles.isBehind(temporaryPosition, obtaclesLayersList, size))
-            {
-                animatedSprite[0].depth = 0.3f;
-                animatedSprite[1].depth = 0.3f;
-                animatedSprite[2].depth = 0.3f;
-                animatedSprite[3].depth = 0.3f;
-            }
-            else
-            {
-                animatedSprite[0].depth = 0.5f;
-                animatedSprite[1].depth = 0.5f;
-                animatedSprite[2].depth = 0.5f;
-                animatedSprite[3].depth = 0.5f;
-            }
-        }
-
-        public bool didCollide(BoundingBox boundingBox,BoundingSphere boundingSphere)
-        {
-            foreach(Obstacles obstacle in obtaclesLayersList)
-            {
-             if(obstacle.GetType() == typeof(SunflowerPlant))
-                    if (obstacle.didCollide(boundingSphere, obtaclesLayersList))
-                    return true;
-             if (obstacle.GetType() == typeof(Fence))
-                    if(obstacle.didCollide(boundingBox, obtaclesLayersList))
-                    return true;
-            }
-            return false;
-        }        
+      
     }
 }

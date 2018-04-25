@@ -18,7 +18,6 @@ namespace LandsOfTalaria.Entities.Enemies
         protected Vector2 startingPosition;
         Random random = new Random();
         protected Vector2 screenCenter;
-        protected string[] source = new string[4];
         protected Vector2 speedChasing;
         protected Vector2 speedRunningAway;
         protected Vector2 speedWandering;
@@ -60,7 +59,7 @@ namespace LandsOfTalaria.Entities.Enemies
 
         }
 
-        public void Update(GameTime gameTime, Vector2 playerPosition) {
+        public override void Update(GameTime gameTime, Vector2 playerPosition) {
 
             animatedSpriteWalking = animatedSprite[(int)direction];
             float distanceFromPlayer = Vector2.Distance(position, playerPosition);
@@ -114,7 +113,7 @@ namespace LandsOfTalaria.Entities.Enemies
             isMoving = false;
         }
 
-        public void Draw(SpriteBatch spriteBatch){
+        public override void Draw(SpriteBatch spriteBatch){
             animatedSpriteWalking.Draw(spriteBatch, new Vector2(position.X - radius, position.Y - radius));
         }
 
@@ -158,21 +157,6 @@ namespace LandsOfTalaria.Entities.Enemies
             {
                 sideFlag = Flag.Xpos;
             }
-        }
-
-        public void LoadContent(ContentManager contentManager){
-            walkingFrames = new Texture2D[]{
-             contentManager.Load<Texture2D>(source[0]),
-             contentManager.Load<Texture2D>(source[1]),
-             contentManager.Load<Texture2D>(source[2]),
-             contentManager.Load<Texture2D>(source[3]),
-            };
-
-            animatedSprite[0] = new AnimatedSprite(walkingFrames[0], 1, 3,1); //WALK RIGHT
-            animatedSprite[1] = new AnimatedSprite(walkingFrames[1], 1, 3,1); //LEFT
-            animatedSprite[2] = new AnimatedSprite(walkingFrames[2], 1, 3,1); //UP
-            animatedSprite[3] = new AnimatedSprite(walkingFrames[3], 1, 3,1); //DOWN
-            size = new Vector2(walkingFrames[0].Width, walkingFrames[0].Height);
         }
 
         public void Wandering(Vector2 playerPosition,float dt)

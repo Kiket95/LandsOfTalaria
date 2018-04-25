@@ -33,7 +33,7 @@ namespace LandsOfTalaria.Objects
             textureSize = new Vector2(upperPart.Width, upperPart.Height);
             textureSize2 = new Vector2(lowerPart.Width, lowerPart.Height);
         }
-        public override bool didCollide(BoundingBox entityHitboxSphere, List<Obstacles> obtaclesLayersList)
+        public override bool didCollide(BoundingSphere entityHitboxSphere, List<Obstacles> obtaclesLayersList)
         {
             foreach (Obstacles obstacle in obtaclesLayersList)
             {

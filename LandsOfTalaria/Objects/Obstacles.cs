@@ -36,6 +36,7 @@ namespace LandsOfTalaria.Objects
         {
             return false;
         }
+
         public virtual bool didCollide(BoundingSphere entityHitboxSphere, List<Obstacles> obtaclesLayersList)
         {
             return false;
@@ -61,7 +62,7 @@ namespace LandsOfTalaria.Objects
                     if ((int)temporaryPosition.Y + size.Y < obstacle.position.Y + 70 &&
                         (int)temporaryPosition.Y + 32 >= obstacle.position.Y &&
                         (int)temporaryPosition.Y < obstacle.position.Y + 96 &&
-                        (int)temporaryPosition.Y + 10 >= obstacle.position.Y &&
+                        (int)temporaryPosition.Y + 15 >= obstacle.position.Y &&
                         (int)temporaryPosition.X + 32 >= obstacle.position.X &&
                         (int)temporaryPosition.X <= obstacle.position.X + obstacle.textureSize.X &&
                         (int)temporaryPosition.Y > obstacle.position.Y - 34)

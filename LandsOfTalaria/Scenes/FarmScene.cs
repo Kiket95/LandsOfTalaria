@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using LandsOfTalaria.Objects;
 using LandsOfTalaria.Entities.Enemies;
 using Microsoft.Xna.Framework.Media;
+using LandsOfTalaria.Entities;
 
 namespace LandsOfTalaria
 {
@@ -20,10 +21,13 @@ namespace LandsOfTalaria
         SpriteBatch spriteBatch;
         Vector2 screenCenter;
         public List<Obstacles> obstacles;
-        public List<TiledMapObject> mapLayerObstacles;
+        public List<Entity> entities;
+
+        //  public List<TiledMapObject> mapLayerObstacles;
         public FarmScene(Player player, PlayerCamera playerCamera, TiledMapRenderer tiledMapRenderer,SpriteBatch spriteBatch,Vector2 screenCenter)
         {
             obstacles = new List<Obstacles>();
+            entities = new List<Entity>();
             this.player = player;
             this.playerCamera = playerCamera;
             this.tiledMapRenderer = tiledMapRenderer;
@@ -37,35 +41,38 @@ namespace LandsOfTalaria
             MediaPlayer.Volume = 0.1f;
             MediaPlayer.Play(song);
             MediaPlayer.IsRepeating = true;
-
             startingLoc = contentManager.Load<TiledMap>("Scenes Maps/Farm");
-            player.LoadContent(contentManager);
             LoadTrees();
             LoadEnemies();
             foreach(Obstacles obstacle in obstacles)
             {
                 obstacle.LoadContent(contentManager);
             }
+            player.LoadContent(contentManager);
             attackSprite = contentManager.Load<Texture2D>("Attacks Textures/ball");
 
-            foreach (Enemy enemy in Enemy.enemies)
+            foreach (Entity entity in entities)
             {
-                enemy.LoadContent(contentManager);
+                entity.LoadContent(contentManager);
             }
         }
 
         public void Update(GameTime gameTime)
         {
-            player.Update(gameTime);
+            player.Update(gameTime,player.Position);
+            foreach(Entity entity in entities )
+            {
+                entity.obtaclesLayersList = obstacles;
+            }
             player.obtaclesLayersList = obstacles;
             playerCamera.Follow(player);
             foreach (PlayerAttack playerAttack in PlayerAttack.playerAttacks)
             {
                 playerAttack.Update(gameTime);
             }
-            foreach (Enemy enemy in Enemy.enemies)
+            foreach (Entity entity in entities)
             {
-                enemy.Update(gameTime,new Vector2((int)player.Position.X,(int)player.Position.Y));
+                entity.Update(gameTime,new Vector2((int)player.Position.X,(int)player.Position.Y));
             }
         }
 
@@ -139,15 +146,15 @@ namespace LandsOfTalaria
 
         public void LoadEnemies()
         {
-            Enemy.enemies.Add(new Wolf(new Vector2(1500,100),screenCenter));
-            Enemy.enemies.Add(new Wolf(new Vector2(1900, 100), screenCenter));
+            entities.Add(new Wolf(new Vector2(1500,100),screenCenter));
+            entities.Add(new Wolf(new Vector2(1900, 100), screenCenter));
         }
 
         public void DrawEnemies()
         {
-            foreach(Enemy enemy in Enemy.enemies)
+            foreach(Entity entity in entities)
             {
-                enemy.Draw(spriteBatch);
+                entity.Draw(spriteBatch);
             }
         }
 

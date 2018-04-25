@@ -13,5 +13,14 @@ namespace LandsOfTalaria.Objects
             hitBoxPosition = new Vector2(position.X+16, position.Y+48);
             source = "Objects Textures/SunflowerPlant";
         }
+        public override bool didCollide(BoundingSphere entityHitboxSphere, List<Obstacles> obtaclesLayersList)
+        {
+            foreach (Obstacles obstacle in obtaclesLayersList)
+            {
+                if (entityHitboxSphere.Intersects(obstacle.boundingSphere))
+                    return true;
+            }
+            return false;
+        }
     }
 }

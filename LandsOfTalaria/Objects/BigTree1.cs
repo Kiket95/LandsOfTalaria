@@ -19,6 +19,7 @@ namespace LandsOfTalaria.Objects
             source = "Objects Textures/Trees/BigTree1Upper";
             source2 = "Objects Textures/Trees/BigTree1Lower";
             Console.WriteLine(layer);
+            
         }
 
         public override void LoadContent(ContentManager contentManager)
