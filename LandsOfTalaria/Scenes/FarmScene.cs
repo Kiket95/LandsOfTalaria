@@ -21,7 +21,7 @@ namespace LandsOfTalaria
         SpriteBatch spriteBatch;
         Vector2 screenCenter;
         public List<Obstacles> obstacles;
-        public List<Entity> entities;
+        public static List<Entity> entities;
 
         //  public List<TiledMapObject> mapLayerObstacles;
         public FarmScene(Player player, PlayerCamera playerCamera, TiledMapRenderer tiledMapRenderer,SpriteBatch spriteBatch,Vector2 screenCenter){
@@ -53,6 +53,7 @@ namespace LandsOfTalaria
             {
                 entity.LoadContent(contentManager);
             }
+            Entity.entitiesList = entities;
         }
 
         public void Update(GameTime gameTime){
@@ -101,17 +102,16 @@ namespace LandsOfTalaria
             int y = 200;
             for (int i = 0;i<30;i++){
                 obstacles.Add(new Fence(new Vector2(x, y)));
-
                 x += 32;
             }
+            obstacles.Add(new SunflowerPlant(new Vector2(1500, 500)));
+            obstacles.Add(new SunflowerPlant(new Vector2(1600, 550)));
+            obstacles.Add(new SunflowerPlant(new Vector2(1700, 300)));
+            obstacles.Add(new SunflowerPlant(new Vector2(1800, 400)));
             obstacles.Add(new SunflowerPlant(new Vector2(2000, 500)));
-            obstacles.Add(new SunflowerPlant(new Vector2(2000, 550)));
-            obstacles.Add(new SunflowerPlant(new Vector2(2100, 300)));
-            obstacles.Add(new SunflowerPlant(new Vector2(2000, 400)));
-            obstacles.Add(new SunflowerPlant(new Vector2(2100, 500)));
             obstacles.Add(new SunflowerPlant(new Vector2(2100, 600)));
-            obstacles.Add(new SunflowerPlant(new Vector2(2100, 400)));
-            obstacles.Add(new SunflowerPlant(new Vector2(1900, 500)));
+            obstacles.Add(new SunflowerPlant(new Vector2(2200, 400)));
+            obstacles.Add(new SunflowerPlant(new Vector2(2300, 500)));
             obstacles.Add(new SunflowerPlant(new Vector2(1900, 550)));
             obstacles.Add(new SunflowerPlant(new Vector2(1900, 300)));
             obstacles.Add(new SunflowerPlant(new Vector2(1900, 400)));

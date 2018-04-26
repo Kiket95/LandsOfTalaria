@@ -33,23 +33,18 @@ namespace LandsOfTalaria.Objects
             textureSize.X = texture.Width;
         }
 
-        public static bool didCollide(BoundingBox entityHitbox, List<Obstacles> obstaclesLayersList){
-                foreach(Obstacles obstacle in obstaclesLayersList){
-                        if (entityHitbox.Intersects(obstacle.boundingBox))
-                            return true;
-                }
-                return false;
+        public static bool didCollide(BoundingBox entityHitbox, Obstacles obstacle){
+            if (entityHitbox.Intersects(obstacle.boundingBox))
+                return true;
+              return false;
         }
 
-        public static bool didCollide(BoundingSphere entityHitBox, List<Obstacles> obstaclesLayersList){
-            foreach (Obstacles obstacle in obstaclesLayersList){
-                    if (entityHitBox.Intersects(obstacle.boundingSphere))
-                        return true;
-            }
+        public static bool didCollide(BoundingSphere entityHitBox, Obstacles obstacle)
+        {
+            if (entityHitBox.Intersects(obstacle.boundingSphere))
+                return true;
             return false;
         }
-
-
 
         public static bool isBehind(Vector2 temporaryPosition, List<Obstacles> obtaclesLayersList, Vector2 size){
             foreach (Obstacles obstacle in obtaclesLayersList){
@@ -57,8 +52,8 @@ namespace LandsOfTalaria.Objects
                     if ((int)temporaryPosition.Y + size.Y <= obstacle.position.Y + 72 &&
                         (int)temporaryPosition.Y+32 <= obstacle.position.Y + 96 &&
                         (int)temporaryPosition.Y + 15 >= obstacle.position.Y &&
-                        (int)temporaryPosition.X + 32 >= obstacle.position.X &&
-                        (int)temporaryPosition.X <= obstacle.position.X + obstacle.textureSize.X &&
+                        (int)temporaryPosition.X + 48 >= obstacle.position.X &&
+                        (int)temporaryPosition.X <= obstacle.position.X + obstacle.textureSize.X + 16 &&
                         (int)temporaryPosition.Y >= obstacle.position.Y - 32)
                     {
                         Console.WriteLine("Sunflower");

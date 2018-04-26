@@ -6,6 +6,7 @@ using MonoGame.Extended;
 using LandsOfTalaria.Objects;
 using System.Collections.Generic;
 using LandsOfTalaria.Entities.Enemies;
+using System;
 
 namespace LandsOfTalaria
 {
@@ -20,6 +21,7 @@ namespace LandsOfTalaria
             health = 10;
             speed = new Vector2(160,160);
             radius = 16;
+            size = new Vector2(32,32);
             speedRunningAway = new Vector2(240, 240);
             speedWandering = new Vector2(80, 80);
             skinPath[0] = "Entities Textures/WolfMoveRight";

@@ -21,7 +21,11 @@ namespace LandsOfTalaria
         private KeyboardState keyboardState;
         private float timer;
         private float timerTick = 0.4f;
+        public new static BoundingSphere boundingSphere;
+        public new static BoundingBox boundingBox;
 
+        public new static int radius;
+        public new static Vector2 temporaryPosition;
         public Vector2 Position{
             get { return position;}
             set { position = value;}
@@ -42,6 +46,8 @@ namespace LandsOfTalaria
             skinPath[1] = "Player Textures/playerMoveLeft";
             skinPath[2] = "Player Textures/playerMoveUp";
             skinPath[3] = "Player Textures/playerMoveDown";
+            boundingSphere = new BoundingSphere(new Vector3(position.X, position.Y, 0), radius);
+            boundingBox = new BoundingBox(new Vector3(position.X + 8, position.Y + 8, 0), new Vector3(position.X + 24, position.Y + 24, 0));
         }
 
         public override void Update(GameTime gameTime){
@@ -50,7 +56,6 @@ namespace LandsOfTalaria
             timer += dt;
             animatedSpriteWalking = animatedSprite[(int)direction];
             
-
             if (isMoving)
                 animatedSpriteWalking.Update(gameTime, runSpeed);
             else
@@ -105,9 +110,9 @@ namespace LandsOfTalaria
             if (keyboardState.IsKeyDown(Keys.Space) && (keyboardStateOld.IsKeyUp(Keys.Space))){
                PlayerAttack.playerAttacks.Add(new PlayerAttack(position, direction));
             }
-
-            keyboardStateOld = keyboardState;
             temporaryPosition = position;
+            keyboardStateOld = keyboardState;
+
             if (isMoving){
                 if (timer >= timerTick){
                     grassStep.Play(0.4f, 0.0f, 0.0f);
@@ -116,25 +121,29 @@ namespace LandsOfTalaria
                 switch (direction){
                     case Direction.Right:
                         temporaryPosition.X += speed.X * dt;
-                        if (!didCollide()){
+                        if (!didCollide() && !didCollideEntity())
+                        {
                             position.X += speed.X * dt;
                         }
                         break;
                     case Direction.Left:
                         temporaryPosition.X -= speed.X * dt;
-                        if (!didCollide()){
+                        if (!didCollide() && !didCollideEntity())
+                        {
                             position.X -= speed.X * dt;
                         }
                         break;
                     case Direction.Up:
                         temporaryPosition.Y -= speed.Y * dt;
-                        if (!didCollide()){
+                        if (!didCollide() && !didCollideEntity())
+                        {
                             position.Y -= speed.Y * dt;
                         }
                         break;
                     case Direction.Down:
                         temporaryPosition.Y += speed.Y * dt;
-                        if (!didCollide()){
+                        if (!didCollide() && !didCollideEntity())
+                        {
                             position.Y += speed.Y * dt;
                         }
                         break;
@@ -142,6 +151,56 @@ namespace LandsOfTalaria
                 }
                 isBehind();
             }
+        }
+
+        public override void isBehind()
+        {
+            if (Obstacles.isBehind(temporaryPosition, obstaclesLayersList, size))
+            {
+                animatedSprite[0].depth = 0.3f;
+                animatedSprite[1].depth = 0.3f;
+                animatedSprite[2].depth = 0.3f;
+                animatedSprite[3].depth = 0.3f;
+            }
+            else
+            {
+                animatedSprite[0].depth = 0.5f;
+                animatedSprite[1].depth = 0.5f;
+                animatedSprite[2].depth = 0.5f;
+                animatedSprite[3].depth = 0.5f;
+            }
+        }
+
+        public override bool didCollide()
+        {
+            foreach (Obstacles obstacle in obstaclesLayersList)
+            {
+                if (obstacle.collisionShape == Obstacles.CollisionShape.Circle)
+                {
+                    boundingSphere = new BoundingSphere(new Vector3(temporaryPosition.X, temporaryPosition.Y, 0), radius);
+                    if (Obstacles.didCollide(boundingSphere, obstacle))
+                        return true;
+                }
+                if (obstacle.collisionShape == Obstacles.CollisionShape.Rectangle)
+                {
+                    boundingBox = new BoundingBox(new Vector3(temporaryPosition.X + 8, temporaryPosition.Y + 8, 0), new Vector3(temporaryPosition.X + 24, temporaryPosition.Y + 24, 0));
+                    if (Obstacles.didCollide(boundingBox, obstacle))
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        protected bool didCollideEntity()
+        {
+            foreach (Entity otherEntity in entitiesList)
+            {
+                if (boundingBox.Intersects(otherEntity.boundingBox))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

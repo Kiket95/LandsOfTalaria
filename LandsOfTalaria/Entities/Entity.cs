@@ -14,17 +14,18 @@ namespace LandsOfTalaria.Entities
     {
         protected Direction direction = Direction.Down;
         public List<Obstacles> obstaclesLayersList;
+        public static List<Entity> entitiesList;
         protected AnimatedSprite[] animatedSprite = new AnimatedSprite[4];
         protected AnimatedSprite animatedSpriteWalking;
         protected Texture2D[] walkingFrames;
-        protected BoundingBox boundingBox;
-        protected BoundingSphere boundingSphere;
+        public BoundingBox boundingBox;
+        public BoundingSphere boundingSphere;
         protected Vector2 speed;
-        protected Vector2 size;
+        public Vector2 size;
         protected Vector2 position;
-        protected Vector2 temporaryPosition;
+        public Vector2 temporaryPosition;
         public Vector2 playerPosition;
-        protected int radius;
+        public int radius;
         protected int health;
         protected bool isMoving = false;
         protected float dt;
@@ -34,11 +35,13 @@ namespace LandsOfTalaria.Entities
 
         public virtual void Draw(SpriteBatch spriteBatch) { }
 
-        public Entity(){
+        public Entity() {
             layerDepth = 0.5f;
+            boundingSphere = new BoundingSphere(new Vector3(position.X, position.Y, 0), radius);
+            boundingBox = new BoundingBox(new Vector3(position.X + 8, position.Y + 8, 0), new Vector3(position.X + 24, position.Y + 24, 0));
         }
 
-        public virtual void LoadContent(ContentManager contentManager){
+        public virtual void LoadContent(ContentManager contentManager) {
             walkingFrames = new Texture2D[]{
              contentManager.Load<Texture2D>(skinPath[0]),
              contentManager.Load<Texture2D>(skinPath[1]),
@@ -53,30 +56,30 @@ namespace LandsOfTalaria.Entities
             size = new Vector2(walkingFrames[0].Width, walkingFrames[0].Height);
         }
 
-        public void isBehind(){
-            if (Obstacles.isBehind(temporaryPosition, obstaclesLayersList, size)){
-                animatedSprite[0].depth = 0.3f;
-                animatedSprite[1].depth = 0.3f;
-                animatedSprite[2].depth = 0.3f;
-                animatedSprite[3].depth = 0.3f;
+        public virtual void isBehind() {
+            if (Obstacles.isBehind(temporaryPosition, obstaclesLayersList, size)) {
+                animatedSprite[0].depth = 0.31f;
+                animatedSprite[1].depth = 0.31f;
+                animatedSprite[2].depth = 0.31f;
+                animatedSprite[3].depth = 0.31f;
             }
-            else{
-                animatedSprite[0].depth = 0.5f;
-                animatedSprite[1].depth = 0.5f;
-                animatedSprite[2].depth = 0.5f;
-                animatedSprite[3].depth = 0.5f;
+            else {
+                animatedSprite[0].depth = 0.51f;
+                animatedSprite[1].depth = 0.51f;
+                animatedSprite[2].depth = 0.51f;
+                animatedSprite[3].depth = 0.51f;
             }
         }
-        public bool didCollide(){
-            foreach(Obstacles obstacle in obstaclesLayersList){
-               if(obstacle.collisionShape == Obstacles.CollisionShape.Circle){
+        public virtual bool didCollide() {
+            foreach (Obstacles obstacle in obstaclesLayersList) {
+                if (obstacle.collisionShape == Obstacles.CollisionShape.Circle) {
                     boundingSphere = new BoundingSphere(new Vector3(temporaryPosition.X, temporaryPosition.Y, 0), radius);
-                    if (Obstacles.didCollide(boundingSphere, obstaclesLayersList))
+                    if (Obstacles.didCollide(boundingSphere, obstacle))
                         return true;
                 }
-                if (obstacle.collisionShape == Obstacles.CollisionShape.Rectangle){
+                if (obstacle.collisionShape == Obstacles.CollisionShape.Rectangle) {
                     boundingBox = new BoundingBox(new Vector3(temporaryPosition.X + 8, temporaryPosition.Y + 8, 0), new Vector3(temporaryPosition.X + 24, temporaryPosition.Y + 24, 0));
-                    if (Obstacles.didCollide(boundingBox, obstaclesLayersList))
+                    if (Obstacles.didCollide(boundingBox, obstacle))
                         return true;
                 }
             }
@@ -86,6 +89,7 @@ namespace LandsOfTalaria.Entities
         public virtual void Update(GameTime gameTime){
             Console.WriteLine(obstaclesLayersList);
             animatedSpriteWalking = animatedSprite[(int)direction];
+
         }
     }
 }
