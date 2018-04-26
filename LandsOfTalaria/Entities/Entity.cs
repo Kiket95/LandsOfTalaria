@@ -17,7 +17,7 @@ namespace LandsOfTalaria.Entities
         protected AnimatedSprite[] animatedSprite = new AnimatedSprite[4];
         protected AnimatedSprite animatedSpriteWalking;
         protected Texture2D[] walkingFrames;
-        private BoundingBox boundingBox;
+        protected BoundingBox boundingBox;
         protected BoundingSphere boundingSphere;
         protected Vector2 speed;
         protected Vector2 size;
@@ -68,13 +68,21 @@ namespace LandsOfTalaria.Entities
             }
         }
         public bool didCollide(){
-            boundingBox = new BoundingBox(new Vector3(temporaryPosition.X + 8, temporaryPosition.Y + 8, 0), new Vector3(temporaryPosition.X + 24, temporaryPosition.Y + 24, 0));
-            boundingSphere = new BoundingSphere(new Vector3(temporaryPosition.X, temporaryPosition.Y, 0), radius);
-            if (Obstacles.didCollide(boundingBox, obstaclesLayersList,boundingSphere))
-                return true;
-            else
-                return false;
+            foreach(Obstacles obstacle in obstaclesLayersList){
+               if(obstacle.collisionShape == Obstacles.CollisionShape.Circle){
+                    boundingSphere = new BoundingSphere(new Vector3(temporaryPosition.X, temporaryPosition.Y, 0), radius);
+                    if (Obstacles.didCollide(boundingSphere, obstaclesLayersList))
+                        return true;
+                }
+                if (obstacle.collisionShape == Obstacles.CollisionShape.Rectangle){
+                    boundingBox = new BoundingBox(new Vector3(temporaryPosition.X + 8, temporaryPosition.Y + 8, 0), new Vector3(temporaryPosition.X + 24, temporaryPosition.Y + 24, 0));
+                    if (Obstacles.didCollide(boundingBox, obstaclesLayersList))
+                        return true;
+                }
+            }
+            return false;
         }
+
         public virtual void Update(GameTime gameTime){
             Console.WriteLine(obstaclesLayersList);
             animatedSpriteWalking = animatedSprite[(int)direction];

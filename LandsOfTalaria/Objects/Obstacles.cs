@@ -17,8 +17,8 @@ namespace LandsOfTalaria.Objects
         public Vector2 hitBoxPosition;
         public Vector2 textureSize;
         protected string source;
-        public BoundingBox boundingBox;
-        public BoundingSphere boundingSphere;
+        public  BoundingBox boundingBox;
+        public  BoundingSphere boundingSphere;
 
         public virtual void Draw(SpriteBatch spriteBatch) { }
 
@@ -33,33 +33,22 @@ namespace LandsOfTalaria.Objects
             textureSize.X = texture.Width;
         }
 
-        internal static bool didCollide(BoundingBox entityHitbox, List<Obstacles> obstaclesLayersList, BoundingSphere entityHitSphere){
-            foreach (Obstacles obstacle in obstaclesLayersList)
-            {
-                if(obstacle.collisionShape == CollisionShape.Circle){
-                    if (entityHitSphere.Intersects(obstacle.boundingSphere))
-                        return true;
+        public static bool didCollide(BoundingBox entityHitbox, List<Obstacles> obstaclesLayersList){
+                foreach(Obstacles obstacle in obstaclesLayersList){
+                        if (entityHitbox.Intersects(obstacle.boundingBox))
+                            return true;
                 }
-                if (obstacle.collisionShape == CollisionShape.Rectangle){
-                    if (entityHitbox.Intersects(obstacle.boundingBox))
+                return false;
+        }
+
+        public static bool didCollide(BoundingSphere entityHitBox, List<Obstacles> obstaclesLayersList){
+            foreach (Obstacles obstacle in obstaclesLayersList){
+                    if (entityHitBox.Intersects(obstacle.boundingSphere))
                         return true;
-                }
             }
             return false;
         }
 
-        //public bool whichCollision(BoundingBox entityHitbox, List<Obstacles> obtaclesLayersList)
-        //{
-        //    foreach (Obstacles obstacle in obtaclesLayersList)
-        //    {
-        //        if (obstacle.collisionShape == CollisionShape.Rectangle)
-        //        {
-        //            if (entityHitbox.Intersects(obstacle.boundingBox))
-        //                return true;
-        //        }
-        //    }
-        //    return false;
-        //}
 
 
         public static bool isBehind(Vector2 temporaryPosition, List<Obstacles> obtaclesLayersList, Vector2 size){

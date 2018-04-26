@@ -24,7 +24,7 @@ namespace LandsOfTalaria.Entities.Enemies
         protected Vector2 wanderPoint;
         protected int sizeOfView;
         protected int teritorySize;
-       
+
         public Vector2 Position
         {
             get { return position; }
