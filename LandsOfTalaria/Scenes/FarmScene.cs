@@ -89,6 +89,9 @@ namespace LandsOfTalaria
             }
             
             spriteBatch.End();
+            spriteBatch.Begin();
+            Player.showPlayerHP(spriteBatch);
+            spriteBatch.End();
         }
 
         public void DrawObstacle(){
