@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AnimatedSprite.cs" />
+    <Compile Include="CollisionsObject.cs" />
     <Compile Include="Entities\Enemies\Enemy.cs" />
     <Compile Include="Entities\Enemies\Wolf.cs" />
     <Compile Include="Entities\Entity.cs" />

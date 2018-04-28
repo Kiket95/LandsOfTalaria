@@ -23,7 +23,6 @@ namespace LandsOfTalaria
             speed = 0.15D;
             timer = speed;
             this.rotation = rotation;
-            this.depth = 0.5f;
         }
 
         public void Update(GameTime gameTime,float animationSpeed) {

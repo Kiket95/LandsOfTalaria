@@ -22,6 +22,7 @@ namespace LandsOfTalaria.Objects
             radius = 16;
             source = "Objects Textures/Trees/BigTree1Upper";
             source2 = "Objects Textures/Trees/BigTree1Lower";
+            layer = 0.45f;
         }
 
         public override void LoadContent(ContentManager contentManager){
@@ -32,8 +33,8 @@ namespace LandsOfTalaria.Objects
         }
 
         public override void Draw(SpriteBatch spriteBatch){
-            spriteBatch.Draw(upperPart, new Rectangle((int)position.X, (int)position.Y, (int)textureSize.X, (int)textureSize.Y), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: 0.6f+ layer);
-            spriteBatch.Draw(lowerPart, new Rectangle((int)position.X, (int)position.Y + (int)textureSize.Y, (int)textureSize2.X, (int)textureSize2.Y), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: 0.4f+ layer);
+            spriteBatch.Draw(upperPart, new Rectangle((int)position.X, (int)position.Y, (int)textureSize.X, (int)textureSize.Y), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: layer + 0.2f);
+            spriteBatch.Draw(lowerPart, new Rectangle((int)position.X, (int)position.Y + (int)textureSize.Y, (int)textureSize2.X, (int)textureSize2.Y), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: layer - 0.1f);
         }
     }
 }

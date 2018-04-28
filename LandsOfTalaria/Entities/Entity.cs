@@ -13,8 +13,6 @@ namespace LandsOfTalaria.Entities
     class Entity
     {
         protected Direction direction = Direction.Down;
-        public List<Obstacles> obstaclesLayersList;
-        public static List<Entity> entitiesList;
         protected AnimatedSprite[] animatedSprite = new AnimatedSprite[4];
         protected AnimatedSprite animatedSpriteWalking;
         protected Texture2D[] walkingFrames;
@@ -57,7 +55,7 @@ namespace LandsOfTalaria.Entities
         }
 
         public virtual void isBehind() {
-            if (Obstacles.isBehind(temporaryPosition, obstaclesLayersList, size)) {
+            if (Obstacles.isBehind(temporaryPosition, size)) {
                 animatedSprite[0].depth = 0.31f;
                 animatedSprite[1].depth = 0.31f;
                 animatedSprite[2].depth = 0.31f;
@@ -71,7 +69,7 @@ namespace LandsOfTalaria.Entities
             }
         }
         public virtual bool didCollide() {
-            foreach (Obstacles obstacle in obstaclesLayersList) {
+            foreach (Obstacles obstacle in FarmScene.obstaclesList) {
                 if (obstacle.collisionShape == Obstacles.CollisionShape.Circle) {
                     boundingSphere = new BoundingSphere(new Vector3(temporaryPosition.X, temporaryPosition.Y, 0), radius);
                     if (Obstacles.didCollide(boundingSphere, obstacle))
@@ -87,9 +85,7 @@ namespace LandsOfTalaria.Entities
         }
 
         public virtual void Update(GameTime gameTime){
-            Console.WriteLine(obstaclesLayersList);
             animatedSpriteWalking = animatedSprite[(int)direction];
-
         }
     }
 }

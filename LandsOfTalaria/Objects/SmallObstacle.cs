@@ -14,10 +14,11 @@ namespace LandsOfTalaria.Objects
         public override void LoadContent(ContentManager contentManager){
             texture = contentManager.Load<Texture2D>(source);
             textureSize = new Vector2(texture.Width, texture.Height);
+            layer = 0.4f;
         }
 
         public override void Draw(SpriteBatch spriteBatch){
-            spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, (int)textureSize.X, (int)textureSize.Y), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: 0.4f);
+            spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, (int)textureSize.X, (int)textureSize.Y), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: layer);
         }
     }
 }

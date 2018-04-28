@@ -24,7 +24,7 @@ namespace LandsOfTalaria.Objects
 
         public Obstacles(Vector2 newPosition){
             position = newPosition;
-            layer += 0.001f;
+            layer = 0.4f;
         }
       
         public virtual void LoadContent(ContentManager contentManager){
@@ -46,8 +46,8 @@ namespace LandsOfTalaria.Objects
             return false;
         }
 
-        public static bool isBehind(Vector2 temporaryPosition, List<Obstacles> obtaclesLayersList, Vector2 size){
-            foreach (Obstacles obstacle in obtaclesLayersList){
+        public static bool isBehind(Vector2 temporaryPosition, Vector2 size){
+            foreach (Obstacles obstacle in FarmScene.obstaclesList){
                 if (obstacle.GetType() == typeof(SunflowerPlant)){
                     if ((int)temporaryPosition.Y + size.Y <= obstacle.position.Y + 72 &&
                         (int)temporaryPosition.Y+32 <= obstacle.position.Y + 96 &&
@@ -60,7 +60,6 @@ namespace LandsOfTalaria.Objects
                         return true;
                     }
                 }
-
                 else if (obstacle.GetType() == typeof(Fence)){
                     if ((int)temporaryPosition.X <= obstacle.position.X + 32 &&
                         (int)temporaryPosition.X + 32 >= obstacle.position.X &&

@@ -9,7 +9,6 @@ namespace LandsOfTalaria.Entities.Enemies
 
     class Enemy:Entity
     {
-        public static List<Enemy> enemies = new List<Enemy>();
        
         protected enum State { Wander,Chase,RunAway}
         protected State state;
@@ -223,17 +222,6 @@ namespace LandsOfTalaria.Entities.Enemies
             }
             return false;
         }
-        //protected bool didCollideEntity()
-        //{
-        //    foreach (Entity otherEntity in entitiesList)
-        //    {
-        //        if (otherEntity != this && this.boundingBox.Intersects(otherEntity.boundingSphere))
-        //        {
-        //            return true;
-        //        }
-        //    }
-        //    return false;
-        //}
 
 
     }

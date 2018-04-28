@@ -17,7 +17,6 @@ namespace LandsOfTalaria.Objects
             hitBoxPosition = new Vector2(position.X + 120, position.Y + 240);
             source = "Objects Textures/Trees/BigTree1Upper";
             source2 = "Objects Textures/Trees/BigTree1Lower";
-            Console.WriteLine(layer);
         }
 
         public override void LoadContent(ContentManager contentManager){
@@ -28,9 +27,6 @@ namespace LandsOfTalaria.Objects
             boundingSphere = boundingSphere = new BoundingSphere(new Vector3(position.X + 120, position.Y + 240, 0), radius);
         }
 
-        public override void Draw(SpriteBatch spriteBatch){
-            spriteBatch.Draw(upperPart, new Rectangle((int)position.X, (int)position.Y, (int)textureSize.X, (int)textureSize.Y), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: 0.6f + layer);
-            spriteBatch.Draw(lowerPart, new Rectangle((int)position.X, (int)position.Y + (int)textureSize.Y, (int)textureSize2.X, (int)textureSize2.Y), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: 0.4f + layer);
-        }
+     
     }
 }

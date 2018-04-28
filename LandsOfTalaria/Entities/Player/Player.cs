@@ -34,7 +34,7 @@ namespace LandsOfTalaria
 
         public Player() {
             animatedSprite = new AnimatedSprite[4];
-            position = new Vector2(2000, 100);
+            position = new Vector2(1000, 300);
             radius = 16;
             speed = new Vector2(300, 300);
             runSpeed = 1;
@@ -154,7 +154,7 @@ namespace LandsOfTalaria
 
         public override void isBehind()
         {
-            if (Obstacles.isBehind(temporaryPosition, obstaclesLayersList, size))
+            if (Obstacles.isBehind(temporaryPosition, size))
             {
                 animatedSprite[0].depth = 0.3f;
                 animatedSprite[1].depth = 0.3f;
@@ -172,7 +172,7 @@ namespace LandsOfTalaria
 
         public override bool didCollide()
         {
-            foreach (Obstacles obstacle in obstaclesLayersList)
+            foreach (Obstacles obstacle in FarmScene.obstaclesList)
             {
                 if (obstacle.collisionShape == Obstacles.CollisionShape.Circle)
                 {
@@ -187,12 +187,20 @@ namespace LandsOfTalaria
                         return true;
                 }
             }
+            foreach(CollisionsObject collisionsObject in FarmScene.collisionsObjectList)
+            {
+                {
+                    boundingBox = new BoundingBox(new Vector3(temporaryPosition.X + 8, temporaryPosition.Y + 8, 0), new Vector3(temporaryPosition.X + 24, temporaryPosition.Y + 24, 0));
+                    if (boundingBox.Intersects(collisionsObject.boundingBox))
+                        return true;
+                }
+            }
             return false;
         }
 
         protected bool didCollideEntity()
         {
-            foreach (Entity otherEntity in entitiesList)
+            foreach (Entity otherEntity in FarmScene.entitiesList)
             {
                 if (boundingBox.Intersects(otherEntity.boundingBox))
                 {
