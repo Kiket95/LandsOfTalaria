@@ -3,10 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LandsOfTalaria.Entities
 {
@@ -31,7 +27,9 @@ namespace LandsOfTalaria.Entities
         protected float layerDepth;
         protected String[] skinPath = new String[4];
 
-        public virtual void Draw(SpriteBatch spriteBatch) { }
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+        }
 
         public Entity() {
             layerDepth = 0.5f;
@@ -81,7 +79,15 @@ namespace LandsOfTalaria.Entities
                         return true;
                 }
             }
-            return false;
+            foreach (CollisionsObject collisionsObject in FarmScene.collisionsObjectList)
+            {
+                {
+                    boundingBox = new BoundingBox(new Vector3(temporaryPosition.X + 8, temporaryPosition.Y + 8, 0), new Vector3(temporaryPosition.X + 24, temporaryPosition.Y + 24, 0));
+                    if (boundingBox.Intersects(collisionsObject.boundingBox))
+                        return true;
+                }
+            }
+                return false;
         }
 
         public virtual void Update(GameTime gameTime){

@@ -5,7 +5,6 @@ using MonoGame.Extended.Tiled.Graphics;
 using Microsoft.Xna.Framework.Content;
 using System.Collections.Generic;
 using LandsOfTalaria.Objects;
-using LandsOfTalaria.Entities.Enemies;
 using Microsoft.Xna.Framework.Media;
 using LandsOfTalaria.Entities;
 
@@ -23,7 +22,9 @@ namespace LandsOfTalaria
         public static List<Obstacles> obstaclesList;
         public static List<Entity> entitiesList;
         public static TiledMapObject[] obstaclesLayerFromMap;
-        public static TiledMapObject[] collisionLayerFromMap;
+        public static TiledMapObject[] collisionsLayerFromMap;
+        public static TiledMapObject[] entitiesLayerFromMap;
+        public static TiledMapObject[] transitionsLayerFromMap;
         public static List<CollisionsObject> collisionsObjectList;
 
         //  public List<TiledMapObject> mapLayerObstacles;
@@ -45,11 +46,13 @@ namespace LandsOfTalaria
             MediaPlayer.IsRepeating = true;
             startingLoc = contentManager.Load<TiledMap>("Scenes Maps/Farm");
             obstaclesLayerFromMap = startingLoc.GetLayer<TiledMapObjectLayer>("obstaclesLayerFromMap").Objects;
-            collisionLayerFromMap = startingLoc.GetLayer<TiledMapObjectLayer>("collisionLayerFromMap").Objects;
+            collisionsLayerFromMap = startingLoc.GetLayer<TiledMapObjectLayer>("collisionLayerFromMap").Objects;
+            entitiesLayerFromMap = startingLoc.GetLayer<TiledMapObjectLayer>("entitiesLayerFromMap").Objects;
+            transitionsLayerFromMap = startingLoc.GetLayer<TiledMapObjectLayer>("transitionsLayerFromMap").Objects;
 
             LoadTrees();
             LoadEnemies();
-            foreach(TiledMapObject collisionObjectFromMap in collisionLayerFromMap)
+            foreach(TiledMapObject collisionObjectFromMap in collisionsLayerFromMap)
             {
                 collisionsObjectList.Add(new CollisionsObject(collisionObjectFromMap.Position,new Vector2(collisionObjectFromMap.Position.X + collisionObjectFromMap.Size.Width,collisionObjectFromMap.Position.Y+collisionObjectFromMap.Size.Height)));
             }
@@ -77,38 +80,32 @@ namespace LandsOfTalaria
                 entity.playerPosition = player.Position;
             }
             playerCamera.Follow(player);
-            foreach (PlayerAttack playerAttack in PlayerAttack.playerAttacks){
-                playerAttack.Update(gameTime);
-            }
+            //foreach (PlayerAttack playerAttack in PlayerAttack.playerAttacks){
+            //    playerAttack.Update(gameTime);
+            //}
         }
 
         public void Draw(GraphicsDevice graphicsDevice){
-            graphicsDevice.BlendState = BlendState.AlphaBlend;
+
             graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
             graphicsDevice.RasterizerState = RasterizerState.CullNone;
-           
             tiledMapRenderer.Draw(startingLoc.GetLayer("1"), playerCamera.Transform);
             tiledMapRenderer.Draw(startingLoc.GetLayer("Special layer"), playerCamera.Transform);
-
-
-            spriteBatch.Begin(transformMatrix: playerCamera.Transform, sortMode: SpriteSortMode.FrontToBack,depthStencilState: DepthStencilState.DepthRead,blendState: BlendState.NonPremultiplied);
+            spriteBatch.Begin(transformMatrix: playerCamera.Transform, sortMode: SpriteSortMode.FrontToBack,depthStencilState: DepthStencilState.DepthRead,blendState: BlendState.AlphaBlend);
             DrawLayer();
-
-            foreach (PlayerAttack playerAttack in PlayerAttack.playerAttacks){
-                spriteBatch.Draw(attackSprite, new Rectangle((int)playerAttack.position.X, (int)playerAttack.position.Y, 16, 16), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: 0.01f);
-                //     if (Obstacles.didCollide(playerAttack.position, playerAttack.Radius))
-                //         playerAttack.Collided = true;
-            }
-            
             spriteBatch.End();
-            spriteBatch.Begin();
-            Player.showPlayerHP(spriteBatch);
+            spriteBatch.Begin(depthStencilState: DepthStencilState.DepthRead, blendState: BlendState.AlphaBlend);
+            player.gui.showPlayerHP(spriteBatch);
             for (int i = 2; i < 8; i++)
             {
                 tiledMapRenderer.Draw(startingLoc.GetLayer(i.ToString()), playerCamera.Transform);
             }
             spriteBatch.End();
-
+            //foreach (PlayerAttack playerAttack in PlayerAttack.playerAttacks){
+            //    spriteBatch.Draw(attackSprite, new Rectangle((int)playerAttack.position.X, (int)playerAttack.position.Y, 16, 16), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: 0.01f);
+            //    //     if (Obstacles.didCollide(playerAttack.position, playerAttack.Radius))
+            //    //         playerAttack.Collided = true;
+            //}
         }
 
         public void DrawObstacle(){
@@ -146,9 +143,17 @@ namespace LandsOfTalaria
             DrawPlayer();
         }
 
-        public void LoadEnemies(){
-            entitiesList.Add(new Wolf(new Vector2(1500,500),screenCenter));
-            entitiesList.Add(new Wolf(new Vector2(1900, 900), screenCenter));
+        public void LoadEnemies()
+        {
+            foreach (var entitiesFromMap in entitiesLayerFromMap)
+            {
+                string type;
+                entitiesFromMap.Properties.TryGetValue("Type", out type);
+                if (type.Equals("Wolf"))
+                {
+                    entitiesList.Add(new Wolf(entitiesFromMap.Position,screenCenter));
+                }
+            }
         }
 
         public void DrawEnemies(){

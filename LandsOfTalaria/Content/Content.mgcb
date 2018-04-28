@@ -98,6 +98,18 @@
 /processorParam:TextureFormat=Color
 /build:Entities Textures/WolfMoveDown.png
 
+#begin Entities Textures/WolfMoveDown2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Entities Textures/WolfMoveDown2.png
+
 #begin Entities Textures/WolfMoveLeft.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -224,6 +236,18 @@
 /processorParam:TextureFormat=Color
 /build:Objects Textures/Trees/BigTree1Upper.png
 
+#begin Player Textures/EntityHeart.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Player Textures/EntityHeart.png
+
 #begin Player Textures/heart pixel art/heart pixel art 16x16.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -295,6 +319,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Player Textures/Heart.png
+
+#begin Player Textures/Mana.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Player Textures/Mana.png
 
 #begin Player Textures/monstersplayers.png
 /importer:TextureImporter
@@ -452,6 +488,18 @@
 /processorParam:TextureFormat=Color
 /build:Player Textures/PlayerMoveUpRight.png
 
+#begin Player Textures/swordSwing.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Player Textures/swordSwing.png
+
 #begin Scenes Maps/Farm.tmx
 /importer:
 /processor:
@@ -493,7 +541,7 @@
 /processorParam:TextureFormat=Color
 /build:Tilesets/MINE.png
 
-#begin Tilesets/MOUNTAINS.png
+#begin Tilesets/Mountain.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -503,7 +551,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Tilesets/MOUNTAINS.png
+/build:Tilesets/Mountain.png
 
 #begin Tilesets/TREE.png
 /importer:TextureImporter

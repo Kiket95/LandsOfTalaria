@@ -46,6 +46,7 @@
     <Compile Include="Entities\Enemies\Enemy.cs" />
     <Compile Include="Entities\Enemies\Wolf.cs" />
     <Compile Include="Entities\Entity.cs" />
+    <Compile Include="GUI\Gui.cs" />
     <Compile Include="Objects\BigTree1.cs" />
     <Compile Include="Objects\Fence.cs" />
     <Compile Include="Objects\Obstacles.cs" />
@@ -67,6 +68,12 @@
     </Reference>
     <Reference Include="MonoGame.Extended.Graphics, Version=1.0.617.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MonoGame.Extended.Graphics.1.0.617\lib\portable-net45+win8+wpa81\MonoGame.Extended.Graphics.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Extended.Gui, Version=1.0.617.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Extended.Gui.1.0.617\lib\portable-net45+win8+wpa81\MonoGame.Extended.Gui.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Extended.Input, Version=1.0.617.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Extended.Input.1.0.617\lib\portable-net45+win8+wpa81\MonoGame.Extended.Input.dll</HintPath>
     </Reference>
     <Reference Include="MonoGame.Extended.Tiled, Version=1.0.617.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MonoGame.Extended.Tiled.1.0.617\lib\portable-net45+win8+wpa81\MonoGame.Extended.Tiled.dll</HintPath>

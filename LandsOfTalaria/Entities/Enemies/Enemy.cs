@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
 
 namespace LandsOfTalaria.Entities.Enemies
 {
@@ -15,7 +14,7 @@ namespace LandsOfTalaria.Entities.Enemies
         protected enum Flag {Xpos,Ypos}
         protected Flag sideFlag;
         protected Vector2 startingPosition;
-        Random random = new Random();
+        protected Random random;
         protected Vector2 screenCenter;
         protected Vector2 speedChasing;
         protected Vector2 speedRunningAway;
@@ -23,28 +22,8 @@ namespace LandsOfTalaria.Entities.Enemies
         protected Vector2 wanderPoint;
         protected int sizeOfView;
         protected int teritorySize;
+        private Texture2D healthPoints;
 
-        public Vector2 Position
-        {
-            get { return position; }
-            set { position = value; }
-        }
-        public int Health
-        {
-            get { return health; }
-            set { health = value; }
-        }
-        public Vector2 Speed
-        {
-            get { return speed; }
-            set { speed = value; }
-        }
-        public int Radius
-        {
-            get { return radius; }
-            set { radius = value; }
-        }
- 
         public Enemy(Vector2 newPosition,Vector2 screenCenter) {
             position = newPosition;
             startingPosition = position;
@@ -95,6 +74,8 @@ namespace LandsOfTalaria.Entities.Enemies
                     break;
                 default: break;
             }
+            isBehind();
+
             runSpeed = speed.X / 100;
 
             if (isMoving)
@@ -105,7 +86,11 @@ namespace LandsOfTalaria.Entities.Enemies
         }
 
         public override void Draw(SpriteBatch spriteBatch){
-            animatedSpriteWalking.Draw(spriteBatch, new Vector2(position.X - radius, position.Y - radius));
+            animatedSpriteWalking.Draw(spriteBatch, new Vector2(position.X - 16, position.Y - 16));
+            for (int i = 0; i < health; i++)
+            {
+                spriteBatch.Draw(healthPoints, new Rectangle(i * 8 + (int)position.X - (int)size.X/2, (int)position.Y-(int)size.Y, 8, 8), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: 0.9f);
+            }
         }
 
         public void playerChasing(Vector2 playerPosition,float dt){
@@ -157,7 +142,6 @@ namespace LandsOfTalaria.Entities.Enemies
             if (Math.Abs(playerPosition.Y - position.Y) < 4){
                 sideFlag = Flag.Xpos;
             }
-            isBehind();
         }
 
         public void Wandering(Vector2 playerPosition,float dt){
@@ -166,40 +150,44 @@ namespace LandsOfTalaria.Entities.Enemies
                 if ((int)position.X >= (int)wanderPoint.X) {
                     temporaryPosition.X -= speed.X * dt;
                     direction = Direction.Left;
-                    if (!(didCollidePlayer()  && didCollide()))
+                    if (!didCollidePlayer() && !didCollide())
                     {
                         isMoving = true;
                         position.X -= speed.X * dt;
                     }
+                    else randomizeWanderPoint();
                 }
                 else if ((int)position.X < (int)wanderPoint.X){
                     temporaryPosition.X += speed.X * dt;
                     direction = Direction.Right;
-                    if (!(didCollidePlayer() && didCollide()))
+                    if (!didCollidePlayer() && !didCollide())
                     {
                         isMoving = true;
                         position.X += speed.X * dt;
                     }
+                    else randomizeWanderPoint();
                 }
             }
             if (sideFlag == Flag.Ypos){
                 if ((int)position.Y >= (int)wanderPoint.Y){
                     temporaryPosition.Y -= speed.Y * dt;
                     direction = Direction.Up;
-                    if (!(didCollidePlayer() && didCollide()))
+                    if (!didCollidePlayer() && !didCollide())
                     {
                         isMoving = true;
                         position.Y -= speed.Y * dt;
                     }
+                    else randomizeWanderPoint();
                 }
                 else if ((int)position.Y < (int)wanderPoint.Y){
                     temporaryPosition.Y += speed.Y * dt;
                     direction = Direction.Down;
-                    if (!(didCollidePlayer() && didCollide()))
+                    if (!didCollidePlayer() && !didCollide())
                     {
                         isMoving = true;
                         position.Y += speed.Y * dt;
                     }
+                    else randomizeWanderPoint();
                 }
             }
             if (Math.Abs(wanderPoint.X - position.X) < 4){
@@ -210,8 +198,7 @@ namespace LandsOfTalaria.Entities.Enemies
             }
 
             if (Vector2.Distance(position, wanderPoint) < 16){
-                wanderPoint.X = random.Next((int)startingPosition.X - 150, (int)startingPosition.X + 150);
-                wanderPoint.Y = random.Next((int)startingPosition.Y - 150, (int)startingPosition.Y + 150);
+                randomizeWanderPoint();
             }
         }
         protected bool didCollidePlayer()
@@ -222,7 +209,16 @@ namespace LandsOfTalaria.Entities.Enemies
             }
             return false;
         }
+        protected virtual void randomizeWanderPoint()
+        {
+            wanderPoint.X = random.Next((int)startingPosition.X - 150, (int)startingPosition.X + 150);
+            wanderPoint.Y = random.Next((int)startingPosition.Y - 150, (int)startingPosition.Y + 150);
+        }
 
+        public override void LoadContent(ContentManager contentManager)
+        { healthPoints = contentManager.Load<Texture2D>("Player Textures/EntityHeart");
+            base.LoadContent(contentManager);
+        }
 
     }
 }

@@ -2,14 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
-using MonoGame.Extended;
 using LandsOfTalaria.Objects;
 using LandsOfTalaria.Entities;
-using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
-using MonoGame.Extended.Timers;
-using System.Collections.Generic;
-using System;
+using LandsOfTalaria.GUI;
 
 namespace LandsOfTalaria
 {
@@ -17,16 +13,20 @@ namespace LandsOfTalaria
     class Player : Entity
     {
         SoundEffect grassStep;
-        private static Texture2D healthPoints;
         private KeyboardState keyboardStateOld = Keyboard.GetState();
         private KeyboardState keyboardState;
+     //   protected AnimatedSprite swordSwingAnimation;
+      //  protected Texture2D swordSwing;
+        public Gui gui;
         private float timer;
         private float timerTick = 0.4f;
         public new static BoundingSphere boundingSphere;
         public new static BoundingBox boundingBox;
         private new static int health;
+        private static int mana;
         public new static int radius;
         public new static Vector2 temporaryPosition;
+        private bool swordSwingFlag = false;
         public Vector2 Position {
             get { return position; }
             set { position = value; }
@@ -39,6 +39,8 @@ namespace LandsOfTalaria
             speed = new Vector2(300, 300);
             runSpeed = 1;
             health = 10;
+            mana = 10;
+            gui = new Gui(health,mana);
             animatedSpriteWalking = animatedSprite[(int)direction];
             skinPath[0] = "Player Textures/playerMoveRight";
             skinPath[1] = "Player Textures/playerMoveLeft";
@@ -53,6 +55,14 @@ namespace LandsOfTalaria
             dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             timer += dt;
             animatedSpriteWalking = animatedSprite[(int)direction];
+            if(swordSwingFlag)
+            {
+           //     swordSwingAnimation.Update(gameTime, runSpeed);
+
+            }
+            else
+            //    swordSwingAnimation.setFrame(1);
+            swordSwingFlag = false;
 
             if (isMoving)
                 animatedSpriteWalking.Update(gameTime, runSpeed);
@@ -64,12 +74,18 @@ namespace LandsOfTalaria
 
         public override void Draw(SpriteBatch spriteBatch) {
             animatedSpriteWalking.Draw(spriteBatch, new Vector2(position.X - 16, position.Y - 16));
+            if(swordSwingFlag)
+            {
+              //  swordSwingAnimation.Draw(spriteBatch, new Vector2(position.X-64, position.Y-64));
+            }
         }
 
         public override void LoadContent(ContentManager contentManager) {
             base.LoadContent(contentManager);
+            gui.LoadContent(contentManager);
             grassStep = contentManager.Load<SoundEffect>("Music/grassStep");
-            healthPoints = contentManager.Load<Texture2D>("Player Textures/Heart");
+          //  swordSwing = contentManager.Load<Texture2D>("Player Textures/swordSwing");
+          //  swordSwingAnimation = new AnimatedSprite(swordSwing, 1, 9,1f); //SwordSwing
         }
 
         public void movingPlayer() {
@@ -106,8 +122,9 @@ namespace LandsOfTalaria
                 isMoving = true;
             }
 
-            if (keyboardState.IsKeyDown(Keys.Space) && (keyboardStateOld.IsKeyUp(Keys.Space))) {
-                PlayerAttack.playerAttacks.Add(new PlayerAttack(position, direction));
+            if (keyboardState.IsKeyDown(Keys.Space)) {
+                //  PlayerAttack.playerAttacks.Add(new PlayerAttack(position, direction));
+                swordSwingFlag = true;
             }
             temporaryPosition = position;
             keyboardStateOld = keyboardState;
@@ -209,14 +226,5 @@ namespace LandsOfTalaria
             }
             return false;
         }
-
-        public static void showPlayerHP(SpriteBatch spriteBatch)
-        {
-            for(int i=0;i<health;i++)
-            {
-                spriteBatch.Draw(healthPoints, new Rectangle(8+i*16,8, 16, 16), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: 0.9f);
-            }
-        }
-
     }
 }

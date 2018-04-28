@@ -1,9 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Content;
-using MonoGame.Extended;
-using LandsOfTalaria.Objects;
 using System.Collections.Generic;
 using LandsOfTalaria.Entities.Enemies;
 using System;
@@ -28,6 +23,13 @@ namespace LandsOfTalaria
             skinPath[1] = "Entities Textures/WolfMoveLeft";
             skinPath[2] = "Entities Textures/WolfMoveUp";
             skinPath[3] = "Entities Textures/WolfMoveDown";
+            random = new Random();
+        }
+
+        protected override void randomizeWanderPoint()
+        {
+            wanderPoint.X = random.Next((int)startingPosition.X - 150, (int)startingPosition.X + 150);
+            wanderPoint.Y = random.Next((int)startingPosition.Y - 150, (int)startingPosition.Y + 150);
         }
     }
 }

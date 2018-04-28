@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
 
 namespace LandsOfTalaria.Objects
 {
@@ -19,7 +18,6 @@ namespace LandsOfTalaria.Objects
         protected string source;
         public  BoundingBox boundingBox;
         public  BoundingSphere boundingSphere;
-
         public virtual void Draw(SpriteBatch spriteBatch) { }
 
         public Obstacles(Vector2 newPosition){
@@ -56,17 +54,15 @@ namespace LandsOfTalaria.Objects
                         (int)temporaryPosition.X <= obstacle.position.X + obstacle.textureSize.X + 16 &&
                         (int)temporaryPosition.Y >= obstacle.position.Y - 32)
                     {
-                        Console.WriteLine("Sunflower");
                         return true;
                     }
                 }
                 else if (obstacle.GetType() == typeof(Fence)){
-                    if ((int)temporaryPosition.X <= obstacle.position.X + 32 &&
-                        (int)temporaryPosition.X + 32 >= obstacle.position.X &&
-                        (int)temporaryPosition.Y + 24 <= obstacle.position.Y + 32 &&
-                        (int)temporaryPosition.Y + 24 >= obstacle.position.Y - 16)
+                    if ((int)temporaryPosition.X <= obstacle.position.X + obstacle.textureSize.X &&
+                        (int)temporaryPosition.X + size.X >= obstacle.position.X &&
+                        (int)temporaryPosition.Y + 3* size.Y/4 <= obstacle.position.Y + obstacle.textureSize.X &&
+                        (int)temporaryPosition.Y + 3 * size.Y / 4 >= obstacle.position.Y - obstacle.textureSize.X/2)
                     {
-                        Console.WriteLine("Fence");
                         return true;
                     }
                 }
