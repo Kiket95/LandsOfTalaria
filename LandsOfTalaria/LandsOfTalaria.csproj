@@ -42,10 +42,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AnimatedSprite.cs" />
+    <Compile Include="CollisionsObject.cs" />
     <Compile Include="Entities\Enemies\Enemy.cs" />
     <Compile Include="Entities\Enemies\Wolf.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="GUI\Gui.cs" />
     <Compile Include="Objects\BigTree1.cs" />
+    <Compile Include="Objects\Fence.cs" />
     <Compile Include="Objects\Obstacles.cs" />
+    <Compile Include="Objects\SmallObstacle.cs" />
     <Compile Include="Objects\SunflowerPlant.cs" />
     <Compile Include="Objects\Trees.cs" />
     <Compile Include="Scenes\FarmScene.cs" />
@@ -63,6 +68,12 @@
     </Reference>
     <Reference Include="MonoGame.Extended.Graphics, Version=1.0.617.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MonoGame.Extended.Graphics.1.0.617\lib\portable-net45+win8+wpa81\MonoGame.Extended.Graphics.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Extended.Gui, Version=1.0.617.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Extended.Gui.1.0.617\lib\portable-net45+win8+wpa81\MonoGame.Extended.Gui.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Extended.Input, Version=1.0.617.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Extended.Input.1.0.617\lib\portable-net45+win8+wpa81\MonoGame.Extended.Input.dll</HintPath>
     </Reference>
     <Reference Include="MonoGame.Extended.Tiled, Version=1.0.617.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MonoGame.Extended.Tiled.1.0.617\lib\portable-net45+win8+wpa81\MonoGame.Extended.Tiled.dll</HintPath>
@@ -84,7 +95,6 @@
     <None Include="app.manifest" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

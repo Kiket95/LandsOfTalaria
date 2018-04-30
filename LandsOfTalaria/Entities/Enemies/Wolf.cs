@@ -1,11 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Content;
-using MonoGame.Extended;
-using LandsOfTalaria.Objects;
 using System.Collections.Generic;
 using LandsOfTalaria.Entities.Enemies;
+using System;
 
 namespace LandsOfTalaria
 {
@@ -14,19 +10,26 @@ namespace LandsOfTalaria
 
         public static List<Wolf> wolfes = new List<Wolf>();
 
-        public Wolf(Vector2 newPosition,Vector2 screenCenter) :base(newPosition,screenCenter)
-        {
+        public Wolf(Vector2 newPosition,Vector2 screenCenter) :base(newPosition,screenCenter){
             position = newPosition;
             startingPosition = position;
             health = 10;
-            speed = 160;
+            speed = new Vector2(160,160);
             radius = 16;
-            speedRunningAway = 240;
-            speedWandering = 80;
-            source[0] = "Entities Textures/WolfMoveRight";
-            source[1] = "Entities Textures/WolfMoveLeft";
-            source[2] = "Entities Textures/WolfMoveUp";
-            source[3] = "Entities Textures/WolfMoveDown";
+            size = new Vector2(32,32);
+            speedRunningAway = new Vector2(240, 240);
+            speedWandering = new Vector2(80, 80);
+            skinPath[0] = "Entities Textures/WolfMoveRight";
+            skinPath[1] = "Entities Textures/WolfMoveLeft";
+            skinPath[2] = "Entities Textures/WolfMoveUp";
+            skinPath[3] = "Entities Textures/WolfMoveDown";
+            random = new Random();
+        }
+
+        protected override void randomizeWanderPoint()
+        {
+            wanderPoint.X = random.Next((int)startingPosition.X - 150, (int)startingPosition.X + 150);
+            wanderPoint.Y = random.Next((int)startingPosition.Y - 150, (int)startingPosition.Y + 150);
         }
     }
 }
