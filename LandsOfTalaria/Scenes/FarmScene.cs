@@ -49,7 +49,6 @@ namespace LandsOfTalaria
             collisionsLayerFromMap = startingLoc.GetLayer<TiledMapObjectLayer>("collisionLayerFromMap").Objects;
             entitiesLayerFromMap = startingLoc.GetLayer<TiledMapObjectLayer>("entitiesLayerFromMap").Objects;
             transitionsLayerFromMap = startingLoc.GetLayer<TiledMapObjectLayer>("transitionsLayerFromMap").Objects;
-
             LoadTrees();
             LoadEnemies();
             foreach(TiledMapObject collisionObjectFromMap in collisionsLayerFromMap)
@@ -73,7 +72,8 @@ namespace LandsOfTalaria
         public void Update(GameTime gameTime){
             //player.obstaclesLayersList = obstacles;
             player.Update(gameTime);
-            foreach(Entity entity in entitiesList)
+
+            foreach (Entity entity in entitiesList)
             {
             //    entity.obstaclesLayersList = obstacles;
                 entity.Update(gameTime);
@@ -83,6 +83,8 @@ namespace LandsOfTalaria
             //foreach (PlayerAttack playerAttack in PlayerAttack.playerAttacks){
             //    playerAttack.Update(gameTime);
             //}
+            tiledMapRenderer.Update(startingLoc, gameTime);
+
         }
 
         public void Draw(GraphicsDevice graphicsDevice){
@@ -90,7 +92,10 @@ namespace LandsOfTalaria
             graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
             graphicsDevice.RasterizerState = RasterizerState.CullNone;
             tiledMapRenderer.Draw(startingLoc.GetLayer("1"), playerCamera.Transform);
+            tiledMapRenderer.Draw(startingLoc.GetLayer("1.5"), playerCamera.Transform);
+            tiledMapRenderer.Draw(startingLoc.GetLayer("ANIMATED"), playerCamera.Transform);
             tiledMapRenderer.Draw(startingLoc.GetLayer("Special layer"), playerCamera.Transform);
+            tiledMapRenderer.Draw(startingLoc.GetLayer("Special layer2"), playerCamera.Transform);
             spriteBatch.Begin(transformMatrix: playerCamera.Transform, sortMode: SpriteSortMode.FrontToBack,depthStencilState: DepthStencilState.DepthRead,blendState: BlendState.AlphaBlend);
             DrawLayer();
             spriteBatch.End();
