@@ -9,7 +9,7 @@ namespace LandsOfTalaria.Objects
     {
         public enum CollisionShape { Rectangle, Circle };
         public CollisionShape collisionShape;
-        protected static float layer;
+        protected float layer;
         public Vector2 position;
         public Texture2D texture;
         public int radius;
@@ -18,6 +18,7 @@ namespace LandsOfTalaria.Objects
         protected string source;
         public  BoundingBox boundingBox;
         public  BoundingSphere boundingSphere;
+        public String state;
         public virtual void Draw(SpriteBatch spriteBatch) { }
 
         public Obstacles(Vector2 newPosition){
@@ -57,7 +58,7 @@ namespace LandsOfTalaria.Objects
                         return true;
                     }
                 }
-                else if (obstacle.GetType() == typeof(Fence)){
+                else if (obstacle.GetType() == typeof(Fence) && obstacle.state.Equals("horizontal")){
                     if ((int)temporaryPosition.X <= obstacle.position.X + obstacle.textureSize.X &&
                         (int)temporaryPosition.X + size.X >= obstacle.position.X &&
                         (int)temporaryPosition.Y + 3* size.Y/4 <= obstacle.position.Y + obstacle.textureSize.X &&

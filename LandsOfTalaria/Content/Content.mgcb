@@ -188,6 +188,30 @@
 /processorParam:TextureFormat=Color
 /build:Objects Textures/FenceHorizontal.png
 
+#begin Objects Textures/fences.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Objects Textures/fences.png
+
+#begin Objects Textures/FenceVertical.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Objects Textures/FenceVertical.png
+
 #begin Objects Textures/SunflowerPlant.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -504,6 +528,18 @@
 /importer:
 /processor:
 /build:Scenes Maps/Farm.tmx
+
+#begin Tilesets/build_atlas.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Tilesets/build_atlas.png
 
 #begin Tilesets/cave.png
 /importer:TextureImporter

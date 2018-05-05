@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 namespace LandsOfTalaria.Objects
 {
     class SmallObstacle:Obstacles{
+        SpriteAtlas spriteAtlas;
+        protected int spriteCollumns=1;
+        protected int spriteRows=1;
+        protected int currentFrame;
         public SmallObstacle(Vector2 newPosition):base(newPosition){}
         public override void LoadContent(ContentManager contentManager){
             texture = contentManager.Load<Texture2D>(source);
@@ -18,7 +22,9 @@ namespace LandsOfTalaria.Objects
         }
 
         public override void Draw(SpriteBatch spriteBatch){
-            spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, (int)textureSize.X, (int)textureSize.Y), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: layer);
+         //  spriteAtlas = new SpriteAtlas(texture, 5,6, currentFrame);
+         //  spriteAtlas.Draw(spriteBatch,new Vector2((int)position.X, (int)position.Y), layer);
+         spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, (int)textureSize.X, (int)textureSize.Y), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: layer);
         }
     }
 }

@@ -123,10 +123,7 @@ namespace LandsOfTalaria
         public void LoadTrees() {
             int x = 1000;
             int y = 200;
-            for (int i = 0;i<30;i++){
-                obstaclesList.Add(new Fence(new Vector2(x, y)));
-                x += 32;
-            }
+            
             foreach (var obstacleFromMap in obstaclesLayerFromMap)
             {
                 string type;
@@ -137,7 +134,20 @@ namespace LandsOfTalaria
                 }
                 if (type.Equals("Sunflower"))
                 {
-                    obstaclesList.Add(new SunflowerPlant(obstacleFromMap.Position));
+           //         obstaclesList.Add(new SunflowerPlant(obstacleFromMap.Position));
+                }
+                if (type.Equals("Fence"))
+                {
+                    if(obstacleFromMap.Name.Equals("FenceHorizontal"))
+                    for (int i = (int)obstacleFromMap.Position.X; i < (int)obstacleFromMap.Position.X + (int)obstacleFromMap.Size.Width; i+=32)
+                    {
+                        obstaclesList.Add(new Fence(new Vector2(i,obstacleFromMap.Position.Y),"horizontal"));
+                    }
+                    if (obstacleFromMap.Name.Equals("FenceVertical"))
+                    for (int i = (int)obstacleFromMap.Position.Y; i < (int)obstacleFromMap.Position.Y + obstacleFromMap.Size.Height; i += 32)
+                    {
+                        obstaclesList.Add(new Fence(new Vector2(obstacleFromMap.Position.X,i ), "vertical"));
+                    }
                 }
             }
         }
