@@ -9,22 +9,24 @@ using System.Threading.Tasks;
 
 namespace LandsOfTalaria.Objects
 {
-    class SmallObstacle:Obstacles{
-        SpriteAtlas spriteAtlas;
-        protected int spriteCollumns=1;
-        protected int spriteRows=1;
+    class SmallObstacle : Obstacles
+    {
+        private SpriteAtlas spriteAtlas;
+        protected int spriteCollumns = 1;
+        protected int spriteRows = 1;
         protected int currentFrame;
-        public SmallObstacle(Vector2 newPosition):base(newPosition){}
-        public override void LoadContent(ContentManager contentManager){
+        public SmallObstacle(Vector2 newPosition) : base(newPosition) { }
+        public override void LoadContent(ContentManager contentManager)
+        {
+            spriteAtlas = new SpriteAtlas();
             texture = contentManager.Load<Texture2D>(source);
-            textureSize = new Vector2(texture.Width, texture.Height);
-            layer = 0.4f;
+            textureSize = new Vector2(texture.Width / spriteCollumns, texture.Height / spriteRows);
         }
 
-        public override void Draw(SpriteBatch spriteBatch){
-         //  spriteAtlas = new SpriteAtlas(texture, 5,6, currentFrame);
-         //  spriteAtlas.Draw(spriteBatch,new Vector2((int)position.X, (int)position.Y), layer);
-         spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, (int)textureSize.X, (int)textureSize.Y), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: layer);
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            spriteAtlas.Draw(spriteBatch, new Vector2((int)position.X, (int)position.Y), layer, currentFrame, texture, spriteRows, spriteCollumns);
+            //spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, (int)textureSize.X, (int)textureSize.Y), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: layer);
         }
     }
 }

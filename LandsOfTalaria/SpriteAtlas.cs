@@ -5,30 +5,17 @@ namespace LandsOfTalaria
 {
     public class SpriteAtlas
     {
-        public Texture2D Texture { get; set; }
-        public int Rows { get; set; }
-        public int Columns { get; set; }
-        private int currentFrame;
-
-        public SpriteAtlas(Texture2D texture, int rows, int columns ,int currentFrame)
+        public void Draw(SpriteBatch spriteBatch, Vector2 location, float depth, int currentFrame, Texture2D texture, int rows, int columns)
         {
-            Texture = texture;
-            Rows = rows;
-            Columns = columns;
-            this.currentFrame = currentFrame;
-        }
-
-        public void Draw(SpriteBatch spriteBatch, Vector2 location, float depth)
-        {
-            int width = Texture.Width / Columns;
-            int height = Texture.Height / Rows;
-            int row = (int)((float)currentFrame / (float)Columns);
-            int column = currentFrame % Columns;
+            int width = texture.Width / columns;
+            int height = texture.Height / rows;
+            int row = (int)((float)currentFrame / (float)columns);
+            int column = currentFrame % columns;
 
             Rectangle sourceRectangle = new Rectangle(width * column, height * row, width, height);
-            Rectangle destinationRectangle = new Rectangle((int)location.X, (int)location.Y, width, height);
+            Rectangle destinationRectangle = new Rectangle((int)location.X, (int)location.Y, 32, 32);
 
-            spriteBatch.Draw(Texture, destinationRectangle, sourceRectangle, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: depth);
+            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth: 0.4f);
         }
     }
 }
