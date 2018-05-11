@@ -41,8 +41,8 @@ namespace LandsOfTalaria.Entities.Enemies
         public override void Update(GameTime gameTime) {
 
             animatedSpriteWalking = animatedSprite[(int)direction];
-            float distanceFromPlayer = Vector2.Distance(position, playerPosition);
-            float distancePlayerSpawn = Vector2.Distance(startingPosition, playerPosition);
+            float distanceFromPlayer = Vector2.Distance(position, player.Position);
+            float distancePlayerSpawn = Vector2.Distance(startingPosition, player.Position);
             float distanceFromSpawn = Vector2.Distance(position, startingPosition);
             float distanceFromWanderPoints = Vector2.Distance(position, wanderPoint);
             dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -63,13 +63,13 @@ namespace LandsOfTalaria.Entities.Enemies
 
                     break;
                 case State.Chase:
-                    playerChasing(playerPosition, dt);
+                    playerChasing(player.Position, dt);
                     speed = speedChasing;
                     if ((int)distancePlayerSpawn > teritorySize)
                         state = State.Wander;
                     break;
                 case State.Wander:
-                     Wandering(playerPosition,dt);
+                     Wandering(player.Position,dt);
                     speed = speedWandering;
                     break;
                 default: break;
@@ -203,7 +203,7 @@ namespace LandsOfTalaria.Entities.Enemies
         }
         protected bool didCollidePlayer()
         {
-            if (boundingSphere.Intersects(Player.boundingSphere))
+            if (boundingSphere.Intersects(player.boundingSphere)  || boundingSphere.Intersects(player2.boundingSphere))
             {
                 return true;
             }

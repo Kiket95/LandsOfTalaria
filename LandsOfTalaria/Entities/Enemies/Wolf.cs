@@ -7,7 +7,6 @@ namespace LandsOfTalaria
 {
     class Wolf : Enemy
     {
-
         public static List<Wolf> wolfes = new List<Wolf>();
 
         public Wolf(Vector2 newPosition,Vector2 screenCenter) :base(newPosition,screenCenter){

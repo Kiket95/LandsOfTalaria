@@ -18,7 +18,6 @@ namespace LandsOfTalaria.Entities
         public Vector2 size;
         protected Vector2 position;
         public Vector2 temporaryPosition;
-        public Vector2 playerPosition;
         public int radius;
         protected int health;
         protected bool isMoving = false;
@@ -26,6 +25,8 @@ namespace LandsOfTalaria.Entities
         protected float runSpeed;
         protected float layerDepth;
         protected String[] skinPath = new String[4];
+        public Player player;
+        public Player player2;
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {

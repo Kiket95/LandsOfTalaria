@@ -19,21 +19,20 @@ namespace LandsOfTalaria.Objects
                     currentFrame = 1;
                     break;
                 case "vertical":
-                    boundingBox = new BoundingBox(new Vector3(position.X + 24, position.Y, 0), new Vector3(position.X + 32, position.Y + 32, 0));
+                    boundingBox = new BoundingBox(new Vector3(position.X + 24, position.Y, 0), new Vector3(position.X + 40, position.Y + 32, 0));
                     currentFrame = 7;
                     break;
                 case "UpLeft":
-                    boundingBox = new BoundingBox(new Vector3(position.X + 24, position.Y, 0), new Vector3(position.X + 32, position.Y + 32, 0));
-                    currentFrame = 13;
+                    boundingBox = new BoundingBox(new Vector3(position.X + 24, position.Y + 24, 0), new Vector3(position.X + 32, position.Y + 32, 0));
+                    currentFrame = 12;
                     break;
                 case "UpRight":
-                    boundingBox = new BoundingBox(new Vector3(position.X + 24, position.Y, 0), new Vector3(position.X + 32, position.Y + 32, 0));
+                    boundingBox = new BoundingBox(new Vector3(position.X + 16, position.Y + 24, 0), new Vector3(position.X + 32, position.Y + 32, 0));
                     currentFrame = 14;
                     break;
                 case "DownLeft":
                     boundingBox = new BoundingBox(new Vector3(position.X + 24, position.Y, 0), new Vector3(position.X + 32, position.Y + 32, 0));
                     currentFrame = 24;
-
                     break;
                 case "DownRight":
                     boundingBox = new BoundingBox(new Vector3(position.X + 24, position.Y, 0), new Vector3(position.X + 32, position.Y + 32, 0));

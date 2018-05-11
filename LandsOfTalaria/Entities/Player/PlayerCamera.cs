@@ -14,7 +14,7 @@ namespace LandsOfTalaria
         public void Follow(Player player)
         {
             var position = Matrix.CreateTranslation(-(int)player.Position.X - 16, -(int)player.Position.Y - 16, 0);
-            var offset = Matrix.CreateTranslation(Game1.screenWidth / 2, Game1.screenHeight / 2, 0);
+            var offset = Matrix.CreateTranslation(Game1.screenWidth / 4, Game1.screenHeight / 2, 0);
             Transform = position * offset;
         }
 

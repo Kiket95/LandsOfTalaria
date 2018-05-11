@@ -58,7 +58,7 @@ namespace LandsOfTalaria.Objects
                         return true;
                     }
                 }
-                else if (obstacle.GetType() == typeof(Fence) && obstacle.state.Equals("horizontal")){
+                else if (obstacle.GetType() == typeof(Fence) && !obstacle.state.Equals("vertical")){
                     if ((int)temporaryPosition.X <= obstacle.position.X + obstacle.textureSize.X &&
                         (int)temporaryPosition.X + size.X >= obstacle.position.X &&
                         (int)temporaryPosition.Y + 3* size.Y/4 <= obstacle.position.Y + obstacle.textureSize.X &&

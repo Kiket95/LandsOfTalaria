@@ -13,6 +13,7 @@ namespace LandsOfTalaria
     class Player : Entity
     {
         SoundEffect grassStep;
+        public Player otherPlayer;
         private KeyboardState keyboardStateOld = Keyboard.GetState();
         private KeyboardState keyboardState;
      //   protected AnimatedSprite swordSwingAnimation;
@@ -20,10 +21,10 @@ namespace LandsOfTalaria
         public Gui gui;
         private float timer;
         private float timerTick = 0.4f;
-        public new static BoundingSphere boundingSphere;
-        public new static BoundingBox boundingBox;
-        private new static int health;
-        private static int mana;
+        public new BoundingSphere boundingSphere;
+        public new BoundingBox boundingBox;
+        private new int health;
+        private int mana;
         public new static int radius;
         public new static Vector2 temporaryPosition;
         private bool swordSwingFlag = false;
@@ -32,9 +33,8 @@ namespace LandsOfTalaria
             set { position = value; }
         }
 
-        public Player() {
+        public Player(string firstTexture, string secondTexture, string thirdTexture, string fourthTexture) {
             animatedSprite = new AnimatedSprite[4];
-            position = new Vector2(1000, 300);
             radius = 16;
             speed = new Vector2(300, 300);
             runSpeed = 1;
@@ -42,15 +42,15 @@ namespace LandsOfTalaria
             mana = 10;
             gui = new Gui(health,mana);
             animatedSpriteWalking = animatedSprite[(int)direction];
-            skinPath[0] = "Player Textures/playerMoveRight";
-            skinPath[1] = "Player Textures/playerMoveLeft";
-            skinPath[2] = "Player Textures/playerMoveUp";
-            skinPath[3] = "Player Textures/playerMoveDown";
+            skinPath[0] = firstTexture;
+            skinPath[1] = secondTexture;
+            skinPath[2] = thirdTexture;
+            skinPath[3] = fourthTexture;
             boundingSphere = new BoundingSphere(new Vector3(position.X, position.Y, 0), radius);
             boundingBox = new BoundingBox(new Vector3(position.X + 8, position.Y + 8, 0), new Vector3(position.X + 24, position.Y + 24, 0));
         }
 
-        public override void Update(GameTime gameTime) {
+        public void Update(GameTime gameTime, Keys UP, Keys LEFT, Keys RIGHT, Keys DOWN) {
             keyboardState = Keyboard.GetState();
             dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             timer += dt;
@@ -69,7 +69,7 @@ namespace LandsOfTalaria
             else
                 animatedSpriteWalking.setFrame(1);
             isMoving = false;
-            movingPlayer();
+            movingPlayer(UP,LEFT,RIGHT,DOWN);
         }
 
         public override void Draw(SpriteBatch spriteBatch) {
@@ -88,7 +88,7 @@ namespace LandsOfTalaria
           //  swordSwingAnimation = new AnimatedSprite(swordSwing, 1, 9,1f); //SwordSwing
         }
 
-        public void movingPlayer() {
+        public void movingPlayer(Keys UP, Keys LEFT, Keys RIGHT, Keys DOWN) {
             if (keyboardState.IsKeyDown(Keys.LeftShift))
             {
                 speed.X = 300;
@@ -103,21 +103,21 @@ namespace LandsOfTalaria
                 timerTick = 0.35f;
             }
 
-            if (keyboardState.IsKeyDown(Keys.D)) {
+            if (keyboardState.IsKeyDown(RIGHT)) {
                 direction = Direction.Right;
                 isMoving = true;
             }
 
-            if (keyboardState.IsKeyDown(Keys.A)) {
+            if (keyboardState.IsKeyDown(LEFT)) {
                 direction = Direction.Left;
                 isMoving = true;
             }
-            if (keyboardState.IsKeyDown(Keys.W)) {
+            if (keyboardState.IsKeyDown(UP)) {
                 direction = Direction.Up;
                 isMoving = true;
 
             }
-            if (keyboardState.IsKeyDown(Keys.S)) {
+            if (keyboardState.IsKeyDown(DOWN)) {
                 direction = Direction.Down;
                 isMoving = true;
             }
@@ -224,6 +224,9 @@ namespace LandsOfTalaria
                     return true;
                 }
             }
+            if (boundingBox.Intersects(otherPlayer.boundingBox))
+                return true;
+
             return false;
         }
     }
